@@ -1,8 +1,27 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+    
+    // Snippets Vault Collection (Safe Community / Client Persistent Code Store)
     match /snippets/{snippetId} {
-      allow read, write: if true;
+      // Allow read access to all developers
+      allow read: if true;
+      
+      // Allow creation with strict schema & field size bounds
+      allow create: if request.resource.data.keys().hasAll(['title', 'lang', 'code'])
+                    && request.resource.data.title is string
+                    && request.resource.data.title.size() > 0
+                    && request.resource.data.title.size() <= 200
+                    && request.resource.data.lang is string
+                    && request.resource.data.lang.size() <= 50
+                    && request.resource.data.code is string
+                    && request.resource.data.code.size() <= 100000;
+                    
+      // Allow deletion
+      allow delete: if true;
+      
+      // Prevent unauthorized updates
+      allow update: if false;
     }
   }
 }

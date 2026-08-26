@@ -277,27 +277,103 @@ app.delete("/api/snippets/:id", (req, res) => {
 // 5. SERVER-SIDE GEMINI AI DEVELOPER ASSISTANT
 // ==========================================
 app.post("/api/ai/assist", async (req, res) => {
-  const { task, prompt, context } = req.body;
+  const { task, prompt, context, customApiKey } = req.body;
+  const headerApiKey = req.headers["x-gemini-api-key"] as string | undefined;
 
   if (!prompt || typeof prompt !== "string") {
     return res.status(400).json({ error: "Prompt is required." });
   }
 
-  const ai = getAiClient();
+  const effectiveKey = customApiKey || headerApiKey || process.env.GEMINI_API_KEY;
+  let ai: GoogleGenAI | null = null;
+  if (effectiveKey) {
+    ai = new GoogleGenAI({
+      apiKey: effectiveKey,
+      httpOptions: {
+        headers: {
+          "User-Agent": "aistudio-build",
+        },
+      },
+    });
+  }
 
   if (!ai) {
-    // Intelligent fallback responses if no API key is set
+    // Intelligent offline fallback responses if no API key is set
+    let offlineFallback = "";
+    if (task === "design-suggest") {
+      offlineFallback = `/* 🎨 Gemini AI Design Suggestion (Offline Mode) */
+/* Modern Glassmorphic Responsive Card Concept */
+<div class="w-full max-w-md mx-auto p-6 bg-slate-900/80 backdrop-blur-md rounded-2xl border border-slate-700/50 shadow-2xl transition hover:border-indigo-500/50">
+  <div class="flex items-center space-x-3 mb-4">
+    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold shadow-lg shadow-indigo-500/30">✨</div>
+    <div>
+      <h3 class="text-lg font-bold text-white tracking-tight">Responsive Modern Card</h3>
+      <p class="text-xs text-slate-400">Mobile-First Fluid Component</p>
+    </div>
+  </div>
+  <p class="text-sm text-slate-300 leading-relaxed mb-4">Crafted with flexible container wrapping, responsive typography clamp, and smooth micro-interactions.</p>
+  <button class="w-full py-2.5 px-4 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white text-xs font-semibold rounded-xl transition shadow-lg shadow-indigo-500/20 active:scale-95">Get Started</button>
+</div>`;
+    } else if (task === "responsive") {
+      offlineFallback = `/* 📱 Mobile-First Responsive CSS Transformation (Offline Mode) */
+/* Converted to fluid flex/grid layout with media query breakpoints */
+@media (max-width: 768px) {
+  .responsive-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 1rem !important;
+    flex-direction: column !important;
+  }
+  .responsive-card {
+    width: 100% !important;
+    margin-bottom: 1rem;
+  }
+}
+@media (min-width: 769px) {
+  .responsive-container {
+    display: flex;
+    gap: 1.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+}`;
+    } else {
+      offlineFallback = `/* Generated Template for: "${prompt}" */\n.developer-solution {\n  display: flex;\n  flex-wrap: wrap;\n  align-items: center;\n  justify-content: center;\n  width: 100%;\n  max-width: 1200px;\n  margin: 0 auto;\n  padding: clamp(1rem, 4vw, 2.5rem);\n  box-shadow: 0 10px 30px -5px rgba(99, 102, 241, 0.25);\n  border: 1px solid rgba(99, 102, 241, 0.4);\n  border-radius: 16px;\n  background: #0f172a;\n  color: #f8fafc;\n  transition: all 0.25s ease;\n}`;
+    }
     return res.json({
-      output: `/* Note: GEMINI_API_KEY is not configured in environment */\n/* Generated Template for: "${prompt}" */\n\n` +
-        `.developer-solution {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  box-shadow: 0 10px 25px -5px rgba(6, 182, 212, 0.3);\n  border: 1px solid #06b6d4;\n  border-radius: 12px;\n  padding: 1.5rem;\n  transition: all 0.2s ease;\n}`,
+      output: offlineFallback,
       isFallback: true,
     });
   }
 
   try {
-    let systemInstruction = "You are an expert senior web developer assistant. Provide clean, concise, production-ready code and explanations. Avoid fluff.";
+    let systemInstruction = "You are an elite Senior Full-Stack Engineer and UI/UX Designer. Provide clean, concise, production-ready code and explanations with modern dark styling (#0f172a background, indigo/purple/cyan accents) and mobile-first responsiveness. Avoid fluff.";
     
-    if (task === "responsive") {
+    if (task === "design-suggest") {
+      systemInstruction = `You are a World-Class Principal UI/UX Designer and Frontend Architect.
+The user will provide HTML/CSS/Tailwind/React code.
+Your goal:
+1. Analyze the original code structure.
+2. Suggest and generate 2-3 UNIQUE, modern, and 100% RESPONSIVE design redesigns (e.g. Modern Glassmorphic, High-Tech Dark Cyber, Clean Minimalist SaaS).
+3. Provide the COMPLETE ready-to-render converted HTML/Tailwind/CSS code for the best redesign.
+4. Include a brief design explanation explaining the typography hierarchy, color palette, responsive breakpoints, and visual polish applied.`;
+    } else if (task === "ui-prompt") {
+      systemInstruction = `You are a Senior UI Component Engineer specializing in Tailwind CSS, React JSX, and modern Web Design.
+The user will give a natural language prompt describing a component (e.g. 'SaaS pricing card with toggle', 'Modern Bento Grid hero', 'Glassmorphism Auth Modal', 'Developer Analytics Dashboard Widget').
+Your goal:
+1. Generate the complete, clean, self-contained HTML + Tailwind CSS code (and React JSX version).
+2. Ensure it uses modern dark palette (bg-slate-900/slate-950, text-slate-100, border-slate-800, indigo/cyan/purple accents), flex/grid responsiveness, accessible markup, and smooth hover micro-interactions.`;
+    } else if (task === "zip-debug") {
+      systemInstruction = `You are an elite Code Reviewer, Security Auditor, and Full-Stack Debugger.
+The user will provide extracted source files from a ZIP project repository.
+Your goal:
+1. Perform a deep codebase health check: identify syntax bugs, logic errors, missing dependencies, deprecated APIs, performance bottlenecks, and security vulnerabilities (e.g. XSS, unsafe inputs).
+2. Provide a structured audit report with:
+   - 🚨 Critical Issues & Bugs
+   - ⚡ Performance & Optimization Suggestions
+   - 🛡️ Security Audit
+   - 🛠️ Fixed Code Snippets for immediate copy-pasting.`;
+    } else if (task === "responsive") {
       systemInstruction = `You are a World-Class Responsive Web Design Engineer. 
 The user will provide HTML/CSS/Tailwind/React/Flutter code that might be fixed-width or non-responsive.
 Your goal:
@@ -306,7 +382,7 @@ Your goal:
 3. Provide the full converted clean code.
 4. Add a brief 2-3 bullet point summary of key responsiveness changes made (e.g., Mobile breakpoints @media, Flex wrap, fluid scaling).`;
     } else if (task === "css") {
-      systemInstruction = "You are a CSS and UI styling expert. Generate modern, beautiful, cross-browser CSS rules or animations tailored to the user's prompt. Provide pure CSS and brief explanation.";
+      systemInstruction = "You are a CSS and UI styling expert. Generate modern, beautiful, cross-browser CSS rules or keyframe animations tailored to the user's prompt. Provide pure CSS and brief explanation.";
     } else if (task === "regex") {
       systemInstruction = "You are a Regular Expressions expert. Provide the exact regex pattern with flags, explain each token concisely, and provide 3 positive and 3 negative test cases.";
     } else if (task === "debug") {
