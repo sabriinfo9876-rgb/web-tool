@@ -1,0 +1,17 @@
+{
+  "entities": {
+    "snippets": {
+      "title": "Developer Snippets",
+      "description": "Custom CSS snippets, regex patterns, text notes and API configurations saved by users",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "description": "Title of the snippet" },
+        "category": { "type": "string", "description": "Category: css, text, api, regex, or note" },
+        "content": { "type": "string", "description": "Actual code or text content" },
+        "userId": { "type": "string", "description": "Owner user ID (or 'anonymous')" },
+        "createdAt": { "type": "string", "description": "ISO timestamp of creation" }
+      },
+      "required": ["title", "category", "content", "createdAt"]
+    }
+  }
+}

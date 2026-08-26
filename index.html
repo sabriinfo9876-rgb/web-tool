@@ -1,0 +1,1894 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Web Developer Hub - All-in-One Dev Tools with Firebase & AI</title>
+  <meta name="description" content="All-in-One Web Developer Hub: CSS Generator, Text Analyzer, Screen Resizer, API Tester, AI Dev Assistant, and Cloud Firestore Snippet Sync." />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#ecfeff',
+              100: '#cffafe',
+              400: '#22d3ee',
+              500: '#06b6d4',
+              600: '#0891b2',
+            },
+            accent: {
+              400: '#a855f7',
+              500: '#8b5cf6',
+              600: '#7c3aed',
+            }
+          },
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'Inter', 'system-ui', '-apple-system', 'sans-serif'],
+            mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.6);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(51, 65, 85, 0.8);
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(100, 116, 139, 1);
+    }
+
+    /* Range Slider Styling */
+    input[type="range"] {
+      -webkit-appearance: none;
+      appearance: none;
+      background: #1e293b;
+      height: 6px;
+      border-radius: 9999px;
+      outline: none;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #06b6d4;
+      cursor: pointer;
+      border: 2px solid #0f172a;
+      box-shadow: 0 0 10px rgba(6, 182, 212, 0.5);
+      transition: transform 0.15s ease, background-color 0.15s ease;
+    }
+    input[type="range"]::-webkit-slider-thumb:hover {
+      transform: scale(1.15);
+      background: #22d3ee;
+    }
+    input[type="range"]::-moz-range-thumb {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #06b6d4;
+      cursor: pointer;
+      border: 2px solid #0f172a;
+      box-shadow: 0 0 10px rgba(6, 182, 212, 0.5);
+      transition: transform 0.15s ease, background-color 0.15s ease;
+    }
+    input[type="range"]::-moz-range-thumb:hover {
+      transform: scale(1.15);
+      background: #22d3ee;
+    }
+
+    /* Color picker button reset */
+    input[type="color"] {
+      -webkit-appearance: none;
+      border: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      cursor: pointer;
+      padding: 0;
+      background: transparent;
+    }
+    input[type="color"]::-webkit-color-swatch-wrapper {
+      padding: 0;
+    }
+    input[type="color"]::-webkit-color-swatch {
+      border: 2px solid #475569;
+      border-radius: 8px;
+    }
+
+    /* Background patterns for CSS preview */
+    .bg-grid-pattern {
+      background-size: 24px 24px;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    }
+
+    /* Resizer iframe transition */
+    #resizer-frame-container {
+      transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1), height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Toast animation */
+    @keyframes toastIn {
+      from { transform: translateY(100%) scale(0.95); opacity: 0; }
+      to { transform: translateY(0) scale(1); opacity: 1; }
+    }
+    @keyframes toastOut {
+      from { transform: translateY(0) scale(1); opacity: 1; }
+      to { transform: translateY(100%) scale(0.95); opacity: 0; }
+    }
+    .animate-toast-in {
+      animation: toastIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    .animate-toast-out {
+      animation: toastOut 0.2s cubic-bezier(0.7, 0, 0.84, 0) forwards;
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans min-h-screen flex flex-col md:flex-row overflow-x-hidden antialiased selection:bg-cyan-500 selection:text-slate-950">
+
+  <!-- Mobile Top Navigation Bar -->
+  <header class="md:hidden flex items-center justify-between px-4 py-3 bg-slate-900/90 backdrop-blur-md border-b border-slate-800 sticky top-0 z-40">
+    <div class="flex items-center space-x-3">
+      <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-cyan-500 to-purple-600 flex items-center justify-center shadow-lg shadow-cyan-500/20 text-white font-bold text-base">
+        &lt;/&gt;
+      </div>
+      <div>
+        <h1 class="font-bold text-sm tracking-tight text-white">WEB DEV HUB</h1>
+        <p class="text-[10px] text-cyan-400 font-mono">FIREBASE CLOUD READY</p>
+      </div>
+    </div>
+    <button id="mobile-menu-btn" aria-label="Toggle navigation menu" class="p-2 rounded-lg bg-slate-800 border border-slate-700 text-slate-300 hover:text-white hover:bg-slate-700 transition">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </button>
+  </header>
+
+  <!-- Left Sidebar Navigation -->
+  <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-72 bg-slate-900 border-r border-slate-800/80 flex flex-col justify-between transition-transform duration-300 ease-in-out -translate-x-full md:translate-x-0 md:static md:z-auto">
+    <!-- Brand / Header -->
+    <div>
+      <div class="p-5 border-b border-slate-800/60 flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 via-blue-600 to-purple-600 flex items-center justify-center shadow-lg shadow-cyan-500/25 text-white font-bold text-lg tracking-wider">
+            &lt;/&gt;
+          </div>
+          <div>
+            <div class="flex items-center space-x-1.5">
+              <span class="font-extrabold text-base tracking-tight text-white">WEB DEV HUB</span>
+            </div>
+            <span class="text-[11px] font-semibold text-cyan-400 tracking-wider uppercase font-mono">Cloud Developer Hub</span>
+          </div>
+        </div>
+        <!-- Close Mobile Menu Button -->
+        <button id="close-sidebar-btn" aria-label="Close menu" class="md:hidden text-slate-400 hover:text-white p-1 rounded-md hover:bg-slate-800">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Navigation List -->
+      <nav class="p-3 space-y-1.5">
+        <div class="px-3 py-2 text-[10px] font-bold uppercase tracking-wider text-slate-400 font-mono">Workspace Utilities</div>
+
+        <!-- Tool 1: CSS Generator -->
+        <button id="nav-css-btn" data-tool="css" class="nav-item group w-full flex items-center justify-between px-3.5 py-3 rounded-xl font-medium text-sm transition-all duration-150 bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 shadow-sm shadow-cyan-500/10">
+          <div class="flex items-center space-x-3">
+            <span class="w-8 h-8 rounded-lg bg-slate-800 flex items-center justify-center text-cyan-400 border border-slate-700/60 group-hover:scale-105 transition-transform">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+              </svg>
+            </span>
+            <div class="text-left">
+              <div class="text-white font-semibold leading-tight">CSS Generator</div>
+              <div class="text-[11px] text-slate-400 font-normal">Shadows &amp; Borders</div>
+            </div>
+          </div>
+          <span class="active-pill w-1.5 h-4 rounded-full bg-cyan-400"></span>
+        </button>
+
+        <!-- Tool 2: Text Analyzer -->
+        <button id="nav-text-btn" data-tool="text" class="nav-item group w-full flex items-center justify-between px-3.5 py-3 rounded-xl font-medium text-sm transition-all duration-150 text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 border border-transparent">
+          <div class="flex items-center space-x-3">
+            <span class="w-8 h-8 rounded-lg bg-slate-800 flex items-center justify-center text-purple-400 border border-slate-700/60 group-hover:scale-105 transition-transform">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+            </span>
+            <div class="text-left">
+              <div class="text-slate-300 font-semibold leading-tight group-hover:text-white">Text Analyzer</div>
+              <div class="text-[11px] text-slate-400 font-normal">Case &amp; Metrics</div>
+            </div>
+          </div>
+          <span class="active-pill hidden w-1.5 h-4 rounded-full bg-purple-400"></span>
+        </button>
+
+        <!-- Tool 3: Screen Resizer -->
+        <button id="nav-screen-btn" data-tool="screen" class="nav-item group w-full flex items-center justify-between px-3.5 py-3 rounded-xl font-medium text-sm transition-all duration-150 text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 border border-transparent">
+          <div class="flex items-center space-x-3">
+            <span class="w-8 h-8 rounded-lg bg-slate-800 flex items-center justify-center text-blue-400 border border-slate-700/60 group-hover:scale-105 transition-transform">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+            </span>
+            <div class="text-left">
+              <div class="text-slate-300 font-semibold leading-tight group-hover:text-white">Screen Resizer</div>
+              <div class="text-[11px] text-slate-400 font-normal">Responsive Viewport</div>
+            </div>
+          </div>
+          <span class="active-pill hidden w-1.5 h-4 rounded-full bg-blue-400"></span>
+        </button>
+
+        <!-- Tool 4: Firebase Cloud Snippets -->
+        <button id="nav-snippets-btn" data-tool="snippets" class="nav-item group w-full flex items-center justify-between px-3.5 py-3 rounded-xl font-medium text-sm transition-all duration-150 text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 border border-transparent">
+          <div class="flex items-center space-x-3">
+            <span class="w-8 h-8 rounded-lg bg-slate-800 flex items-center justify-center text-amber-400 border border-slate-700/60 group-hover:scale-105 transition-transform">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
+              </svg>
+            </span>
+            <div class="text-left">
+              <div class="text-slate-300 font-semibold leading-tight group-hover:text-white">Firestore Cloud Vault</div>
+              <div class="text-[11px] text-slate-400 font-normal">Sync &amp; Snippets</div>
+            </div>
+          </div>
+          <span class="active-pill hidden w-1.5 h-4 rounded-full bg-amber-400"></span>
+        </button>
+
+        <!-- Tool 5: Backend API Runner -->
+        <button id="nav-api-btn" data-tool="api" class="nav-item group w-full flex items-center justify-between px-3.5 py-3 rounded-xl font-medium text-sm transition-all duration-150 text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 border border-transparent">
+          <div class="flex items-center space-x-3">
+            <span class="w-8 h-8 rounded-lg bg-slate-800 flex items-center justify-center text-emerald-400 border border-slate-700/60 group-hover:scale-105 transition-transform">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+            </span>
+            <div class="text-left">
+              <div class="text-slate-300 font-semibold leading-tight group-hover:text-white">API Test Client</div>
+              <div class="text-[11px] text-slate-400 font-normal">CORS-Free Proxy</div>
+            </div>
+          </div>
+          <span class="active-pill hidden w-1.5 h-4 rounded-full bg-emerald-400"></span>
+        </button>
+
+        <!-- Tool 6: Gemini AI Assistant -->
+        <button id="nav-ai-btn" data-tool="ai" class="nav-item group w-full flex items-center justify-between px-3.5 py-3 rounded-xl font-medium text-sm transition-all duration-150 text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 border border-transparent">
+          <div class="flex items-center space-x-3">
+            <span class="w-8 h-8 rounded-lg bg-slate-800 flex items-center justify-center text-cyan-300 border border-slate-700/60 group-hover:scale-105 transition-transform">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+              </svg>
+            </span>
+            <div class="text-left">
+              <div class="text-slate-300 font-semibold leading-tight group-hover:text-white">AI Dev Assistant</div>
+              <div class="text-[11px] text-slate-400 font-normal">Gemini 3.7 Coder</div>
+            </div>
+          </div>
+          <span class="active-pill hidden w-1.5 h-4 rounded-full bg-cyan-300"></span>
+        </button>
+      </nav>
+    </div>
+
+    <!-- Sidebar Footer -->
+    <div class="p-4 border-t border-slate-800/80 bg-slate-900/60 space-y-2">
+      <div class="flex items-center justify-between text-xs text-slate-400">
+        <span class="font-mono text-slate-300 font-medium">v1.2.0 Full-Stack</span>
+        <div class="flex items-center space-x-1.5">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span id="firestore-badge" class="text-[11px] text-emerald-400 font-medium">Firestore Connected</span>
+        </div>
+      </div>
+      <div class="text-[10px] text-slate-500 font-mono truncate">
+        Project: <span class="text-amber-400/80">yielding-xenops-dxctm</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Mobile Backdrop -->
+  <div id="mobile-backdrop" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-40 hidden md:hidden"></div>
+
+  <!-- Main Content Wrapper -->
+  <main class="flex-1 flex flex-col min-w-0 min-h-screen bg-slate-950 overflow-y-auto">
+    <!-- Desktop Header -->
+    <header class="px-6 py-4 border-b border-slate-800/80 bg-slate-900/40 backdrop-blur-md flex flex-wrap items-center justify-between gap-4 sticky top-0 z-30">
+      <div>
+        <h2 id="header-title" class="text-lg font-bold text-white tracking-tight flex items-center gap-2">
+          <span>All-in-One Web Developer Hub</span>
+        </h2>
+        <p id="header-desc" class="text-xs text-slate-400">Essential tools with Firebase Cloud Persistence and Backend Services</p>
+      </div>
+
+      <div class="flex items-center space-x-3">
+        <!-- Download Flutter App Package -->
+        <a href="/api/download-flutter-zip" download="flutter_web_developer_hub.zip" class="flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs shadow-md shadow-cyan-500/20 transition-all">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+          </svg>
+          <span>Download Flutter App (ZIP)</span>
+        </a>
+
+        <!-- Firebase Status Indicator -->
+        <div class="flex items-center space-x-2 px-3 py-1.5 rounded-full bg-slate-800/90 border border-slate-700/60 text-xs text-slate-300 shadow-inner">
+          <span class="relative flex h-2 w-2">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+          </span>
+          <span class="font-medium text-amber-300">Firebase Firestore Active</span>
+        </div>
+
+        <div class="flex items-center space-x-2 px-3 py-1.5 rounded-full bg-slate-800/90 border border-slate-700/60 text-xs text-slate-300 shadow-inner">
+          <span class="relative flex h-2 w-2">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+          </span>
+          <span class="font-medium text-emerald-400">Server Online</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Content Workspace -->
+    <div class="flex-1 p-4 md:p-8 max-w-7xl w-full mx-auto">
+
+      <!-- ======================================================== -->
+      <!-- TOOL 1: CSS SHADOWS & BORDERS GENERATOR                  -->
+      <!-- ======================================================== -->
+      <section id="tool-css" class="tool-view space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-slate-800/60 pb-4">
+          <div>
+            <h3 class="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
+              <span>CSS Shadows &amp; Borders Generator</span>
+            </h3>
+            <p class="text-sm text-slate-400">Design, tweak, and save custom box-shadow and border styles to Firebase Cloud.</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button id="save-css-to-cloud-btn" class="px-3.5 py-1.5 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/40 text-xs font-semibold text-amber-300 hover:text-amber-200 transition flex items-center gap-1.5">
+              <svg class="w-3.5 h-3.5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
+              </svg>
+              <span>Save to Firestore</span>
+            </button>
+            <button id="css-reset-btn" class="px-3.5 py-1.5 rounded-lg bg-slate-800/80 hover:bg-slate-700 border border-slate-700 text-xs font-semibold text-slate-300 hover:text-white transition flex items-center gap-1.5">
+              <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              </svg>
+              <span>Reset Defaults</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Quick Presets -->
+        <div class="flex flex-wrap items-center gap-2 pt-1">
+          <span class="text-xs font-mono font-semibold uppercase tracking-wider text-slate-400 mr-1">Presets:</span>
+          <button class="css-preset-btn px-2.5 py-1 text-xs rounded-md bg-slate-900 border border-slate-800 hover:border-cyan-500/50 hover:text-cyan-300 text-slate-400 transition" data-preset="soft">Soft Depth</button>
+          <button class="css-preset-btn px-2.5 py-1 text-xs rounded-md bg-slate-900 border border-slate-800 hover:border-cyan-500/50 hover:text-cyan-300 text-slate-400 transition" data-preset="neon">Neon Cyan</button>
+          <button class="css-preset-btn px-2.5 py-1 text-xs rounded-md bg-slate-900 border border-slate-800 hover:border-cyan-500/50 hover:text-cyan-300 text-slate-400 transition" data-preset="elevation">Deep Float</button>
+          <button class="css-preset-btn px-2.5 py-1 text-xs rounded-md bg-slate-900 border border-slate-800 hover:border-cyan-500/50 hover:text-cyan-300 text-slate-400 transition" data-preset="pill">Rounded Glass</button>
+          <button class="css-preset-btn px-2.5 py-1 text-xs rounded-md bg-slate-900 border border-slate-800 hover:border-cyan-500/50 hover:text-cyan-300 text-slate-400 transition" data-preset="minimal">Minimal Border</button>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+          <!-- Control Panel (Left column) -->
+          <div class="lg:col-span-6 space-y-5">
+            <!-- Box Shadow Group -->
+            <div class="bg-slate-900/80 rounded-2xl p-5 border border-slate-800/90 shadow-xl backdrop-blur-sm space-y-4">
+              <div class="flex items-center justify-between pb-2 border-b border-slate-800/80">
+                <div class="flex items-center space-x-2">
+                  <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 shadow-sm shadow-cyan-400/50"></span>
+                  <h4 class="text-sm font-bold text-white uppercase tracking-wider font-mono">Box Shadow</h4>
+                </div>
+                <label class="flex items-center space-x-2 cursor-pointer text-xs text-slate-400 hover:text-slate-300">
+                  <input type="checkbox" id="shadow-inset" class="rounded bg-slate-800 border-slate-700 text-cyan-500 focus:ring-0 focus:ring-offset-0">
+                  <span>Inset</span>
+                </label>
+              </div>
+
+              <!-- Horizontal Offset -->
+              <div class="space-y-1.5">
+                <div class="flex justify-between text-xs">
+                  <label for="shadow-x" class="text-slate-300 font-medium">Horizontal Offset</label>
+                  <span id="shadow-x-val" class="font-mono text-cyan-400 font-semibold">8px</span>
+                </div>
+                <input type="range" id="shadow-x" min="-50" max="50" value="8" class="w-full">
+              </div>
+
+              <!-- Vertical Offset -->
+              <div class="space-y-1.5">
+                <div class="flex justify-between text-xs">
+                  <label for="shadow-y" class="text-slate-300 font-medium">Vertical Offset</label>
+                  <span id="shadow-y-val" class="font-mono text-cyan-400 font-semibold">8px</span>
+                </div>
+                <input type="range" id="shadow-y" min="-50" max="50" value="8" class="w-full">
+              </div>
+
+              <!-- Blur Radius -->
+              <div class="space-y-1.5">
+                <div class="flex justify-between text-xs">
+                  <label for="shadow-blur" class="text-slate-300 font-medium">Blur Radius</label>
+                  <span id="shadow-blur-val" class="font-mono text-cyan-400 font-semibold">20px</span>
+                </div>
+                <input type="range" id="shadow-blur" min="0" max="100" value="20" class="w-full">
+              </div>
+
+              <!-- Spread Radius -->
+              <div class="space-y-1.5">
+                <div class="flex justify-between text-xs">
+                  <label for="shadow-spread" class="text-slate-300 font-medium">Spread Radius</label>
+                  <span id="shadow-spread-val" class="font-mono text-cyan-400 font-semibold">0px</span>
+                </div>
+                <input type="range" id="shadow-spread" min="-50" max="50" value="0" class="w-full">
+              </div>
+
+              <!-- Shadow Color & Opacity -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                <div class="space-y-1.5">
+                  <label for="shadow-color" class="block text-xs text-slate-300 font-medium">Shadow Color</label>
+                  <div class="flex items-center space-x-2 bg-slate-800/80 px-2.5 py-1.5 rounded-lg border border-slate-700/80">
+                    <input type="color" id="shadow-color" value="#000000" class="w-7 h-7">
+                    <input type="text" id="shadow-color-text" value="#000000" class="w-full bg-transparent text-xs font-mono text-slate-200 outline-none uppercase" maxlength="7">
+                  </div>
+                </div>
+
+                <div class="space-y-1.5">
+                  <div class="flex justify-between text-xs">
+                    <label for="shadow-opacity" class="text-slate-300 font-medium">Opacity</label>
+                    <span id="shadow-opacity-val" class="font-mono text-cyan-400 font-semibold">25%</span>
+                  </div>
+                  <input type="range" id="shadow-opacity" min="0" max="100" value="25" class="w-full mt-2">
+                </div>
+              </div>
+            </div>
+
+            <!-- Border Group -->
+            <div class="bg-slate-900/80 rounded-2xl p-5 border border-slate-800/90 shadow-xl backdrop-blur-sm space-y-4">
+              <div class="flex items-center space-x-2 pb-2 border-b border-slate-800/80">
+                <span class="w-2.5 h-2.5 rounded-full bg-purple-400 shadow-sm shadow-purple-400/50"></span>
+                <h4 class="text-sm font-bold text-white uppercase tracking-wider font-mono">Border &amp; Radius</h4>
+              </div>
+
+              <!-- Border Radius -->
+              <div class="space-y-1.5">
+                <div class="flex justify-between text-xs">
+                  <label for="border-radius" class="text-slate-300 font-medium">Border Radius</label>
+                  <span id="border-radius-val" class="font-mono text-purple-400 font-semibold">16px</span>
+                </div>
+                <input type="range" id="border-radius" min="0" max="100" value="16" class="w-full">
+              </div>
+
+              <!-- Border Width -->
+              <div class="space-y-1.5">
+                <div class="flex justify-between text-xs">
+                  <label for="border-width" class="text-slate-300 font-medium">Border Width</label>
+                  <span id="border-width-val" class="font-mono text-purple-400 font-semibold">1px</span>
+                </div>
+                <input type="range" id="border-width" min="0" max="10" value="1" class="w-full">
+              </div>
+
+              <!-- Border Style & Color -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
+                <div class="space-y-1.5">
+                  <label for="border-style" class="block text-xs text-slate-300 font-medium">Border Style</label>
+                  <select id="border-style" class="w-full bg-slate-800/90 border border-slate-700 text-xs rounded-lg px-3 py-2 text-slate-200 focus:outline-none focus:border-purple-500">
+                    <option value="solid" selected>Solid</option>
+                    <option value="dashed">Dashed</option>
+                    <option value="dotted">Dotted</option>
+                    <option value="double">Double</option>
+                    <option value="none">None</option>
+                  </select>
+                </div>
+
+                <div class="space-y-1.5">
+                  <label for="border-color" class="block text-xs text-slate-300 font-medium">Border Color</label>
+                  <div class="flex items-center space-x-2 bg-slate-800/80 px-2.5 py-1.5 rounded-lg border border-slate-700/80">
+                    <input type="color" id="border-color" value="#334155" class="w-7 h-7">
+                    <input type="text" id="border-color-text" value="#334155" class="w-full bg-transparent text-xs font-mono text-slate-200 outline-none uppercase" maxlength="7">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Preview & Code Column (Right column) -->
+          <div class="lg:col-span-6 space-y-5">
+            <!-- Live Preview Card Box -->
+            <div class="bg-slate-900/80 rounded-2xl border border-slate-800/90 shadow-xl overflow-hidden backdrop-blur-sm">
+              <div class="px-5 py-3.5 border-b border-slate-800/80 flex items-center justify-between bg-slate-900/90">
+                <div class="flex items-center space-x-2">
+                  <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
+                  <span class="text-xs font-bold text-slate-300 uppercase tracking-wider font-mono">LIVE PREVIEW</span>
+                </div>
+
+                <div class="flex items-center space-x-1.5 bg-slate-800/80 p-1 rounded-lg border border-slate-700/60">
+                  <button id="bg-toggle-dark" title="Dark Canvas" class="w-5 h-5 rounded bg-slate-950 border border-slate-700 transition hover:scale-110 active:scale-95"></button>
+                  <button id="bg-toggle-grid" title="Grid Pattern" class="w-5 h-5 rounded bg-slate-900 bg-grid-pattern border border-slate-700 transition hover:scale-110 active:scale-95"></button>
+                  <button id="bg-toggle-light" title="Light Canvas" class="w-5 h-5 rounded bg-slate-200 border border-slate-400 transition hover:scale-110 active:scale-95"></button>
+                </div>
+              </div>
+
+              <!-- Preview Stage Area -->
+              <div id="preview-canvas" class="p-8 md:p-14 min-h-[300px] flex items-center justify-center bg-slate-950/60 bg-grid-pattern transition-colors duration-200">
+                <div id="css-preview-target" class="w-64 h-48 bg-slate-800 text-slate-200 p-5 flex flex-col justify-between transition-all duration-75 select-none">
+                  <div class="flex items-center justify-between">
+                    <div class="w-8 h-8 rounded-lg bg-cyan-500/20 text-cyan-400 flex items-center justify-center font-bold text-xs border border-cyan-500/30">
+                      CSS
+                    </div>
+                    <span class="text-[10px] uppercase font-mono tracking-widest text-slate-400 font-semibold">Element</span>
+                  </div>
+                  <div>
+                    <h5 class="font-bold text-sm text-white">Interactive Card</h5>
+                    <p class="text-xs text-slate-400 mt-1 leading-snug">Real-time box shadow, border, and border-radius rendering.</p>
+                  </div>
+                  <div class="flex items-center justify-between text-[11px] font-mono text-cyan-400/80">
+                    <span id="preview-badge-radius">16px radius</span>
+                    <span>Ready</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Generated CSS Output Panel -->
+            <div class="bg-slate-900/80 rounded-2xl border border-slate-800/90 shadow-xl overflow-hidden backdrop-blur-sm">
+              <div class="px-5 py-3.5 border-b border-slate-800/80 flex items-center justify-between bg-slate-900/90">
+                <div class="flex items-center space-x-2">
+                  <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                  </svg>
+                  <span class="text-xs font-bold text-slate-300 uppercase tracking-wider font-mono">GENERATED CSS</span>
+                </div>
+                <button id="copy-css-btn" class="px-3.5 py-1.5 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-slate-950 text-xs font-bold transition-all shadow-md shadow-cyan-500/20 flex items-center space-x-1.5 active:scale-95">
+                  <svg id="copy-css-icon" class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                  </svg>
+                  <span id="copy-css-text">COPY CODE</span>
+                </button>
+              </div>
+              <div class="p-5 bg-slate-950/90 font-mono text-xs text-cyan-300 overflow-x-auto leading-relaxed">
+                <pre><code id="generated-css-code">.example {
+  box-shadow: 8px 8px 20px 0px rgba(0, 0, 0, 0.25);
+  border: 1px solid #334155;
+  border-radius: 16px;
+}</code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================== -->
+      <!-- TOOL 2: TEXT ANALYZER & CASE CONVERTER                   -->
+      <!-- ======================================================== -->
+      <section id="tool-text" class="tool-view hidden space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-slate-800/60 pb-4">
+          <div>
+            <h3 class="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
+              <span>Text Analyzer &amp; Case Converter</span>
+            </h3>
+            <p class="text-sm text-slate-400">Calculate reading metrics, word statistics, and transform casing instantly.</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button id="save-text-to-cloud-btn" class="px-3.5 py-1.5 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/40 text-xs font-semibold text-amber-300 hover:text-amber-200 transition flex items-center gap-1.5">
+              <svg class="w-3.5 h-3.5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
+              </svg>
+              <span>Save Note to Cloud</span>
+            </button>
+            <button id="load-sample-text-btn" class="px-3.5 py-1.5 rounded-lg bg-slate-800/80 hover:bg-slate-700 border border-slate-700 text-xs font-semibold text-slate-300 hover:text-white transition flex items-center gap-1.5">
+              <span>Insert Sample</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Real-Time Statistics Grid -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
+          <div class="bg-slate-900/80 rounded-2xl p-4 border border-slate-800 shadow-md backdrop-blur-sm">
+            <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400 font-mono">Word Count</div>
+            <div id="stat-words" class="text-2xl font-extrabold text-white mt-1">0</div>
+            <div class="text-[11px] text-slate-400 mt-0.5">Total words</div>
+          </div>
+
+          <div class="bg-slate-900/80 rounded-2xl p-4 border border-slate-800 shadow-md backdrop-blur-sm">
+            <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400 font-mono">Characters</div>
+            <div id="stat-chars" class="text-2xl font-extrabold text-cyan-400 mt-1">0</div>
+            <div id="stat-chars-nospace" class="text-[11px] text-slate-400 mt-0.5">0 without spaces</div>
+          </div>
+
+          <div class="bg-slate-900/80 rounded-2xl p-4 border border-slate-800 shadow-md backdrop-blur-sm">
+            <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400 font-mono">Sentence Count</div>
+            <div id="stat-sentences" class="text-2xl font-extrabold text-purple-400 mt-1">0</div>
+            <div id="stat-paragraphs" class="text-[11px] text-slate-400 mt-0.5">0 paragraphs</div>
+          </div>
+
+          <div class="bg-slate-900/80 rounded-2xl p-4 border border-slate-800 shadow-md backdrop-blur-sm">
+            <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400 font-mono">Reading Time</div>
+            <div id="stat-reading-time" class="text-2xl font-extrabold text-emerald-400 mt-1">0 min read</div>
+            <div class="text-[11px] text-slate-400 mt-0.5">~200 words / min</div>
+          </div>
+        </div>
+
+        <!-- Action Buttons Toolbar -->
+        <div class="bg-slate-900/80 p-3 rounded-2xl border border-slate-800 shadow-lg flex flex-wrap items-center gap-2">
+          <button id="btn-uppercase" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white border border-slate-700 text-xs font-semibold tracking-wide transition active:scale-95">
+            UPPERCASE
+          </button>
+          <button id="btn-lowercase" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white border border-slate-700 text-xs font-semibold tracking-wide transition active:scale-95">
+            lowercase
+          </button>
+          <button id="btn-capitalize" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white border border-slate-700 text-xs font-semibold tracking-wide transition active:scale-95">
+            Capitalize Words
+          </button>
+          <button id="btn-sentence-case" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white border border-slate-700 text-xs font-semibold tracking-wide transition active:scale-95">
+            Sentence case
+          </button>
+          <button id="btn-slugify" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white border border-slate-700 text-xs font-semibold tracking-wide transition active:scale-95">
+            slug-case
+          </button>
+          <button id="btn-trim" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white border border-slate-700 text-xs font-semibold tracking-wide transition active:scale-95">
+            Trim Spaces
+          </button>
+
+          <div class="ml-auto flex items-center gap-2">
+            <button id="btn-clear-text" class="px-3 py-1.5 rounded-lg bg-red-950/40 hover:bg-red-900/60 text-red-300 border border-red-800/60 text-xs font-semibold transition active:scale-95 flex items-center gap-1.5">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              </svg>
+              <span>Clear Text</span>
+            </button>
+            <button id="btn-copy-text" class="px-4 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold transition shadow-md shadow-purple-600/20 active:scale-95 flex items-center gap-1.5">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+              </svg>
+              <span id="copy-text-label">Copy Text</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Main Textarea Workspace -->
+        <div class="relative bg-slate-900/80 rounded-2xl border border-slate-800 shadow-xl overflow-hidden">
+          <textarea id="text-input" rows="12" placeholder="Paste or type your text here..." class="w-full bg-transparent p-5 text-slate-100 placeholder-slate-400 font-sans text-base leading-relaxed focus:outline-none resize-y selection:bg-purple-500 selection:text-white border-0"></textarea>
+
+          <div id="text-empty-state" class="absolute inset-0 pointer-events-none flex items-center justify-center p-6 text-center">
+            <div class="text-slate-400 max-w-sm space-y-1">
+              <svg class="w-10 h-10 mx-auto text-slate-500/60 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+              </svg>
+              <p class="text-sm font-medium text-slate-300">Start typing or paste text to analyze it.</p>
+              <p class="text-xs text-slate-400">Live statistics and case conversions will update automatically.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================== -->
+      <!-- TOOL 3: RESPONSIVE SCREEN RESIZER                        -->
+      <!-- ======================================================== -->
+      <section id="tool-screen" class="tool-view hidden space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-slate-800/60 pb-4">
+          <div>
+            <h3 class="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
+              <span>Responsive Screen Resizer &amp; Security Inspector</span>
+            </h3>
+            <p class="text-sm text-slate-400">Test live websites across mobile, tablet, and desktop viewports with backend security inspection.</p>
+          </div>
+          <div class="flex items-center space-x-2">
+            <span class="px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-xs font-mono text-cyan-400">
+              <span id="viewport-label">Viewport: 100% (Desktop)</span>
+            </span>
+          </div>
+        </div>
+
+        <!-- URL Input & Control Bar -->
+        <div class="bg-slate-900/90 p-4 rounded-2xl border border-slate-800 shadow-xl space-y-3">
+          <form id="url-form" class="flex flex-col sm:flex-row gap-2">
+            <div class="relative flex-1">
+              <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+                </svg>
+              </div>
+              <input type="text" id="url-input" value="https://example.com" placeholder="https://example.com" class="w-full bg-slate-950 border border-slate-700/80 rounded-xl pl-10 pr-4 py-2.5 text-sm text-slate-100 placeholder-slate-400 focus:outline-none focus:border-cyan-500 transition font-mono">
+            </div>
+            <button type="submit" id="load-url-btn" class="px-5 py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-sm transition shadow-lg shadow-cyan-500/20 active:scale-95 flex items-center justify-center gap-2 whitespace-nowrap">
+              <span>LOAD &amp; INSPECT</span>
+            </button>
+          </form>
+
+          <!-- Quick Test URLs and Presets -->
+          <div class="flex flex-wrap items-center justify-between gap-3 pt-1 border-t border-slate-800/80">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="text-xs font-mono font-medium text-slate-400">Sample Sites:</span>
+              <button type="button" class="quick-url-btn px-2.5 py-1 text-xs rounded-md bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition" data-url="https://example.com">example.com</button>
+              <button type="button" class="quick-url-btn px-2.5 py-1 text-xs rounded-md bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition" data-url="https://wikipedia.org">Wikipedia</button>
+              <button type="button" class="quick-url-btn px-2.5 py-1 text-xs rounded-md bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition" data-url="https://www.w3.org">W3C</button>
+            </div>
+
+            <!-- Device Preset Buttons -->
+            <div class="flex items-center gap-1.5 bg-slate-950 p-1 rounded-xl border border-slate-800">
+              <button id="device-mobile" type="button" data-device="mobile" class="device-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-slate-200 transition flex items-center gap-1.5">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                </svg>
+                <span>MOBILE (375×812)</span>
+              </button>
+
+              <button id="device-tablet" type="button" data-device="tablet" class="device-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-slate-200 transition flex items-center gap-1.5">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                </svg>
+                <span>TABLET (768×1024)</span>
+              </button>
+
+              <button id="device-desktop" type="button" data-device="desktop" class="device-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 transition flex items-center gap-1.5">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+                <span>DESKTOP (100%)</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Security & Meta Inspector Box (Backend Powered) -->
+        <div id="inspector-result-box" class="bg-slate-900/80 rounded-xl p-3.5 border border-slate-800 text-xs font-mono text-slate-300 flex flex-wrap items-center justify-between gap-2">
+          <div class="flex items-center space-x-2">
+            <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+            <span class="text-slate-400">Inspection:</span>
+            <span id="inspect-title" class="text-white font-semibold">Ready to inspect headers</span>
+          </div>
+          <div class="flex items-center space-x-4">
+            <span id="inspect-status" class="text-emerald-400 font-bold">HTTP 200</span>
+            <span id="inspect-iframe" class="text-cyan-400">iFrame Allowed</span>
+          </div>
+        </div>
+
+        <!-- Browser Mockup & Iframe Stage -->
+        <div class="bg-slate-900/90 rounded-2xl border border-slate-800 shadow-2xl overflow-hidden flex flex-col items-center">
+          <div class="w-full px-4 py-3 bg-slate-900 border-b border-slate-800 flex items-center justify-between gap-4">
+            <div class="flex items-center space-x-2">
+              <span class="w-3 h-3 rounded-full bg-red-500/80 inline-block"></span>
+              <span class="w-3 h-3 rounded-full bg-amber-500/80 inline-block"></span>
+              <span class="w-3 h-3 rounded-full bg-emerald-500/80 inline-block"></span>
+            </div>
+
+            <div class="flex-1 max-w-lg bg-slate-950/80 border border-slate-800 rounded-lg px-3 py-1 text-center text-xs font-mono text-slate-400 truncate flex items-center justify-center space-x-1.5">
+              <svg class="w-3 h-3 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              </svg>
+              <span id="active-url-display">https://example.com</span>
+            </div>
+
+            <div class="flex items-center space-x-1.5">
+              <button id="reload-iframe-btn" title="Reload Frame" class="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+              </button>
+              <a id="open-external-btn" href="https://example.com" target="_blank" rel="noopener noreferrer" title="Open in New Tab" class="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                </svg>
+              </a>
+            </div>
+          </div>
+
+          <!-- Resizable Stage Canvas -->
+          <div class="w-full bg-slate-950/70 p-4 md:p-8 flex justify-center items-start overflow-x-auto min-h-[600px] bg-grid-pattern">
+            <div id="resizer-frame-container" class="relative bg-slate-900 rounded-xl border border-slate-700/60 shadow-2xl overflow-hidden w-full h-[580px] max-w-full">
+              <!-- Loading Indicator Overlay -->
+              <div id="resizer-loading" class="absolute inset-0 bg-slate-950/80 backdrop-blur-sm z-20 flex flex-col items-center justify-center space-y-3 hidden">
+                <div class="w-8 h-8 border-3 border-cyan-400 border-t-transparent rounded-full animate-spin"></div>
+                <p class="text-xs text-slate-300 font-mono">Loading preview...</p>
+              </div>
+
+              <!-- Iframe Blocked / CSP Fallback Message Overlay -->
+              <div id="resizer-blocked-notice" class="hidden absolute inset-0 bg-slate-900/95 backdrop-blur-md z-10 p-6 flex flex-col items-center justify-center text-center space-y-3">
+                <div class="w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center border border-amber-500/40 mb-1">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                  </svg>
+                </div>
+                <h4 class="text-base font-bold text-white">This website does not allow iframe embedding.</h4>
+                <p class="text-xs text-slate-400 max-w-md leading-relaxed">
+                  The target site has sent security headers (<code class="text-amber-300 font-mono">X-Frame-Options: SAMEORIGIN</code> or <code class="text-amber-300 font-mono">CSP frame-ancestors</code>) preventing browser rendering inside iframes.
+                </p>
+                <div class="pt-2 flex items-center gap-3">
+                  <a id="resizer-external-link" href="#" target="_blank" rel="noopener noreferrer" class="px-4 py-2 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs transition">
+                    Open in New Window
+                  </a>
+                  <button id="resizer-try-example" type="button" class="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs transition">
+                    Load example.com
+                  </button>
+                </div>
+              </div>
+
+              <!-- Live Iframe -->
+              <iframe id="resizer-iframe" src="https://example.com" class="w-full h-full border-0 bg-white" title="Responsive Device Preview"></iframe>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================== -->
+      <!-- TOOL 4: FIRESTORE CLOUD VAULT & SNIPPETS SYNC            -->
+      <!-- ======================================================== -->
+      <section id="tool-snippets" class="tool-view hidden space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-slate-800/60 pb-4">
+          <div>
+            <h3 class="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
+              <span>Firestore Cloud Snippet Vault</span>
+            </h3>
+            <p class="text-sm text-slate-400">Save, organize, and sync your CSS rules, regex patterns, API endpoints, and code snippets across devices in real-time.</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button id="refresh-snippets-btn" class="px-3.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-300 transition flex items-center gap-1.5">
+              <svg class="w-3.5 h-3.5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              </svg>
+              <span>Sync Cloud</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Add Snippet Card Form -->
+        <div class="bg-slate-900/90 rounded-2xl p-5 border border-slate-800 shadow-xl space-y-4">
+          <div class="flex items-center space-x-2 pb-2 border-b border-slate-800">
+            <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
+            <h4 class="text-sm font-bold text-white uppercase tracking-wider font-mono">Create New Cloud Snippet</h4>
+          </div>
+
+          <form id="snippet-form" class="space-y-4">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div class="sm:col-span-2 space-y-1">
+                <label for="snippet-title" class="block text-xs text-slate-300 font-medium">Snippet Title</label>
+                <input type="text" id="snippet-title" placeholder="e.g. Glowing Neon Button CSS" required class="w-full bg-slate-950 border border-slate-700/80 rounded-xl px-3.5 py-2 text-xs text-slate-100 focus:outline-none focus:border-amber-500 font-medium">
+              </div>
+              <div class="space-y-1">
+                <label for="snippet-category" class="block text-xs text-slate-300 font-medium">Category</label>
+                <select id="snippet-category" class="w-full bg-slate-950 border border-slate-700/80 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
+                  <option value="css">CSS Styling</option>
+                  <option value="regex">Regular Expression</option>
+                  <option value="api">API Endpoint</option>
+                  <option value="sql">SQL Query</option>
+                  <option value="note">Developer Note</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="space-y-1">
+              <label for="snippet-content" class="block text-xs text-slate-300 font-medium">Code / Content</label>
+              <textarea id="snippet-content" rows="4" placeholder="Paste your CSS, regex pattern, JSON, or code here..." required class="w-full bg-slate-950 border border-slate-700/80 rounded-xl p-3.5 text-xs text-slate-100 font-mono focus:outline-none focus:border-amber-500"></textarea>
+            </div>
+
+            <div class="flex justify-end">
+              <button type="submit" id="save-snippet-submit-btn" class="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs transition shadow-lg shadow-amber-500/20 active:scale-95 flex items-center gap-1.5">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                </svg>
+                <span>Save to Firestore</span>
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Snippets List Grid -->
+        <div>
+          <div class="flex items-center justify-between mb-3">
+            <h4 class="text-xs font-mono font-bold uppercase tracking-wider text-slate-400">Cloud Synced Snippets (<span id="snippet-count">0</span>)</h4>
+            <div class="flex items-center gap-2">
+              <button class="snippet-filter-btn px-2.5 py-1 text-xs rounded-md bg-amber-500/20 text-amber-300 border border-amber-500/40" data-cat="all">All</button>
+              <button class="snippet-filter-btn px-2.5 py-1 text-xs rounded-md bg-slate-900 text-slate-400 border border-slate-800" data-cat="css">CSS</button>
+              <button class="snippet-filter-btn px-2.5 py-1 text-xs rounded-md bg-slate-900 text-slate-400 border border-slate-800" data-cat="regex">Regex</button>
+              <button class="snippet-filter-btn px-2.5 py-1 text-xs rounded-md bg-slate-900 text-slate-400 border border-slate-800" data-cat="api">API</button>
+            </div>
+          </div>
+
+          <div id="snippets-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <!-- Rendered Snippets dynamically here -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================== -->
+      <!-- TOOL 5: BACKEND HTTP API TEST CLIENT                     -->
+      <!-- ======================================================== -->
+      <section id="tool-api" class="tool-view hidden space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-slate-800/60 pb-4">
+          <div>
+            <h3 class="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
+              <span>Backend API Runner &amp; HTTP Proxy</span>
+            </h3>
+            <p class="text-sm text-slate-400">Test REST endpoints, microservices, and webhooks bypassing CORS via the Express backend.</p>
+          </div>
+        </div>
+
+        <div class="bg-slate-900/90 rounded-2xl p-5 border border-slate-800 shadow-xl space-y-4">
+          <form id="http-tester-form" class="space-y-4">
+            <div class="flex flex-col sm:flex-row gap-2">
+              <select id="http-method" class="bg-slate-950 border border-slate-700/80 rounded-xl px-3.5 py-2 text-xs font-bold text-emerald-400 focus:outline-none focus:border-emerald-500">
+                <option value="GET">GET</option>
+                <option value="POST">POST</option>
+                <option value="PUT">PUT</option>
+                <option value="PATCH">PATCH</option>
+                <option value="DELETE">DELETE</option>
+              </select>
+              <input type="text" id="http-url" value="https://jsonplaceholder.typicode.com/todos/1" placeholder="https://api.example.com/data" required class="flex-1 bg-slate-950 border border-slate-700/80 rounded-xl px-3.5 py-2 text-xs text-slate-100 font-mono focus:outline-none focus:border-emerald-500">
+              <button type="submit" id="http-send-btn" class="px-6 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs transition shadow-lg shadow-emerald-500/20 active:scale-95 flex items-center justify-center gap-1.5">
+                <span>SEND REQUEST</span>
+              </button>
+            </div>
+
+            <!-- Headers & Payload Tabs -->
+            <div class="space-y-2">
+              <div class="flex items-center space-x-2 text-xs">
+                <button type="button" id="tab-btn-headers" class="px-2.5 py-1 rounded-md bg-slate-800 text-slate-200 border border-slate-700 font-medium">Headers (JSON)</button>
+                <button type="button" id="tab-btn-body" class="px-2.5 py-1 rounded-md bg-slate-950 text-slate-400 border border-slate-800 font-medium">Request Body (JSON)</button>
+              </div>
+              <textarea id="http-headers-input" rows="2" placeholder='{"Authorization": "Bearer token123"}' class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-slate-300 font-mono focus:outline-none focus:border-emerald-500"></textarea>
+              <textarea id="http-body-input" rows="3" placeholder='{"title": "New Task", "completed": false}' class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-slate-300 font-mono focus:outline-none focus:border-emerald-500 hidden"></textarea>
+            </div>
+          </form>
+        </div>
+
+        <!-- API Response Viewer -->
+        <div class="bg-slate-900/90 rounded-2xl border border-slate-800 shadow-xl overflow-hidden">
+          <div class="px-5 py-3.5 border-b border-slate-800 flex items-center justify-between bg-slate-900">
+            <div class="flex items-center space-x-3">
+              <span class="text-xs font-bold text-slate-300 uppercase tracking-wider font-mono">RESPONSE</span>
+              <span id="http-res-status" class="px-2 py-0.5 rounded text-[11px] font-mono font-bold bg-slate-800 text-slate-400">Ready</span>
+              <span id="http-res-time" class="text-[11px] font-mono text-slate-400">0 ms</span>
+              <span id="http-res-size" class="text-[11px] font-mono text-slate-400">0 bytes</span>
+            </div>
+            <button id="copy-http-res-btn" class="px-3 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium transition">Copy Response</button>
+          </div>
+          <pre class="p-5 bg-slate-950 text-xs font-mono text-emerald-300 overflow-x-auto max-h-96"><code id="http-res-output">// Send a request above to preview server response output</code></pre>
+        </div>
+      </section>
+
+      <!-- ======================================================== -->
+      <!-- TOOL 6: GEMINI 3.7 AI DEVELOPER ASSISTANT               -->
+      <!-- ======================================================== -->
+      <section id="tool-ai" class="tool-view hidden space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-slate-800/60 pb-4">
+          <div>
+            <h3 class="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
+              <span>AI Developer Assistant (Gemini 3.7)</span>
+            </h3>
+            <p class="text-sm text-slate-400">Generate complex CSS animations, build regex patterns, debug code, and optimize SQL schemas with Gemini.</p>
+          </div>
+        </div>
+
+        <div class="bg-slate-900/90 rounded-2xl p-5 border border-slate-800 shadow-xl space-y-4">
+          <form id="ai-form" class="space-y-4">
+            <div class="grid grid-cols-1 sm:grid-cols-4 gap-3">
+              <div class="sm:col-span-3 space-y-1">
+                <label for="ai-prompt" class="block text-xs text-slate-300 font-medium">Prompt / Coding Task</label>
+                <input type="text" id="ai-prompt" placeholder="e.g. Generate a glowing glassmorphism neon card with animated border" required class="w-full bg-slate-950 border border-slate-700/80 rounded-xl px-3.5 py-2 text-xs text-slate-100 focus:outline-none focus:border-cyan-400">
+              </div>
+              <div class="space-y-1">
+                <label for="ai-task" class="block text-xs text-slate-300 font-medium">Specialized Mode</label>
+                <select id="ai-task" class="w-full bg-slate-950 border border-slate-700/80 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-cyan-400">
+                  <option value="css">CSS / UI Styling</option>
+                  <option value="regex">Regex Builder</option>
+                  <option value="debug">Code Debugger</option>
+                  <option value="sql">SQL / Database</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="space-y-1">
+              <label for="ai-context" class="block text-xs text-slate-300 font-medium">Code Context / Snippet (Optional)</label>
+              <textarea id="ai-context" rows="3" placeholder="Paste existing code or schema if you want AI to refactor or debug it..." class="w-full bg-slate-950 border border-slate-700/80 rounded-xl p-3 text-xs text-slate-100 font-mono focus:outline-none focus:border-cyan-400"></textarea>
+            </div>
+
+            <div class="flex items-center justify-between">
+              <div class="text-[11px] text-slate-400 flex items-center space-x-1.5">
+                <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+                <span>Powered by Gemini 3.7 Flash</span>
+              </div>
+              <button type="submit" id="ai-generate-btn" class="px-5 py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-400 hover:to-purple-500 text-white font-bold text-xs transition shadow-lg shadow-cyan-500/20 active:scale-95 flex items-center gap-1.5">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+                <span>Generate Solution</span>
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- AI Output Window -->
+        <div class="bg-slate-900/90 rounded-2xl border border-slate-800 shadow-xl overflow-hidden">
+          <div class="px-5 py-3.5 border-b border-slate-800 flex items-center justify-between bg-slate-900">
+            <div class="flex items-center space-x-2">
+              <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+              </svg>
+              <span class="text-xs font-bold text-slate-300 uppercase tracking-wider font-mono">AI ASSISTANT RESPONSE</span>
+            </div>
+            <button id="copy-ai-output-btn" class="px-3 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium transition">Copy Output</button>
+          </div>
+          <pre class="p-5 bg-slate-950 text-xs font-mono text-cyan-300 overflow-x-auto max-h-96 leading-relaxed"><code id="ai-output">// AI response will appear here...</code></pre>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Reusable Toast Notification Container -->
+  <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col space-y-2 pointer-events-none"></div>
+
+  <!-- Firebase Web SDK Modular Scripts -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+
+    // Global App State
+    window.DevHub = {
+      firebase: null,
+      firestore: null,
+      snippets: [],
+    };
+
+    // Initialize Firebase
+    try {
+      const firebaseConfig = {
+        projectId: "yielding-xenops-dxctm",
+        appId: "1:527251743266:web:f60a6dca9816962940207b",
+        apiKey: "AIzaSyA8GLK9xX25V5uwl6obsTQDvLLMyKDdb3g",
+        authDomain: "yielding-xenops-dxctm.firebaseapp.com",
+        firestoreDatabaseId: "ai-studio-webdeveloperhub-87abf501-9c5a-4ffc-a111-39e68f40ad8a",
+        storageBucket: "yielding-xenops-dxctm.firebasestorage.app",
+        messagingSenderId: "527251743266",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      // Use standard or custom database ID
+      const db = getFirestore(app, firebaseConfig.firestoreDatabaseId || "(default)");
+      window.DevHub.firebase = app;
+      window.DevHub.firestore = db;
+      console.log("Firebase Firestore initialized successfully!");
+
+      // Listen to Real-time Cloud Snippets from Firestore
+      initFirestoreListener(db);
+    } catch (err) {
+      console.warn("Firestore client init fallback to REST backend:", err);
+    }
+
+    // ==========================================
+    // FIRESTORE REAL-TIME SNIPPETS ENGINE
+    // ==========================================
+    function initFirestoreListener(db) {
+      try {
+        const snippetsCol = collection(db, "snippets");
+        onSnapshot(snippetsCol, (snapshot) => {
+          const loaded = [];
+          snapshot.forEach((docSnap) => {
+            loaded.push({ id: docSnap.id, ...docSnap.data() });
+          });
+          window.DevHub.snippets = loaded;
+          renderSnippetsGrid(loaded);
+        }, (err) => {
+          console.warn("Firestore onSnapshot error, falling back to backend:", err);
+          fetchBackendSnippets();
+        });
+      } catch (e) {
+        fetchBackendSnippets();
+      }
+    }
+
+    async function fetchBackendSnippets() {
+      try {
+        const res = await fetch('/api/snippets');
+        const data = await res.json();
+        if (data.snippets) {
+          window.DevHub.snippets = data.snippets;
+          renderSnippetsGrid(data.snippets);
+        }
+      } catch (err) {
+        console.error("Failed to fetch snippets:", err);
+      }
+    }
+
+    // Save Snippet to Firestore or Backend API
+    window.saveSnippetToCloud = async function(title, category, content) {
+      if (!title || !content) {
+        showToast("Please provide a title and content", "error");
+        return;
+      }
+
+      showToast("Saving to Firestore Cloud...", "info");
+      const snippetData = {
+        title: title.trim(),
+        category: category || "css",
+        content: content.trim(),
+        userId: "anonymous_dev",
+        createdAt: new Date().toISOString(),
+      };
+
+      try {
+        if (window.DevHub.firestore) {
+          const col = collection(window.DevHub.firestore, "snippets");
+          await addDoc(col, snippetData);
+          showToast("Saved to Firestore Vault!", "success");
+        } else {
+          // Fallback to Express backend API
+          const res = await fetch("/api/snippets", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(snippetData),
+          });
+          if (res.ok) {
+            showToast("Saved to Developer Vault!", "success");
+            fetchBackendSnippets();
+          }
+        }
+      } catch (err) {
+        console.error("Error saving snippet:", err);
+        showToast("Failed to save to Firestore", "error");
+      }
+    };
+
+    // Delete Snippet
+    window.deleteSnippetFromCloud = async function(id) {
+      try {
+        if (window.DevHub.firestore) {
+          await deleteDoc(doc(window.DevHub.firestore, "snippets", id));
+          showToast("Snippet removed from Cloud", "info");
+        } else {
+          await fetch(`/api/snippets/${id}`, { method: "DELETE" });
+          showToast("Snippet removed", "info");
+          fetchBackendSnippets();
+        }
+      } catch (err) {
+        console.error("Delete error:", err);
+        showToast("Failed to delete snippet", "error");
+      }
+    };
+
+    function renderSnippetsGrid(snippets) {
+      const grid = document.getElementById("snippets-grid");
+      const countEl = document.getElementById("snippet-count");
+      if (!grid) return;
+
+      if (countEl) countEl.textContent = snippets.length;
+
+      if (snippets.length === 0) {
+        grid.innerHTML = `
+          <div class="col-span-full py-12 text-center text-slate-500 bg-slate-900/40 rounded-2xl border border-slate-800">
+            <p class="text-sm">No snippets saved yet in your Firestore Vault.</p>
+            <p class="text-xs text-slate-600 mt-1">Generate CSS, extract text, or save code above.</p>
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = snippets.map((s) => `
+        <div class="bg-slate-900/90 rounded-xl p-4 border border-slate-800 shadow-md space-y-2.5 flex flex-col justify-between hover:border-slate-700 transition">
+          <div class="space-y-1.5">
+            <div class="flex items-center justify-between">
+              <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold uppercase ${
+                s.category === 'css' ? 'bg-cyan-500/20 text-cyan-300' :
+                s.category === 'regex' ? 'bg-purple-500/20 text-purple-300' :
+                s.category === 'api' ? 'bg-emerald-500/20 text-emerald-300' : 'bg-amber-500/20 text-amber-300'
+              }">${s.category || 'code'}</span>
+              <span class="text-[10px] text-slate-500 font-mono">${new Date(s.createdAt || Date.now()).toLocaleDateString()}</span>
+            </div>
+            <h5 class="text-sm font-bold text-white tracking-tight">${s.title}</h5>
+            <pre class="bg-slate-950 p-2.5 rounded-lg text-xs font-mono text-slate-300 overflow-x-auto max-h-32 leading-tight select-all"><code>${s.content}</code></pre>
+          </div>
+          <div class="flex items-center justify-between pt-2 border-t border-slate-800">
+            <button onclick="navigator.clipboard.writeText(\`${s.content.replace(/`/g, '\\`')}\`); showToast('Snippet copied to clipboard', 'success');" class="text-xs text-cyan-400 hover:text-cyan-300 font-medium">Copy Code</button>
+            <button onclick="window.deleteSnippetFromCloud('${s.id}')" class="text-xs text-red-400 hover:text-red-300 font-medium">Delete</button>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    // Initial load check
+    fetchBackendSnippets();
+  </script>
+
+  <!-- Core JavaScript Engine -->
+  <script>
+    // Global Toast Function
+    function showToast(message, type = 'success') {
+      const container = document.getElementById('toast-container');
+      if (!container) return;
+
+      const toast = document.createElement('div');
+      toast.className = `pointer-events-auto flex items-center space-x-2.5 px-4 py-3 rounded-xl shadow-2xl border text-xs font-semibold animate-toast-in ${
+        type === 'success' 
+          ? 'bg-slate-900/95 text-emerald-300 border-emerald-500/40 shadow-emerald-500/10'
+          : type === 'error'
+          ? 'bg-slate-900/95 text-red-300 border-red-500/40 shadow-red-500/10'
+          : 'bg-slate-900/95 text-cyan-300 border-cyan-500/40 shadow-cyan-500/10'
+      }`;
+
+      let iconSvg = '';
+      if (type === 'success') {
+        iconSvg = `<svg class="w-4 h-4 text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>`;
+      } else if (type === 'error') {
+        iconSvg = `<svg class="w-4 h-4 text-red-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>`;
+      } else {
+        iconSvg = `<svg class="w-4 h-4 text-cyan-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>`;
+      }
+
+      toast.innerHTML = `${iconSvg}<span>${message}</span>`;
+      container.appendChild(toast);
+
+      setTimeout(() => {
+        toast.classList.remove('animate-toast-in');
+        toast.classList.add('animate-toast-out');
+        setTimeout(() => {
+          if (toast.parentNode) {
+            toast.parentNode.removeChild(toast);
+          }
+        }, 200);
+      }, 2600);
+    }
+
+    // ==========================================
+    // 1. TOOL NAVIGATION ENGINE
+    // ==========================================
+    function initNavigation() {
+      const navButtons = document.querySelectorAll('.nav-item');
+      const toolViews = document.querySelectorAll('.tool-view');
+      const mobileBtn = document.getElementById('mobile-menu-btn');
+      const closeSidebarBtn = document.getElementById('close-sidebar-btn');
+      const sidebar = document.getElementById('sidebar');
+      const mobileBackdrop = document.getElementById('mobile-backdrop');
+
+      function switchTool(targetToolId) {
+        toolViews.forEach(view => view.classList.add('hidden'));
+
+        const activeView = document.getElementById(`tool-${targetToolId}`);
+        if (activeView) activeView.classList.remove('hidden');
+
+        navButtons.forEach(btn => {
+          const tool = btn.getAttribute('data-tool');
+          const pill = btn.querySelector('.active-pill');
+          if (tool === targetToolId) {
+            btn.className = 'nav-item group w-full flex items-center justify-between px-3.5 py-3 rounded-xl font-medium text-sm transition-all duration-150 bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 shadow-sm shadow-cyan-500/10';
+            if (pill) pill.classList.remove('hidden');
+          } else {
+            btn.className = 'nav-item group w-full flex items-center justify-between px-3.5 py-3 rounded-xl font-medium text-sm transition-all duration-150 text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 border border-transparent';
+            if (pill) pill.classList.add('hidden');
+          }
+        });
+
+        // Close mobile drawer
+        sidebar.classList.add('-translate-x-full');
+        mobileBackdrop.classList.add('hidden');
+      }
+
+      navButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const tool = btn.getAttribute('data-tool');
+          switchTool(tool);
+        });
+      });
+
+      mobileBtn?.addEventListener('click', () => {
+        sidebar.classList.remove('-translate-x-full');
+        mobileBackdrop.classList.remove('hidden');
+      });
+
+      closeSidebarBtn?.addEventListener('click', () => {
+        sidebar.classList.add('-translate-x-full');
+        mobileBackdrop.classList.add('hidden');
+      });
+
+      mobileBackdrop?.addEventListener('click', () => {
+        sidebar.classList.add('-translate-x-full');
+        mobileBackdrop.classList.add('hidden');
+      });
+    }
+
+    // ==========================================
+    // 2. CSS SHADOWS & BORDERS ENGINE
+    // ==========================================
+    function initShadowGenerator() {
+      const inputs = {
+        shadowX: document.getElementById('shadow-x'),
+        shadowY: document.getElementById('shadow-y'),
+        shadowBlur: document.getElementById('shadow-blur'),
+        shadowSpread: document.getElementById('shadow-spread'),
+        shadowColor: document.getElementById('shadow-color'),
+        shadowColorText: document.getElementById('shadow-color-text'),
+        shadowOpacity: document.getElementById('shadow-opacity'),
+        shadowInset: document.getElementById('shadow-inset'),
+        borderRadius: document.getElementById('border-radius'),
+        borderWidth: document.getElementById('border-width'),
+        borderStyle: document.getElementById('border-style'),
+        borderColor: document.getElementById('border-color'),
+        borderColorText: document.getElementById('border-color-text'),
+      };
+
+      const labels = {
+        shadowX: document.getElementById('shadow-x-val'),
+        shadowY: document.getElementById('shadow-y-val'),
+        shadowBlur: document.getElementById('shadow-blur-val'),
+        shadowSpread: document.getElementById('shadow-spread-val'),
+        shadowOpacity: document.getElementById('shadow-opacity-val'),
+        borderRadius: document.getElementById('border-radius-val'),
+        borderWidth: document.getElementById('border-width-val'),
+        previewBadgeRadius: document.getElementById('preview-badge-radius'),
+      };
+
+      const target = document.getElementById('css-preview-target');
+      const codeOutput = document.getElementById('generated-css-code');
+      const copyBtn = document.getElementById('copy-css-btn');
+      const copyBtnText = document.getElementById('copy-css-text');
+      const resetBtn = document.getElementById('css-reset-btn');
+      const saveCloudBtn = document.getElementById('save-css-to-cloud-btn');
+
+      function hexToRgba(hex, opacityPercent) {
+        let cleanHex = hex.replace('#', '');
+        if (cleanHex.length === 3) {
+          cleanHex = cleanHex.split('').map(c => c + c).join('');
+        }
+        const r = parseInt(cleanHex.substring(0, 2), 16) || 0;
+        const g = parseInt(cleanHex.substring(2, 4), 16) || 0;
+        const b = parseInt(cleanHex.substring(4, 6), 16) || 0;
+        const a = (opacityPercent / 100).toFixed(2);
+        return `rgba(${r}, ${g}, ${b}, ${a})`;
+      }
+
+      function updateStyles() {
+        const sx = inputs.shadowX.value;
+        const sy = inputs.shadowY.value;
+        const sb = inputs.shadowBlur.value;
+        const ss = inputs.shadowSpread.value;
+        const sc = inputs.shadowColor.value;
+        const so = inputs.shadowOpacity.value;
+        const isInset = inputs.shadowInset.checked;
+
+        const br = inputs.borderRadius.value;
+        const bw = inputs.borderWidth.value;
+        const bs = inputs.borderStyle.value;
+        const bc = inputs.borderColor.value;
+
+        labels.shadowX.textContent = `${sx}px`;
+        labels.shadowY.textContent = `${sy}px`;
+        labels.shadowBlur.textContent = `${sb}px`;
+        labels.shadowSpread.textContent = `${ss}px`;
+        labels.shadowOpacity.textContent = `${so}%`;
+        labels.borderRadius.textContent = `${br}px`;
+        labels.borderWidth.textContent = `${bw}px`;
+        labels.previewBadgeRadius.textContent = `${br}px radius`;
+
+        inputs.shadowColorText.value = sc.toUpperCase();
+        inputs.borderColorText.value = bc.toUpperCase();
+
+        const shadowRgba = hexToRgba(sc, so);
+        const shadowValue = `${isInset ? 'inset ' : ''}${sx}px ${sy}px ${sb}px ${ss}px ${shadowRgba}`;
+        const borderValue = bw === '0' || bs === 'none' ? 'none' : `${bw}px ${bs} ${bc}`;
+        const borderRadiusValue = `${br}px`;
+
+        target.style.boxShadow = shadowValue;
+        target.style.border = borderValue;
+        target.style.borderRadius = borderRadiusValue;
+
+        const generatedCSS = `.example {
+  box-shadow: ${shadowValue};
+  border: ${borderValue};
+  border-radius: ${borderRadiusValue};
+}`;
+        codeOutput.textContent = generatedCSS;
+      }
+
+      // Add input listeners
+      Object.values(inputs).forEach(input => {
+        if (!input) return;
+        input.addEventListener('input', updateStyles);
+        input.addEventListener('change', updateStyles);
+      });
+
+      // Color text sync
+      inputs.shadowColorText.addEventListener('input', (e) => {
+        if (/^#[0-9A-Fa-f]{6}$/.test(e.target.value)) {
+          inputs.shadowColor.value = e.target.value;
+          updateStyles();
+        }
+      });
+      inputs.borderColorText.addEventListener('input', (e) => {
+        if (/^#[0-9A-Fa-f]{6}$/.test(e.target.value)) {
+          inputs.borderColor.value = e.target.value;
+          updateStyles();
+        }
+      });
+
+      // Presets
+      document.querySelectorAll('.css-preset-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const preset = btn.getAttribute('data-preset');
+          if (preset === 'soft') {
+            inputs.shadowX.value = '0';
+            inputs.shadowY.value = '10';
+            inputs.shadowBlur.value = '25';
+            inputs.shadowSpread.value = '-5';
+            inputs.shadowOpacity.value = '30';
+            inputs.shadowColor.value = '#000000';
+            inputs.borderRadius.value = '16';
+            inputs.borderWidth.value = '1';
+            inputs.borderColor.value = '#334155';
+          } else if (preset === 'neon') {
+            inputs.shadowX.value = '0';
+            inputs.shadowY.value = '0';
+            inputs.shadowBlur.value = '25';
+            inputs.shadowSpread.value = '0';
+            inputs.shadowColor.value = '#06b6d4';
+            inputs.shadowOpacity.value = '70';
+            inputs.borderRadius.value = '12';
+            inputs.borderWidth.value = '2';
+            inputs.borderColor.value = '#22d3ee';
+          } else if (preset === 'elevation') {
+            inputs.shadowX.value = '0';
+            inputs.shadowY.value = '25';
+            inputs.shadowBlur.value = '50';
+            inputs.shadowSpread.value = '-12';
+            inputs.shadowColor.value = '#000000';
+            inputs.shadowOpacity.value = '50';
+            inputs.borderRadius.value = '24';
+            inputs.borderWidth.value = '1';
+            inputs.borderColor.value = '#475569';
+          } else if (preset === 'pill') {
+            inputs.shadowX.value = '0';
+            inputs.shadowY.value = '8';
+            inputs.shadowBlur.value = '32';
+            inputs.shadowSpread.value = '0';
+            inputs.shadowColor.value = '#8b5cf6';
+            inputs.shadowOpacity.value = '35';
+            inputs.borderRadius.value = '50';
+            inputs.borderWidth.value = '1';
+            inputs.borderColor.value = '#a855f7';
+          } else if (preset === 'minimal') {
+            inputs.shadowX.value = '0';
+            inputs.shadowY.value = '1';
+            inputs.shadowBlur.value = '3';
+            inputs.shadowSpread.value = '0';
+            inputs.shadowColor.value = '#000000';
+            inputs.shadowOpacity.value = '10';
+            inputs.borderRadius.value = '8';
+            inputs.borderWidth.value = '1';
+            inputs.borderColor.value = '#64748b';
+          }
+          updateStyles();
+          showToast(`Applied preset: ${btn.textContent}`, 'info');
+        });
+      });
+
+      // Copy Button
+      copyBtn.addEventListener('click', () => {
+        navigator.clipboard.writeText(codeOutput.textContent).then(() => {
+          copyBtnText.textContent = 'COPIED!';
+          showToast('CSS copied to clipboard!', 'success');
+          setTimeout(() => {
+            copyBtnText.textContent = 'COPY CODE';
+          }, 2000);
+        });
+      });
+
+      // Save to Cloud
+      saveCloudBtn?.addEventListener('click', () => {
+        const title = prompt("Enter a title for this CSS style:", "Custom Box Shadow Style");
+        if (title) {
+          window.saveSnippetToCloud(title, "css", codeOutput.textContent);
+        }
+      });
+
+      // Reset
+      resetBtn.addEventListener('click', () => {
+        inputs.shadowX.value = '8';
+        inputs.shadowY.value = '8';
+        inputs.shadowBlur.value = '20';
+        inputs.shadowSpread.value = '0';
+        inputs.shadowColor.value = '#000000';
+        inputs.shadowOpacity.value = '25';
+        inputs.shadowInset.checked = false;
+        inputs.borderRadius.value = '16';
+        inputs.borderWidth.value = '1';
+        inputs.borderStyle.value = 'solid';
+        inputs.borderColor.value = '#334155';
+        updateStyles();
+        showToast('Reset all controls to defaults', 'info');
+      });
+
+      // Background switchers
+      document.getElementById('bg-toggle-dark')?.addEventListener('click', () => {
+        document.getElementById('preview-canvas').className = 'p-8 md:p-14 min-h-[300px] flex items-center justify-center bg-slate-950 transition-colors duration-200';
+      });
+      document.getElementById('bg-toggle-grid')?.addEventListener('click', () => {
+        document.getElementById('preview-canvas').className = 'p-8 md:p-14 min-h-[300px] flex items-center justify-center bg-slate-950/60 bg-grid-pattern transition-colors duration-200';
+      });
+      document.getElementById('bg-toggle-light')?.addEventListener('click', () => {
+        document.getElementById('preview-canvas').className = 'p-8 md:p-14 min-h-[300px] flex items-center justify-center bg-slate-200 transition-colors duration-200';
+      });
+
+      updateStyles();
+    }
+
+    // ==========================================
+    // 3. TEXT ANALYZER ENGINE
+    // ==========================================
+    function initTextAnalyzer() {
+      const textarea = document.getElementById('text-input');
+      const emptyState = document.getElementById('text-empty-state');
+      const statWords = document.getElementById('stat-words');
+      const statChars = document.getElementById('stat-chars');
+      const statCharsNoSpace = document.getElementById('stat-chars-nospace');
+      const statSentences = document.getElementById('stat-sentences');
+      const statParagraphs = document.getElementById('stat-paragraphs');
+      const statReadingTime = document.getElementById('stat-reading-time');
+      const saveTextCloudBtn = document.getElementById('save-text-to-cloud-btn');
+
+      function updateStats() {
+        const text = textarea.value;
+
+        if (!text.trim()) {
+          emptyState.classList.remove('hidden');
+          statWords.textContent = '0';
+          statChars.textContent = '0';
+          statCharsNoSpace.textContent = '0 without spaces';
+          statSentences.textContent = '0';
+          statParagraphs.textContent = '0 paragraphs';
+          statReadingTime.textContent = '0 min read';
+          return;
+        }
+
+        emptyState.classList.add('hidden');
+
+        // Words
+        const words = text.trim().split(/\s+/).filter(w => w.length > 0);
+        statWords.textContent = words.length.toLocaleString();
+
+        // Characters
+        statChars.textContent = text.length.toLocaleString();
+        const noSpace = text.replace(/\s/g, '').length;
+        statCharsNoSpace.textContent = `${noSpace.toLocaleString()} without spaces`;
+
+        // Sentences
+        const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0);
+        statSentences.textContent = sentences.length.toLocaleString();
+
+        // Paragraphs
+        const paras = text.split(/\n+/).filter(p => p.trim().length > 0);
+        statParagraphs.textContent = `${paras.length.toLocaleString()} paragraphs`;
+
+        // Reading Time (200 words / min)
+        const mins = Math.ceil(words.length / 200);
+        statReadingTime.textContent = `${mins} min read`;
+      }
+
+      textarea.addEventListener('input', updateStats);
+
+      document.getElementById('btn-uppercase')?.addEventListener('click', () => {
+        textarea.value = textarea.value.toUpperCase();
+        updateStats();
+        showToast('Converted to UPPERCASE', 'info');
+      });
+
+      document.getElementById('btn-lowercase')?.addEventListener('click', () => {
+        textarea.value = textarea.value.toLowerCase();
+        updateStats();
+        showToast('Converted to lowercase', 'info');
+      });
+
+      document.getElementById('btn-capitalize')?.addEventListener('click', () => {
+        textarea.value = textarea.value.replace(/\b\w/g, c => c.toUpperCase());
+        updateStats();
+        showToast('Capitalized each word', 'info');
+      });
+
+      document.getElementById('btn-sentence-case')?.addEventListener('click', () => {
+        textarea.value = textarea.value.toLowerCase().replace(/(^\s*\w|[.!?]\s*\w)/g, c => c.toUpperCase());
+        updateStats();
+        showToast('Converted to Sentence case', 'info');
+      });
+
+      document.getElementById('btn-slugify')?.addEventListener('click', () => {
+        textarea.value = textarea.value.toLowerCase().trim().replace(/[^\w\s-]/g, '').replace(/[\s_-]+/g, '-').replace(/^-+|-+$/g, '');
+        updateStats();
+        showToast('Converted to slug-case', 'info');
+      });
+
+      document.getElementById('btn-trim')?.addEventListener('click', () => {
+        textarea.value = textarea.value.replace(/\s+/g, ' ').trim();
+        updateStats();
+        showToast('Trimmed redundant spaces', 'info');
+      });
+
+      document.getElementById('btn-clear-text')?.addEventListener('click', () => {
+        textarea.value = '';
+        updateStats();
+        showToast('Text cleared', 'info');
+      });
+
+      document.getElementById('btn-copy-text')?.addEventListener('click', () => {
+        if (!textarea.value) {
+          showToast('Nothing to copy', 'error');
+          return;
+        }
+        navigator.clipboard.writeText(textarea.value).then(() => {
+          showToast('Text copied to clipboard!', 'success');
+        });
+      });
+
+      document.getElementById('load-sample-text-btn')?.addEventListener('click', () => {
+        textarea.value = `Web Developer Hub provides modern developer tools designed with precision. It includes real-time CSS generation, reading time analysis, and responsive testing viewports.\n\nWith Firebase Firestore cloud persistence and full-stack backend APIs, your snippets and testing workflow stay synchronized across all environments.`;
+        updateStats();
+        showToast('Sample text inserted', 'info');
+      });
+
+      saveTextCloudBtn?.addEventListener('click', () => {
+        if (!textarea.value.trim()) {
+          showToast("Enter some text first", "error");
+          return;
+        }
+        const title = prompt("Enter a title for this note:", "Developer Notes");
+        if (title) {
+          window.saveSnippetToCloud(title, "note", textarea.value);
+        }
+      });
+    }
+
+    // ==========================================
+    // 4. SCREEN RESIZER & BACKEND INSPECTION
+    // ==========================================
+    function initScreenResizer() {
+      const urlForm = document.getElementById('url-form');
+      const urlInput = document.getElementById('url-input');
+      const iframe = document.getElementById('resizer-iframe');
+      const frameContainer = document.getElementById('resizer-frame-container');
+      const loadingOverlay = document.getElementById('resizer-loading');
+      const blockedNotice = document.getElementById('resizer-blocked-notice');
+      const activeUrlDisplay = document.getElementById('active-url-display');
+      const openExternalBtn = document.getElementById('open-external-btn');
+      const inspectTitle = document.getElementById('inspect-title');
+      const inspectStatus = document.getElementById('inspect-status');
+      const inspectIframe = document.getElementById('inspect-iframe');
+
+      async function loadAndInspect(rawUrl) {
+        let url = rawUrl.trim();
+        if (!url) return;
+        if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
+
+        urlInput.value = url;
+        activeUrlDisplay.textContent = url;
+        openExternalBtn.href = url;
+
+        blockedNotice.classList.add('hidden');
+        loadingOverlay.classList.remove('hidden');
+
+        // Call Express backend inspector to check X-Frame-Options & headers
+        try {
+          const res = await fetch('/api/url-inspect', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ url }),
+          });
+          const data = await res.json();
+
+          if (data.title) inspectTitle.textContent = data.title;
+          if (data.status) inspectStatus.textContent = `HTTP ${data.status}`;
+          
+          if (data.allowsIframe === false) {
+            inspectIframe.textContent = 'Embedding Restricted (CSP/XFO)';
+            inspectIframe.className = 'text-amber-400 font-bold';
+            blockedNotice.classList.remove('hidden');
+            loadingOverlay.classList.add('hidden');
+          } else {
+            inspectIframe.textContent = 'iFrame Allowed';
+            inspectIframe.className = 'text-emerald-400 font-bold';
+          }
+        } catch (e) {
+          console.warn("Inspector check failed, loading frame directly:", e);
+        }
+
+        iframe.src = url;
+        setTimeout(() => loadingOverlay.classList.add('hidden'), 1000);
+      }
+
+      urlForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        loadAndInspect(urlInput.value);
+      });
+
+      document.querySelectorAll('.quick-url-btn').forEach(btn => {
+        btn.addEventListener('click', () => loadAndInspect(btn.getAttribute('data-url')));
+      });
+
+      // Device Switcher
+      const deviceBtns = {
+        mobile: document.getElementById('device-mobile'),
+        tablet: document.getElementById('device-tablet'),
+        desktop: document.getElementById('device-desktop'),
+      };
+
+      function setDeviceSize(mode) {
+        Object.values(deviceBtns).forEach(btn => {
+          btn.className = 'device-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-slate-200 transition flex items-center gap-1.5';
+        });
+
+        if (deviceBtns[mode]) {
+          deviceBtns[mode].className = 'device-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 transition flex items-center gap-1.5';
+        }
+
+        const label = document.getElementById('viewport-label');
+        if (mode === 'mobile') {
+          frameContainer.style.width = '375px';
+          frameContainer.style.height = '812px';
+          label.textContent = 'Viewport: 375 × 812 (Mobile)';
+        } else if (mode === 'tablet') {
+          frameContainer.style.width = '768px';
+          frameContainer.style.height = '1024px';
+          label.textContent = 'Viewport: 768 × 1024 (Tablet)';
+        } else {
+          frameContainer.style.width = '100%';
+          frameContainer.style.height = '580px';
+          label.textContent = 'Viewport: 100% (Desktop)';
+        }
+      }
+
+      deviceBtns.mobile.addEventListener('click', () => setDeviceSize('mobile'));
+      deviceBtns.tablet.addEventListener('click', () => setDeviceSize('tablet'));
+      deviceBtns.desktop.addEventListener('click', () => setDeviceSize('desktop'));
+    }
+
+    // ==========================================
+    // 5. BACKEND HTTP TESTER
+    // ==========================================
+    function initApiTester() {
+      const form = document.getElementById('http-tester-form');
+      const methodSelect = document.getElementById('http-method');
+      const urlInput = document.getElementById('http-url');
+      const headersInput = document.getElementById('http-headers-input');
+      const bodyInput = document.getElementById('http-body-input');
+      const output = document.getElementById('http-res-output');
+      const statusBadge = document.getElementById('http-res-status');
+      const timeBadge = document.getElementById('http-res-time');
+      const sizeBadge = document.getElementById('http-res-size');
+
+      document.getElementById('tab-btn-headers').addEventListener('click', () => {
+        headersInput.classList.remove('hidden');
+        bodyInput.classList.add('hidden');
+      });
+      document.getElementById('tab-btn-body').addEventListener('click', () => {
+        headersInput.classList.add('hidden');
+        bodyInput.classList.remove('hidden');
+      });
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        showToast("Dispatching backend HTTP request...", "info");
+        output.textContent = "Loading response from backend...";
+
+        let headers = {};
+        let body = null;
+        try {
+          if (headersInput.value.trim()) headers = JSON.parse(headersInput.value.trim());
+        } catch {
+          showToast("Invalid JSON in headers field", "error");
+          return;
+        }
+
+        if (bodyInput.value.trim() && methodSelect.value !== "GET") {
+          try {
+            body = JSON.parse(bodyInput.value.trim());
+          } catch {
+            body = bodyInput.value.trim();
+          }
+        }
+
+        try {
+          const res = await fetch('/api/http-test', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              url: urlInput.value,
+              method: methodSelect.value,
+              headers,
+              body,
+            }),
+          });
+          const data = await res.json();
+
+          statusBadge.textContent = `HTTP ${data.status || 500}`;
+          statusBadge.className = `px-2 py-0.5 rounded text-[11px] font-mono font-bold ${data.ok ? 'bg-emerald-500/20 text-emerald-300' : 'bg-red-500/20 text-red-300'}`;
+          timeBadge.textContent = `${data.timeMs || 0} ms`;
+          sizeBadge.textContent = `${data.sizeBytes || 0} bytes`;
+          output.textContent = JSON.stringify(data.data || data, null, 2);
+          showToast("Response received successfully!", "success");
+        } catch (err) {
+          output.textContent = "Error executing request: " + err.message;
+          showToast("Request failed", "error");
+        }
+      });
+
+      document.getElementById('copy-http-res-btn').addEventListener('click', () => {
+        navigator.clipboard.writeText(output.textContent).then(() => showToast("Copied response to clipboard", "success"));
+      });
+    }
+
+    // ==========================================
+    // 6. GEMINI 3.7 AI ASSISTANT
+    // ==========================================
+    function initAiAssistant() {
+      const form = document.getElementById('ai-form');
+      const promptInput = document.getElementById('ai-prompt');
+      const taskSelect = document.getElementById('ai-task');
+      const contextInput = document.getElementById('ai-context');
+      const output = document.getElementById('ai-output');
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        showToast("Gemini 3.7 generating solution...", "info");
+        output.textContent = "Generating solution with Gemini AI...";
+
+        try {
+          const res = await fetch('/api/ai/assist', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              prompt: promptInput.value,
+              task: taskSelect.value,
+              context: contextInput.value,
+            }),
+          });
+          const data = await res.json();
+          output.textContent = data.output || "No output generated.";
+          showToast("AI Solution Ready!", "success");
+        } catch (err) {
+          output.textContent = "Error connecting to AI service: " + err.message;
+          showToast("AI generation failed", "error");
+        }
+      });
+
+      document.getElementById('copy-ai-output-btn').addEventListener('click', () => {
+        navigator.clipboard.writeText(output.textContent).then(() => showToast("Copied AI output to clipboard", "success"));
+      });
+    }
+
+    // Initialize All
+    document.addEventListener('DOMContentLoaded', () => {
+      initNavigation();
+      initShadowGenerator();
+      initTextAnalyzer();
+      initScreenResizer();
+      initApiTester();
+      initAiAssistant();
+
+      // Snippet form
+      document.getElementById('snippet-form')?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const title = document.getElementById('snippet-title').value;
+        const category = document.getElementById('snippet-category').value;
+        const content = document.getElementById('snippet-content').value;
+        window.saveSnippetToCloud(title, category, content);
+        document.getElementById('snippet-form').reset();
+      });
+    });
+  </script>
+</body>
+</html>
