@@ -297,7 +297,15 @@ app.post("/api/ai/assist", async (req, res) => {
   try {
     let systemInstruction = "You are an expert senior web developer assistant. Provide clean, concise, production-ready code and explanations. Avoid fluff.";
     
-    if (task === "css") {
+    if (task === "responsive") {
+      systemInstruction = `You are a World-Class Responsive Web Design Engineer. 
+The user will provide HTML/CSS/Tailwind/React/Flutter code that might be fixed-width or non-responsive.
+Your goal:
+1. Transform and refactor the code into fully responsive, mobile-first, tablet, and desktop-friendly code.
+2. Add media queries, flexible fluid grid/flexbox layouts, responsive typography (clamp/rem), max-width constraints, responsive padding/margins, and adaptive UI components.
+3. Provide the full converted clean code.
+4. Add a brief 2-3 bullet point summary of key responsiveness changes made (e.g., Mobile breakpoints @media, Flex wrap, fluid scaling).`;
+    } else if (task === "css") {
       systemInstruction = "You are a CSS and UI styling expert. Generate modern, beautiful, cross-browser CSS rules or animations tailored to the user's prompt. Provide pure CSS and brief explanation.";
     } else if (task === "regex") {
       systemInstruction = "You are a Regular Expressions expert. Provide the exact regex pattern with flags, explain each token concisely, and provide 3 positive and 3 negative test cases.";
