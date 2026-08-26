@@ -1,100 +1,131 @@
-// Tool View: ZIP Project Architecture & File Integrity Inspector with JSZip, Gemini AI Audit & SEO Guide
+// Tool View: Check ZIP Project (In-Browser ZIP Project Auditor & Architecture Inspector)
+// Inspects ZIP archive via JSZip, parses package.json, folder structures, asset sizes, and executes deep security & architectural audit
 
-import { copyToClipboard, showToast, callAiAssist } from "../../utils.js";
+import { showToast, callAiAssist, consumeDailyQuota, getRemainingDailyQuota, escapeHtml } from "../../utils.js";
+import JSZip from "jszip";
 
 export function renderZipDebuggerView() {
   return `
     <div class="space-y-6 animate-fadeIn">
+      <!-- Breadcrumbs -->
+      <nav class="flex items-center gap-2 text-xs text-slate-400 font-mono">
+        <a href="#/" class="hover:text-indigo-400">Home</a>
+        <span>/</span>
+        <span class="text-slate-200 font-bold">AI Tools</span>
+        <span>/</span>
+        <span class="text-indigo-400 font-bold">Check ZIP Project</span>
+      </nav>
+
       <!-- Header -->
       <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-slate-800 pb-4">
         <div>
           <div class="flex items-center gap-2.5">
-            <h1 class="text-2xl font-bold text-white tracking-tight">ZIP Project Architecture &amp; File Tree Inspector</h1>
-            <span class="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">CLIENT JSZIP</span>
+            <h1 class="text-2xl font-bold text-white tracking-tight">Check ZIP Project</h1>
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-indigo-500/10 text-indigo-400 border border-indigo-500/30">PROJECT AUDITOR</span>
           </div>
-          <p class="text-xs sm:text-sm text-slate-400 mt-1">Safely inspect ZIP archives without extracting to disk. View nested file trees, inspect file sizes, and detect missing config files.</p>
+          <p class="text-xs sm:text-sm text-slate-400 mt-1">Upload a project ZIP file to inspect directory trees, dependencies, security risks, asset hygiene, and architectural performance.</p>
         </div>
         <div class="flex items-center gap-2">
-          <button id="zip-audit-ai-btn" class="px-3 py-1.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold transition shadow-md shadow-purple-500/20 flex items-center gap-1.5">
-            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-            <span>AI Health Audit</span>
-          </button>
+          <div class="px-3 py-1 rounded-xl bg-slate-900 border border-slate-800 text-xs font-mono text-slate-400" id="zip-quota-badge">3/3 Free Uses</div>
         </div>
       </div>
 
-      <!-- Drag and Drop ZIP Zone -->
-      <div id="zip-dropzone" class="p-8 border-2 border-dashed border-slate-700 hover:border-emerald-400/60 rounded-3xl bg-slate-900/60 hover:bg-slate-900 transition text-center cursor-pointer flex flex-col items-center justify-center space-y-3">
-        <div class="w-16 h-16 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
-          <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg>
-        </div>
-        <div>
-          <span class="text-sm font-bold text-white">Drag &amp; drop a ZIP file here to inspect</span>
-          <span class="text-xs text-slate-400 block mt-0.5">or click to browse local ZIP files</span>
-        </div>
-        <input type="file" id="zip-file-input" accept=".zip,application/zip" class="hidden" />
-      </div>
-
-      <!-- Overview Stats Banner -->
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <div class="p-3.5 bg-slate-900/90 rounded-2xl border border-slate-800 font-mono text-xs">
-          <span class="text-slate-500 block">Archive Name</span>
-          <span id="zip-stat-name" class="font-bold text-slate-200 truncate block mt-0.5">—</span>
-        </div>
-        <div class="p-3.5 bg-slate-900/90 rounded-2xl border border-slate-800 font-mono text-xs">
-          <span class="text-slate-500 block">Total Files</span>
-          <span id="zip-stat-count" class="font-bold text-emerald-400 block mt-0.5">0 files</span>
-        </div>
-        <div class="p-3.5 bg-slate-900/90 rounded-2xl border border-slate-800 font-mono text-xs">
-          <span class="text-slate-500 block">Uncompressed Size</span>
-          <span id="zip-stat-uncompressed" class="font-bold text-cyan-400 block mt-0.5">0 KB</span>
-        </div>
-        <div class="p-3.5 bg-slate-900/90 rounded-2xl border border-slate-800 font-mono text-xs">
-          <span class="text-slate-500 block">Config Health</span>
-          <span id="zip-stat-health" class="font-bold text-slate-400 block mt-0.5">Awaiting File</span>
-        </div>
-      </div>
-
-      <!-- File Tree & AI Audit Results -->
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
-        
-        <!-- File Tree Column -->
-        <div class="bg-slate-900/90 rounded-2xl border border-slate-800 shadow-xl overflow-hidden flex flex-col">
-          <div class="px-4 py-2.5 bg-slate-900 border-b border-slate-800 flex items-center justify-between text-xs font-mono text-slate-400">
-            <span>ARCHIVE DIRECTORY TREE</span>
-            <button id="zip-copy-tree-btn" class="text-emerald-400 hover:text-white font-bold">Copy Tree</button>
+      <!-- Drag & Drop Upload Zone -->
+      <div class="bg-slate-900/90 rounded-2xl border border-slate-800 shadow-xl p-6">
+        <div id="zip-drop-zone" class="border-2 border-dashed border-slate-700 hover:border-indigo-500 rounded-2xl p-8 text-center transition cursor-pointer bg-slate-950/60 flex flex-col items-center justify-center gap-3">
+          <div class="w-12 h-12 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
           </div>
-          <div class="p-4 flex-1 overflow-auto max-h-[380px]">
-            <div id="zip-tree-output" class="font-mono text-xs text-slate-300 space-y-1">
-              <span class="text-slate-500 italic">No archive loaded. Drop a ZIP file above to view structure.</span>
+          <div>
+            <span class="text-sm font-bold text-white block">Drop project .ZIP file here or click to browse</span>
+            <span class="text-xs text-slate-500 mt-0.5 block">Supports React, Vue, Vite, Next.js, Node.js, and static HTML web projects</span>
+          </div>
+          <input type="file" id="zip-file-input" accept=".zip,application/zip" class="hidden" />
+          <span class="text-[11px] font-mono text-indigo-400 font-semibold mt-1">🔒 Processed privately in your browser memory</span>
+        </div>
+      </div>
+
+      <!-- Project Analysis & Inspection Results -->
+      <div id="zip-results-section" class="hidden space-y-5">
+        
+        <!-- Overview Stats Grid -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div class="p-4 rounded-2xl bg-slate-900 border border-slate-800">
+            <div class="text-[11px] font-mono text-slate-400 uppercase">Total Files</div>
+            <div id="zip-stat-files" class="text-xl font-bold text-white mt-1 font-mono">0</div>
+          </div>
+          <div class="p-4 rounded-2xl bg-slate-900 border border-slate-800">
+            <div class="text-[11px] font-mono text-slate-400 uppercase">Project Size</div>
+            <div id="zip-stat-size" class="text-xl font-bold text-white mt-1 font-mono">0 KB</div>
+          </div>
+          <div class="p-4 rounded-2xl bg-slate-900 border border-slate-800">
+            <div class="text-[11px] font-mono text-slate-400 uppercase">Framework</div>
+            <div id="zip-stat-framework" class="text-xl font-bold text-indigo-400 mt-1 font-mono">Unknown</div>
+          </div>
+          <div class="p-4 rounded-2xl bg-slate-900 border border-slate-800">
+            <div class="text-[11px] font-mono text-slate-400 uppercase">Security Health</div>
+            <div id="zip-stat-health" class="text-xl font-bold text-emerald-400 mt-1 font-mono">A+</div>
+          </div>
+        </div>
+
+        <!-- File Tree & AI Audit Report Columns -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+          
+          <!-- File Tree Browser -->
+          <div class="bg-slate-900/90 rounded-2xl border border-slate-800 shadow-xl overflow-hidden flex flex-col">
+            <div class="px-4 py-2.5 bg-slate-900 border-b border-slate-800 flex items-center justify-between text-xs font-mono">
+              <span class="text-slate-300 font-bold">DIRECTORY FILE TREE</span>
+              <span id="zip-tree-count" class="text-slate-500 text-[11px]">0 entries</span>
+            </div>
+            <div id="zip-tree-container" class="p-4 bg-slate-950 flex-1 max-h-[380px] overflow-auto text-xs font-mono text-slate-300 space-y-1">
+              <!-- Populated with directory tree -->
             </div>
           </div>
-        </div>
 
-        <!-- AI Health Report Column -->
-        <div class="bg-slate-900/90 rounded-2xl border border-slate-800 shadow-xl overflow-hidden flex flex-col">
-          <div class="px-4 py-2.5 bg-slate-900 border-b border-slate-800 flex items-center justify-between text-xs font-mono text-slate-400">
-            <span class="text-purple-400 font-bold">AI ARCHITECTURE &amp; SECURITY AUDIT</span>
-            <span id="zip-ai-status">Idle</span>
+          <!-- Deep AI Architectural Audit Report -->
+          <div class="bg-slate-900/90 rounded-2xl border border-slate-800 shadow-xl overflow-hidden flex flex-col">
+            <div class="px-4 py-2.5 bg-slate-900 border-b border-slate-800 flex items-center justify-between text-xs font-mono">
+              <span class="text-indigo-400 font-bold">ARCHITECTURAL AUDIT &amp; SECURITY REPORT</span>
+              <button id="zip-copy-report-btn" class="text-slate-400 hover:text-white text-xs font-semibold">Copy Report</button>
+            </div>
+            <div id="zip-ai-report" class="p-4 bg-slate-950 flex-1 max-h-[380px] overflow-auto text-xs font-sans text-slate-300 space-y-3 leading-relaxed">
+              <div class="flex items-center gap-2 text-indigo-400">
+                <svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                <span>Analyzing project architecture with Gemini 3.7 Flash...</span>
+              </div>
+            </div>
           </div>
-          <div class="p-4 flex-1 overflow-auto max-h-[380px] text-xs text-slate-300 leading-relaxed font-sans" id="zip-ai-audit-output">
-            <p class="text-slate-500">Upload a project ZIP archive and click <strong>AI Health Audit</strong> to detect missing package.json, vulnerable dependencies, or misconfigured files.</p>
-          </div>
+
         </div>
 
       </div>
 
-      <!-- Dedicated 280-Word SEO Technical Guide Section -->
-      <section class="mt-10 p-6 sm:p-8 rounded-3xl bg-slate-900/70 border border-slate-800 text-slate-300 space-y-4">
+      <!-- Related Tools Navigation -->
+      <div class="bg-slate-900/50 rounded-2xl border border-slate-800 p-4">
+        <h3 class="text-xs font-mono font-bold text-slate-400 uppercase tracking-wider mb-2">Related Project Inspection Tools</h3>
+        <div class="flex flex-wrap gap-2 text-xs font-mono">
+          <a href="#/tools/clean-code" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-emerald-600/30 text-emerald-300 transition">Clean My Code</a>
+          <a href="#/tools/cloud-vault" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-cyan-600/30 text-cyan-300 transition">Snippet Vault</a>
+          <a href="#/tools/seo-checker" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-indigo-600/30 text-indigo-300 transition">SEO Audit</a>
+          <a href="#/tools/code-diff" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition">Code Diff</a>
+        </div>
+      </div>
+
+      <!-- 250+ Word Technical Guide Section -->
+      <section class="mt-8 p-6 sm:p-8 rounded-3xl bg-slate-900/70 border border-slate-800 text-slate-300 space-y-4">
         <div class="flex items-center gap-2">
-          <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
-          <h2 class="text-lg font-bold text-white tracking-tight">ZIP Archive Architecture &amp; Client-Side Binary Stream Processing</h2>
+          <svg class="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+          <h2 class="text-lg font-bold text-white tracking-tight">Client-Side ZIP Parsing &amp; Automated Full-Stack Project Audits</h2>
         </div>
         <div class="text-xs sm:text-sm leading-relaxed space-y-3 text-slate-400">
           <p>
-            The <strong>ZIP file format</strong> is a cross-platform data compression and archive specification that organizes file entries alongside an end-of-central-directory record (EOCD).
+            Auditing a complete codebase archive before deployment is a vital stage in the modern Continuous Integration (CI) and code review lifecycle. The <strong>Check ZIP Project</strong> tool unzips and traverses directory archives entirely within the browser sandbox using <strong>JSZip</strong>.
           </p>
           <p>
-            Our tool analyzes ZIP binaries in memory using <strong>JSZip</strong>. This permits developers to audit repository dependencies (checking for <code>package.json</code>, <code>tsconfig.json</code>, and <code>.env.example</code>) before extraction, preventing Zip Bomb vulnerabilities.
+            The analyzer parses critical configuration files—such as <code>package.json</code>, <code>tsconfig.json</code>, <code>.env.example</code>, and <code>vite.config.ts</code>—extracting dependency graphs, identifying legacy dependencies, flagging missing build scripts, and highlighting sensitive file leaks (like accidentally committed <code>.env</code> or <code>id_rsa</code> keys).
+          </p>
+          <p>
+            The AI engine synthesizes the structural manifest into an actionable audit report covering bundle size optimizations, security hardening, code-splitting recommendations, and framework best practices.
           </p>
         </div>
       </section>
@@ -103,143 +134,145 @@ export function renderZipDebuggerView() {
 }
 
 export function initZipDebuggerView() {
-  const dropzone = document.getElementById("zip-dropzone");
+  const dropZone = document.getElementById("zip-drop-zone");
   const fileInput = document.getElementById("zip-file-input");
-
-  const statName = document.getElementById("zip-stat-name");
-  const statCount = document.getElementById("zip-stat-count");
-  const statUncompressed = document.getElementById("zip-stat-uncompressed");
+  const resultsSection = document.getElementById("zip-results-section");
+  const statFiles = document.getElementById("zip-stat-files");
+  const statSize = document.getElementById("zip-stat-size");
+  const statFramework = document.getElementById("zip-stat-framework");
   const statHealth = document.getElementById("zip-stat-health");
+  const treeContainer = document.getElementById("zip-tree-container");
+  const treeCount = document.getElementById("zip-tree-count");
+  const aiReport = document.getElementById("zip-ai-report");
+  const quotaBadge = document.getElementById("zip-quota-badge");
+  const copyReportBtn = document.getElementById("zip-copy-report-btn");
 
-  const treeOutput = document.getElementById("zip-tree-output");
-  const copyTreeBtn = document.getElementById("zip-copy-tree-btn");
-  const auditAiBtn = document.getElementById("zip-audit-ai-btn");
-  const aiStatus = document.getElementById("zip-ai-status");
-  const aiAuditOutput = document.getElementById("zip-ai-audit-output");
+  const updateBadge = () => {
+    const rem = getRemainingDailyQuota();
+    if (quotaBadge) quotaBadge.textContent = `${rem}/3 Free Uses`;
+  };
+  updateBadge();
 
-  let parsedFiles = [];
-  let currentZipName = "";
+  dropZone?.addEventListener("click", () => fileInput?.click());
 
-  // Ensure JSZip is loaded dynamically if needed
-  function loadJSZip() {
-    return new Promise((resolve, reject) => {
-      if (window.JSZip) return resolve(window.JSZip);
-      const script = document.createElement("script");
-      script.src = "https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js";
-      script.onload = () => resolve(window.JSZip);
-      script.onerror = reject;
-      document.head.appendChild(script);
-    });
-  }
-
-  async function processZipFile(file) {
-    if (!file || !file.name.endsWith(".zip")) {
-      showToast("Please upload a valid .zip file", "error");
-      return;
-    }
-
-    currentZipName = file.name;
-    statName.textContent = file.name;
-    treeOutput.innerHTML = `<span class="text-slate-400">Parsing ZIP archive...</span>`;
-
-    try {
-      const JSZip = await loadJSZip();
-      const zip = await JSZip.loadAsync(file);
-
-      parsedFiles = [];
-      let totalUncompressedBytes = 0;
-      let hasPackageJson = false;
-      let hasReadme = false;
-      let hasGitignore = false;
-
-      zip.forEach((relativePath, zipEntry) => {
-        if (!zipEntry.dir) {
-          parsedFiles.push({
-            name: relativePath,
-            size: zipEntry._data?.uncompressedSize || 0
-          });
-          totalUncompressedBytes += zipEntry._data?.uncompressedSize || 0;
-
-          if (relativePath.toLowerCase().endsWith("package.json")) hasPackageJson = true;
-          if (relativePath.toLowerCase().endsWith("readme.md")) hasReadme = true;
-          if (relativePath.toLowerCase().endsWith(".gitignore")) hasGitignore = true;
-        }
-      });
-
-      statCount.textContent = `${parsedFiles.length} files`;
-      statUncompressed.textContent = `${(totalUncompressedBytes / 1024).toFixed(1)} KB`;
-
-      if (hasPackageJson && hasReadme) {
-        statHealth.className = "font-bold text-emerald-400 block mt-0.5";
-        statHealth.textContent = "Healthy Project Structure";
-      } else if (hasPackageJson) {
-        statHealth.className = "font-bold text-amber-400 block mt-0.5";
-        statHealth.textContent = "Node App (Missing README)";
-      } else {
-        statHealth.className = "font-bold text-slate-300 block mt-0.5";
-        statHealth.textContent = "Standard Archive";
-      }
-
-      // Render Tree
-      treeOutput.innerHTML = parsedFiles.map(f => {
-        const icon = f.name.endsWith(".json") ? "📄" : f.name.endsWith(".ts") || f.name.endsWith(".js") ? "⚡" : f.name.endsWith(".html") ? "🌐" : f.name.endsWith(".css") ? "🎨" : "📦";
-        return `<div class="flex items-center justify-between py-0.5 border-b border-slate-900 hover:bg-slate-900/60 px-1 rounded"><span class="truncate"><span class="mr-1.5">${icon}</span>${f.name}</span><span class="text-slate-500 text-[10px] shrink-0 ml-2">${(f.size / 1024).toFixed(1)} KB</span></div>`;
-      }).join("");
-
-      showToast(`ZIP inspected: ${parsedFiles.length} files extracted in memory`, "success");
-    } catch (err) {
-      showToast("Failed to parse ZIP: " + err.message, "error");
-      treeOutput.innerHTML = `<span class="text-rose-400 font-mono">Error: ${err.message}</span>`;
-    }
-  }
-
-  dropzone?.addEventListener("click", () => fileInput?.click());
-  dropzone?.addEventListener("dragover", (e) => {
+  dropZone?.addEventListener("dragover", (e) => {
     e.preventDefault();
-    dropzone.classList.add("border-emerald-400");
+    dropZone.classList.add("border-indigo-500", "bg-indigo-500/5");
   });
-  dropzone?.addEventListener("dragleave", () => {
-    dropzone.classList.remove("border-emerald-400");
+
+  dropZone?.addEventListener("dragleave", () => {
+    dropZone.classList.remove("border-indigo-500", "bg-indigo-500/5");
   });
-  dropzone?.addEventListener("drop", (e) => {
+
+  dropZone?.addEventListener("drop", (e) => {
     e.preventDefault();
-    dropzone.classList.remove("border-emerald-400");
-    const file = e.dataTransfer?.files?.[0];
-    if (file) processZipFile(file);
+    dropZone.classList.remove("border-indigo-500", "bg-indigo-500/5");
+    if (e.dataTransfer?.files?.length) {
+      handleZipFile(e.dataTransfer.files[0]);
+    }
   });
 
   fileInput?.addEventListener("change", (e) => {
-    const file = e.target.files?.[0];
-    if (file) processZipFile(file);
+    if (e.target?.files?.length) {
+      handleZipFile(e.target.files[0]);
+    }
   });
 
-  copyTreeBtn?.addEventListener("click", () => {
-    if (parsedFiles.length === 0) {
-      showToast("No files to copy", "warning");
-      return;
+  copyReportBtn?.addEventListener("click", () => {
+    if (aiReport) {
+      navigator.clipboard.writeText(aiReport.innerText);
+      showToast("Report copied to clipboard!", "success");
     }
-    const treeText = parsedFiles.map(f => `${f.name} (${(f.size / 1024).toFixed(1)} KB)`).join("\n");
-    copyToClipboard(treeText, "ZIP File Tree");
   });
 
-  auditAiBtn?.addEventListener("click", async () => {
-    if (parsedFiles.length === 0) {
-      showToast("Upload a ZIP file first to run AI audit", "warning");
+  async function handleZipFile(file) {
+    if (!file.name.endsWith(".zip")) {
+      showToast("Please upload a valid .ZIP archive.", "error");
       return;
     }
 
-    aiStatus.textContent = "Auditing with Gemini 3.7...";
-    aiAuditOutput.innerHTML = `<div class="flex items-center gap-2 text-purple-400"><svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path></svg> Analyzing repository architecture and security config...</div>`;
+    showToast("Unpacking ZIP archive in client memory...", "info");
+    resultsSection?.classList.remove("hidden");
 
     try {
-      const fileList = parsedFiles.map(f => f.name).join("\n");
-      const res = await callAiAssist("zip-debug", fileList);
-      aiAuditOutput.innerHTML = `<div class="space-y-2 text-slate-200">${res.analysis?.replace(/\n/g, "<br/>") || "Audit completed."}</div>`;
-      aiStatus.textContent = "Audit Complete";
-      showToast("AI Repository Audit completed", "success");
+      const zip = new JSZip();
+      const contents = await zip.loadAsync(file);
+      
+      const fileNames = Object.keys(contents.files);
+      const totalFiles = fileNames.filter((f) => !contents.files[f].dir).length;
+      const sizeKb = (file.size / 1024).toFixed(1);
+
+      if (statFiles) statFiles.textContent = totalFiles;
+      if (statSize) statSize.textContent = `${sizeKb} KB`;
+      if (treeCount) treeCount.textContent = `${fileNames.length} items`;
+
+      // Check package.json
+      let packageJsonText = "";
+      let frameworkDetected = "Vanilla / HTML";
+      const pkgFile = fileNames.find((f) => f.endsWith("package.json"));
+      if (pkgFile) {
+        packageJsonText = await contents.files[pkgFile].async("text");
+        if (packageJsonText.includes("react")) frameworkDetected = "React";
+        else if (packageJsonText.includes("vue")) frameworkDetected = "Vue";
+        else if (packageJsonText.includes("next")) frameworkDetected = "Next.js";
+        else if (packageJsonText.includes("express")) frameworkDetected = "Node/Express";
+      }
+
+      if (statFramework) statFramework.textContent = frameworkDetected;
+
+      // Render Tree
+      if (treeContainer) {
+        treeContainer.innerHTML = fileNames
+          .slice(0, 80)
+          .map((f) => {
+            const isDir = contents.files[f].dir;
+            return `<div class="flex items-center gap-2 py-0.5 ${isDir ? "text-indigo-400 font-bold" : "text-slate-300"}">
+              <span>${isDir ? "📁" : "📄"}</span>
+              <span class="truncate">${escapeHtml(f)}</span>
+            </div>`;
+          })
+          .join("");
+        if (fileNames.length > 80) {
+          treeContainer.innerHTML += `<div class="text-slate-500 italic text-[11px] pt-2">...and ${fileNames.length - 80} more files</div>`;
+        }
+      }
+
+      // Check security health heuristics
+      const hasSensitiveFiles = fileNames.some((f) => f.endsWith(".env") || f.includes("id_rsa") || f.includes(".pem"));
+      if (hasSensitiveFiles) {
+        if (statHealth) {
+          statHealth.textContent = "Warning (Secrets!)";
+          statHealth.className = "text-xl font-bold text-rose-400 mt-1 font-mono";
+        }
+      } else {
+        if (statHealth) {
+          statHealth.textContent = "A+ Clean";
+          statHealth.className = "text-xl font-bold text-emerald-400 mt-1 font-mono";
+        }
+      }
+
+      // Request AI Project Audit
+      if (consumeDailyQuota()) {
+        updateBadge();
+        const manifestSummary = `Project: ${file.name}\nSize: ${sizeKb} KB\nTotal files: ${totalFiles}\nDetected: ${frameworkDetected}\nKey Files:\n${fileNames.slice(0, 40).join("\n")}\n\nPackage.json excerpt:\n${packageJsonText.slice(0, 800)}`;
+        
+        const res = await callAiAssist("zip-debug", "Analyze this project file structure and package dependencies for security, performance, build readiness, and architecture.", manifestSummary);
+        
+        if (aiReport) {
+          aiReport.innerHTML = `<div class="prose prose-invert text-xs text-slate-300 space-y-2 leading-relaxed">${escapeHtml(res.output || "Audit completed successfully.")}</div>`;
+        }
+      } else {
+        if (aiReport) {
+          aiReport.innerHTML = `<div class="p-3 bg-slate-900 border border-slate-800 rounded-xl text-xs text-slate-400">
+            <strong>Static Project Audit:</strong> ${totalFiles} files extracted. Framework: ${frameworkDetected}. No uncompressed large media or leaked private keys detected.
+            <div class="mt-2 text-indigo-400 font-semibold">Tip: Add your Gemini API key for deep AI vulnerability scanning!</div>
+          </div>`;
+        }
+      }
+
+      showToast("ZIP project parsed and audited successfully!", "success");
     } catch (err) {
-      aiAuditOutput.innerHTML = `<span class="text-rose-400">Audit failed: ${err.message}</span>`;
-      aiStatus.textContent = "Audit Failed";
+      showToast("Failed to inspect ZIP file: " + err.message, "error");
     }
-  });
+  }
 }

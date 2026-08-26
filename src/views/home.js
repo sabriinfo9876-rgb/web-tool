@@ -1,21 +1,22 @@
-// Home View: 20+ Tool Directory, Live Search & Stats Catalog
+// Home View: Complete 74 Developer Utilities & AI Studio Catalog
+// Searchable, filterable directory with real-time fuzzy keyword search and direct routing
 
 export function renderHomeView() {
   return `
     <div class="space-y-8 animate-fadeIn">
       
       <!-- Hero Banner -->
-      <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-indigo-950/80 via-slate-900 to-purple-950/80 border border-indigo-500/20 p-6 sm:p-10 shadow-2xl">
+      <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-indigo-950/90 via-slate-900 to-purple-950/90 border border-indigo-500/20 p-6 sm:p-10 shadow-2xl">
         <div class="relative z-10 max-w-3xl space-y-4">
           <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 text-xs font-semibold">
             <span class="w-2 h-2 rounded-full bg-indigo-400 animate-ping"></span>
-            <span>20+ All-in-One Developer Utilities &amp; AI Engine</span>
+            <span>AI Developer Tools + Web Developer Toolbox (74 Tools)</span>
           </div>
           <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight">
             The Ultimate <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-300 to-cyan-300">Developer Hub</span> for Modern Web Creators.
           </h1>
           <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
-            Fast, client-side, zero-telemetry utilities. Format JSON, convert PX to REM, inspect JWTs, debug ZIP repositories, and generate responsive UI designs with Gemini 3.7 AI.
+            Fast, client-side, zero-telemetry utilities. Format JSON, convert units, debug flexbox, inspect JWTs, test APIs, compress images, and generate responsive UI components with Gemini AI.
           </p>
           
           <!-- Quick Search in Hero -->
@@ -24,21 +25,21 @@ export function renderHomeView() {
               <input 
                 type="text" 
                 id="hero-tool-search" 
-                placeholder="Search by name, keyword or format (e.g. JWT, JSON, SVG, Regex, AI Design, ZIP)..." 
+                placeholder="Search 74 developer tools (e.g. JSON, Flexbox, Regex, JWT, Clean Code, cURL, Image Compress)..." 
                 class="w-full bg-slate-950/90 border border-indigo-500/30 rounded-2xl pl-10 pr-4 py-3 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 shadow-xl"
               />
               <svg class="w-5 h-5 text-indigo-400 absolute left-3.5 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
             </div>
-            <a href="#tools/ai-design-suggester" class="px-5 py-3 rounded-2xl bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-bold text-xs sm:text-sm transition shadow-lg shadow-indigo-500/25 flex items-center justify-center gap-2 shrink-0">
+            <a href="#tools/code-to-design" class="px-5 py-3 rounded-2xl bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-bold text-xs sm:text-sm transition shadow-lg shadow-indigo-500/25 flex items-center justify-center gap-2 shrink-0">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-              <span>Try AI Design Suggester</span>
+              <span>Explore AI Studio</span>
             </a>
           </div>
         </div>
         
-        <!-- Decorative Glow -->
+        <!-- Decorative Glows -->
         <div class="absolute -right-20 -bottom-20 w-80 h-80 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
         <div class="absolute right-40 -top-20 w-60 h-60 bg-purple-500/10 rounded-full blur-3xl pointer-events-none"></div>
       </div>
@@ -46,38 +47,42 @@ export function renderHomeView() {
       <!-- Category Filter Tabs -->
       <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-4">
         <div class="flex flex-wrap gap-1.5" id="home-category-tabs">
-          <button data-cat="all" class="home-cat-btn px-4 py-2 rounded-xl text-xs font-bold bg-indigo-600 text-white shadow-lg shadow-indigo-500/20 transition">All Tools (22)</button>
-          <button data-cat="core" class="home-cat-btn px-4 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-900 transition">Core Utilities (5)</button>
-          <button data-cat="converters" class="home-cat-btn px-4 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-900 transition">Converters &amp; Security (5)</button>
-          <button data-cat="builders" class="home-cat-btn px-4 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-900 transition">Asset &amp; Code (6)</button>
-          <button data-cat="ai" class="home-cat-btn px-4 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-900 transition">AI Suite &amp; Debuggers (6)</button>
+          <button data-cat="all" class="home-cat-btn px-3.5 py-1.5 rounded-xl text-xs font-bold bg-indigo-600 text-white shadow-lg shadow-indigo-500/20 transition">All Tools (76)</button>
+          <button data-cat="ai" class="home-cat-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-900 transition">AI Tools (9)</button>
+          <button data-cat="web" class="home-cat-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-900 transition">Web Tools (22)</button>
+          <button data-cat="css" class="home-cat-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-900 transition">CSS Tools (11)</button>
+          <button data-cat="image" class="home-cat-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-900 transition">Media &amp; Images (7)</button>
+          <button data-cat="security" class="home-cat-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-900 transition">Security (6)</button>
+          <button data-cat="dev" class="home-cat-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-900 transition">Developer Essentials (9)</button>
+          <button data-cat="seo" class="home-cat-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-900 transition">Website &amp; SEO (6)</button>
+          <button data-cat="ref" class="home-cat-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-900 transition">Cheat Sheets &amp; Vault (7)</button>
         </div>
-        <div class="text-xs text-slate-500 font-mono" id="tool-count-label">Showing 22 utilities</div>
+        <div class="text-xs text-slate-500 font-mono" id="tool-count-label">Showing 76 utilities</div>
       </div>
 
       <!-- Tools Grid -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5" id="tools-grid-container">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5" id="tools-grid-container">
         ${getToolCardsHtml()}
       </div>
 
-      <!-- SEO Overview & Schema.org Guide for Web Developer Hub -->
-      <section class="mt-12 p-8 rounded-3xl bg-slate-900/60 border border-slate-800/80 space-y-4 text-slate-300">
+      <!-- Features Overview -->
+      <section class="mt-12 p-6 sm:p-8 rounded-3xl bg-slate-900/60 border border-slate-800/80 space-y-4 text-slate-300">
         <h2 class="text-xl font-bold text-white tracking-tight flex items-center gap-2">
           <svg class="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-          Why Choose Web Developer Hub?
+          Why Modern Engineers Rely on Web Developer Hub
         </h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2 text-xs leading-relaxed">
           <div class="space-y-2">
             <h3 class="font-bold text-indigo-300">100% Client-Side Privacy</h3>
-            <p class="text-slate-400">All sensitive computations—such as JWT parsing, SHA hash generation, Base64 image encoding, and ZIP repository extraction—execute strictly inside your browser sandbox. Your tokens, passwords, and source code are never uploaded or stored on untrusted servers.</p>
+            <p class="text-slate-400">All conversion algorithms, image manipulations, token parsing, and formatters execute strictly inside your local browser runtime. No data is stored or logged without your consent.</p>
           </div>
           <div class="space-y-2">
-            <h3 class="font-bold text-purple-300">AI-Assisted Craftsmanship</h3>
-            <p class="text-slate-400">Powered by Google Gemini 3.7 Flash, our AI tools analyze your raw HTML/CSS/React code to suggest stunning responsive redesigns, mobile-first breakpoints, fluid clamp typography, and perform deep ZIP repository health scans.</p>
+            <h3 class="font-bold text-purple-300">Smart AI Engineering</h3>
+            <p class="text-slate-400">Integrated with Gemini 3.7 to analyze HTML/CSS, suggest responsive viewport breakpoints, clean codebase anti-patterns, and inspect ZIP project dependencies.</p>
           </div>
           <div class="space-y-2">
-            <h3 class="font-bold text-cyan-300">Cloud Persistence via Firestore</h3>
-            <p class="text-slate-400">Seamlessly sync your custom CSS snippets, regex patterns, cURL templates, and API endpoints across multiple machines with Google Firebase Firestore integration.</p>
+            <h3 class="font-bold text-cyan-300">High-Density Productivity</h3>
+            <p class="text-slate-400">Instant keyboard navigation (Ctrl+K), zero-dependency client tools, copyable output snippets, and responsive touch/desktop interfaces.</p>
           </div>
         </div>
       </section>
@@ -99,7 +104,7 @@ export function initHomeView() {
 
     let visibleCount = 0;
 
-    toolCards.forEach(card => {
+    toolCards.forEach((card) => {
       const title = (card.dataset.title || "").toLowerCase();
       const tags = (card.dataset.tags || "").toLowerCase();
       const cat = card.dataset.category || "";
@@ -122,290 +127,699 @@ export function initHomeView() {
 
   searchInput?.addEventListener("input", filterCards);
 
-  catButtons.forEach(btn => {
+  catButtons.forEach((btn) => {
     btn.addEventListener("click", () => {
-      catButtons.forEach(b => {
-        b.className = "home-cat-btn px-4 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-900 transition";
+      catButtons.forEach((b) => {
+        b.className = "home-cat-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-900 transition";
       });
-      btn.className = "home-cat-btn px-4 py-2 rounded-xl text-xs font-bold bg-indigo-600 text-white shadow-lg shadow-indigo-500/20 transition";
+      btn.className = "home-cat-btn px-3.5 py-1.5 rounded-xl text-xs font-bold bg-indigo-600 text-white shadow-lg shadow-indigo-500/20 transition";
       filterCards();
     });
   });
 }
 
 function getToolCardsHtml() {
-  const tools = [
-    // Core Utilities
+  const allTools = [
+    // 1-9: AI Tools & Security Gatekeeper
+    {
+      route: "tools/fix-github-project",
+      cat: "ai",
+      title: "Fix My GitHub Project",
+      desc: "Connect a GitHub repository, scan the entire project, find problems, generate safe fixes, review diffs, approve and sign patch, verify, and create a Pull Request.",
+      badge: "GitHub Repair Engine",
+      badgeColor: "bg-indigo-500/10 text-indigo-400 border-indigo-500/30",
+      tags: "fix my github project repair repository repo scanner audit pull request pr sign approve diff patch branch"
+    },
+    {
+      route: "tools/code-sign-approve",
+      cat: "ai",
+      title: "Code Sign & Approve",
+      desc: "Review and authorize code changes before they are written to your project with SHA-256 fingerprinting and ECDSA digital signatures.",
+      badge: "Zero-Trust Gate",
+      badgeColor: "bg-emerald-500/10 text-emerald-400 border-emerald-500/30",
+      tags: "code sign approve security audit ai authorization diff gatekeeper fingerprint ecdsa p256"
+    },
+    {
+      route: "tools/code-to-design",
+      cat: "ai",
+      title: "Code to Design",
+      desc: "AI visual layout transformer and modern UX enhancement suggestions for raw HTML/CSS/Tailwind.",
+      badge: "AI Studio",
+      badgeColor: "bg-indigo-500/10 text-indigo-400 border-indigo-500/30",
+      tags: "code to design ai visual suggest enhance ui responsive"
+    },
+    {
+      route: "tools/prompt-to-ui",
+      cat: "ai",
+      title: "Prompt to UI",
+      desc: "Generate production-ready HTML5, Tailwind, or React components from natural language prompts.",
+      badge: "AI Studio",
+      badgeColor: "bg-purple-500/10 text-purple-400 border-purple-500/30",
+      tags: "prompt to ui generate component react html tailwind ai"
+    },
+    {
+      route: "tools/make-responsive",
+      cat: "ai",
+      title: "Make Responsive",
+      desc: "Transform desktop-locked markup into fluid, mobile-first responsive layouts with Tailwind prefixes.",
+      badge: "AI Studio",
+      badgeColor: "bg-teal-500/10 text-teal-400 border-teal-500/30",
+      tags: "make responsive mobile first breakpoint viewport ai"
+    },
+    {
+      route: "tools/flex-grid-fix",
+      cat: "ai",
+      title: "Flex & Grid Fix",
+      desc: "Detect overflow anomalies, collapsing items, and alignment bugs in CSS Flexbox and Grid code.",
+      badge: "AI Studio",
+      badgeColor: "bg-emerald-500/10 text-emerald-400 border-emerald-500/30",
+      tags: "flex grid fix css layout overflow alignment ai"
+    },
+    {
+      route: "tools/fix-html",
+      cat: "ai",
+      title: "Fix HTML",
+      desc: "Automated semantic structure repairs, tag unnesting, unclosed element fixes, and accessibility audits.",
+      badge: "AI Studio",
+      badgeColor: "bg-amber-500/10 text-amber-400 border-amber-500/30",
+      tags: "fix html dom unclosed tags semantic accessibility a11y ai"
+    },
+    {
+      route: "tools/clean-my-code",
+      cat: "ai",
+      title: "Clean My Code",
+      desc: "Refactor messy logic, remove dead code, normalize indentation, and improve maintainability.",
+      badge: "AI Studio",
+      badgeColor: "bg-rose-500/10 text-rose-400 border-rose-500/30",
+      tags: "clean my code refactor tidy format quality lint ai"
+    },
+    {
+      route: "tools/check-zip-project",
+      cat: "ai",
+      title: "Check ZIP Project",
+      desc: "Deep client-side archive scanner for package dependencies, security vulnerabilities, and code health.",
+      badge: "AI Studio",
+      badgeColor: "bg-cyan-500/10 text-cyan-400 border-cyan-500/30",
+      tags: "check zip project debugger repository architecture security ai"
+    },
+
+    // 8-13: JSON Suite
     {
       route: "tools/json-formatter",
-      cat: "core",
-      title: "JSON Formatter & Tree",
-      desc: "Validate, format, minify, and inspect JSON with an interactive collapsible tree view and error markers.",
-      badge: "Core",
+      cat: "web",
+      title: "JSON Formatter",
+      desc: "Beautify, indent, and organize JSON structures with interactive collapsible syntax highlighting.",
+      badge: "JSON Suite",
       badgeColor: "bg-cyan-500/10 text-cyan-400 border-cyan-500/30",
-      iconColor: "text-cyan-400",
-      icon: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>`,
-      tags: "json validator formatter minify beautify tree view format syntax"
+      tags: "json formatter beautify indent format syntax tree"
     },
     {
-      route: "tools/px-to-rem",
-      cat: "core",
-      title: "PX to REM / EM Converter",
-      desc: "Convert pixels to scalable REM/EM units with editable base font size, interactive dual sliders, and clamp() snippets.",
-      badge: "Typography",
-      badgeColor: "bg-indigo-500/10 text-indigo-400 border-indigo-500/30",
-      iconColor: "text-indigo-400",
-      icon: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16"/>`,
-      tags: "px rem em pixel converter typography clamp base font fluid"
+      route: "tools/json-validator",
+      cat: "web",
+      title: "JSON Validator",
+      desc: "Validate JSON syntax with precise line/column error markers and parse error diagnostics.",
+      badge: "JSON Suite",
+      badgeColor: "bg-cyan-500/10 text-cyan-400 border-cyan-500/30",
+      tags: "json validator validate schema lint error parse"
     },
     {
-      route: "tools/svg-data-uri",
-      cat: "core",
-      title: "SVG to CSS Data URI",
-      desc: "Transform raw SVG graphics into cleaned inline SVG, CSS background-image Data URIs, and Base64 strings.",
-      badge: "Vector",
-      badgeColor: "bg-purple-500/10 text-purple-400 border-purple-500/30",
-      iconColor: "text-purple-400",
-      icon: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>`,
-      tags: "svg data uri base64 background-image css vector optimize"
+      route: "tools/json-minifier",
+      cat: "web",
+      title: "JSON Minifier",
+      desc: "Strip unnecessary whitespace, line breaks, and indentation from JSON payloads for fast network transport.",
+      badge: "JSON Suite",
+      badgeColor: "bg-cyan-500/10 text-cyan-400 border-cyan-500/30",
+      tags: "json minifier compress compact payload minify"
     },
     {
-      route: "tools/open-graph",
-      cat: "core",
-      title: "Open Graph & Meta Tags",
-      desc: "Generate complete HTML social head tags with real-time interactive preview cards for Twitter and Facebook.",
-      badge: "SEO / Social",
-      badgeColor: "bg-blue-500/10 text-blue-400 border-blue-500/30",
-      iconColor: "text-blue-400",
-      icon: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"/>`,
-      tags: "open graph meta tags twitter card facebook seo social preview head"
+      route: "tools/json-viewer",
+      cat: "web",
+      title: "JSON Viewer & Tree",
+      desc: "Explore complex nested JSON hierarchies with collapsible nodes, copy paths, and key count metrics.",
+      badge: "JSON Suite",
+      badgeColor: "bg-cyan-500/10 text-cyan-400 border-cyan-500/30",
+      tags: "json viewer tree view inspect explore collapsible nodes"
     },
     {
-      route: "tools/flexbox-grid",
-      cat: "core",
-      title: "Flexbox & Grid Playground",
-      desc: "Visual interactive playground with directional, alignment, and gap controls with real-time CSS & Tailwind export.",
-      badge: "CSS Layout",
-      badgeColor: "bg-emerald-500/10 text-emerald-400 border-emerald-500/30",
-      iconColor: "text-emerald-400",
-      icon: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"/>`,
-      tags: "flexbox grid css layout playground align justify tailwind"
+      route: "tools/json-to-csv",
+      cat: "web",
+      title: "JSON to CSV",
+      desc: "Convert JSON array structures into tabular CSV data ready for Google Sheets and Excel.",
+      badge: "JSON Suite",
+      badgeColor: "bg-cyan-500/10 text-cyan-400 border-cyan-500/30",
+      tags: "json to csv convert tabular spreadsheet excel sheets"
+    },
+    {
+      route: "tools/csv-to-json",
+      cat: "web",
+      title: "CSV to JSON",
+      desc: "Parse raw CSV spreadsheet text into structured JSON arrays with automatic column header detection.",
+      badge: "JSON Suite",
+      badgeColor: "bg-cyan-500/10 text-cyan-400 border-cyan-500/30",
+      tags: "csv to json convert table dataset spreadsheet parse"
     },
 
-    // Converters & Security
+    // 14-18: HTML Suite
     {
-      route: "tools/html-markdown-jsx",
-      cat: "converters",
-      title: "HTML to Markdown / JSX",
-      desc: "Dual-pane converter transforming raw HTML markup into GitHub Flavored Markdown and valid React JSX code.",
-      badge: "Syntax",
+      route: "tools/html-formatter",
+      cat: "web",
+      title: "HTML Formatter",
+      desc: "Format and indent HTML documents with clean hierarchical tag alignment.",
+      badge: "HTML Suite",
       badgeColor: "bg-pink-500/10 text-pink-400 border-pink-500/30",
-      iconColor: "text-pink-400",
-      icon: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>`,
-      tags: "html markdown jsx react converter className htmlFor"
+      tags: "html formatter beautify indent tags markup"
     },
     {
-      route: "tools/gradient-palette",
-      cat: "converters",
-      title: "CSS Gradient & Palette",
-      desc: "Create linear, radial, and conic gradients with angle dials, color stops, and automatic harmony color palettes.",
-      badge: "Design",
-      badgeColor: "bg-rose-500/10 text-rose-400 border-rose-500/30",
-      iconColor: "text-rose-400",
-      icon: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4 5 5 0 015-5 4 4 0 014 4 5 5 0 01-5 5zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/>`,
-      tags: "css gradient linear radial conic color palette harmony hex rgb hsl"
+      route: "tools/html-minifier",
+      cat: "web",
+      title: "HTML Minifier",
+      desc: "Compress HTML source code by removing comments, redundant spaces, and line breaks.",
+      badge: "HTML Suite",
+      badgeColor: "bg-pink-500/10 text-pink-400 border-pink-500/30",
+      tags: "html minifier minify compress production markup"
     },
+    {
+      route: "tools/html-checker",
+      cat: "web",
+      title: "HTML Checker",
+      desc: "Syntax validation for unclosed tags, void elements, and DOM hierarchy rules.",
+      badge: "HTML Suite",
+      badgeColor: "bg-pink-500/10 text-pink-400 border-pink-500/30",
+      tags: "html checker validator unclosed tags dom syntax"
+    },
+    {
+      route: "tools/html-to-markdown",
+      cat: "web",
+      title: "HTML to Markdown",
+      desc: "Convert HTML elements into GitHub Flavored Markdown for documentation.",
+      badge: "HTML Suite",
+      badgeColor: "bg-pink-500/10 text-pink-400 border-pink-500/30",
+      tags: "html to markdown gfm convert docs readme"
+    },
+    {
+      route: "tools/html-to-jsx",
+      cat: "web",
+      title: "HTML to JSX",
+      desc: "Convert standard HTML into React JSX with className, htmlFor, and self-closing tags.",
+      badge: "HTML Suite",
+      badgeColor: "bg-pink-500/10 text-pink-400 border-pink-500/30",
+      tags: "html to jsx react classname htmlfor component"
+    },
+
+    // 19-20: JWT Suite
     {
       route: "tools/jwt-decoder",
-      cat: "converters",
-      title: "JWT Safe Client Decoder",
-      desc: "Safely parse JSON Web Tokens on the client without exposing keys. Inspect Header, Claims, and live expiration timer.",
-      badge: "Security",
+      cat: "web",
+      title: "JWT Decoder",
+      desc: "Safely decode JSON Web Tokens into Header and Payload JSON on the client side.",
+      badge: "JWT",
       badgeColor: "bg-amber-500/10 text-amber-400 border-amber-500/30",
-      iconColor: "text-amber-400",
-      icon: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>`,
-      tags: "jwt token decoder json web token claims auth security expiration"
+      tags: "jwt decoder token json web token auth claims header"
     },
+    {
+      route: "tools/jwt-expiry",
+      cat: "web",
+      title: "JWT Expiry Inspector",
+      desc: "Inspect exp timestamps, remaining token lifespan, and expiration status.",
+      badge: "JWT",
+      badgeColor: "bg-amber-500/10 text-amber-400 border-amber-500/30",
+      tags: "jwt expiry expiration timer inspect token status"
+    },
+
+    // 21-26: Regex, URL, Base64
     {
       route: "tools/regex-tester",
-      cat: "converters",
-      title: "Regex Tester & Matcher",
-      desc: "Interactive regex matcher with flags (g, i, m, s, u), visual token highlight, capture group table, and preset patterns.",
-      badge: "Pattern",
+      cat: "web",
+      title: "Regex Tester",
+      desc: "Test regular expressions in real-time with syntax flags, group match extraction, and pattern presets.",
+      badge: "Regex",
       badgeColor: "bg-teal-500/10 text-teal-400 border-teal-500/30",
-      iconColor: "text-teal-400",
-      icon: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>`,
-      tags: "regex regular expression tester matcher pattern flags test cases"
+      tags: "regex tester regular expression match flags pattern sandbox"
     },
     {
-      route: "tools/cheat-sheets",
-      cat: "converters",
-      title: "Developer Cheat Sheets",
-      desc: "Searchable reference cards for Git commands, Linux bash shortcuts, HTTP status codes, and fluid CSS clamp().",
-      badge: "Reference",
-      badgeColor: "bg-sky-500/10 text-sky-400 border-sky-500/30",
-      iconColor: "text-sky-400",
-      icon: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>`,
-      tags: "cheat sheet git linux bash http status clamp calculator reference"
+      route: "tools/url-encoder",
+      cat: "web",
+      title: "URL Encoder",
+      desc: "Encode reserved characters into URI percent-encoded strings.",
+      badge: "URL",
+      badgeColor: "bg-blue-500/10 text-blue-400 border-blue-500/30",
+      tags: "url encoder encode percent encoding uri"
+    },
+    {
+      route: "tools/url-decoder",
+      cat: "web",
+      title: "URL Decoder",
+      desc: "Decode percent-encoded URI strings back into clean, readable text.",
+      badge: "URL",
+      badgeColor: "bg-blue-500/10 text-blue-400 border-blue-500/30",
+      tags: "url decoder decode query string uri"
+    },
+    {
+      route: "tools/url-parser",
+      cat: "web",
+      title: "URL Parser",
+      desc: "Deconstruct URLs into protocol, hostname, port, pathname, hash, and query parameters.",
+      badge: "URL",
+      badgeColor: "bg-blue-500/10 text-blue-400 border-blue-500/30",
+      tags: "url parser breakdown host path search params port"
+    },
+    {
+      route: "tools/base64-encoder",
+      cat: "web",
+      title: "Base64 Encoder",
+      desc: "Encode plaintext and binary assets into standard Base64 representation.",
+      badge: "Base64",
+      badgeColor: "bg-yellow-500/10 text-yellow-400 border-yellow-500/30",
+      tags: "base64 encoder encode text binary data uri"
+    },
+    {
+      route: "tools/base64-decoder",
+      cat: "web",
+      title: "Base64 Decoder",
+      desc: "Decode Base64 strings back to UTF-8 plaintext with error checking.",
+      badge: "Base64",
+      badgeColor: "bg-yellow-500/10 text-yellow-400 border-yellow-500/30",
+      tags: "base64 decoder decode utf8 text binary"
     },
 
-    // Asset & Code Builders
-    {
-      route: "tools/image-base64",
-      cat: "builders",
-      title: "WebP / Image Base64",
-      desc: "Drag-and-drop client-side FileReader encoding PNG, JPG, WebP, and SVG images into raw Data URIs and <img> tags.",
-      badge: "Assets",
-      badgeColor: "bg-yellow-500/10 text-yellow-400 border-yellow-500/30",
-      iconColor: "text-yellow-400",
-      icon: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>`,
-      tags: "image base64 encoder data uri webp png jpg filereader drag drop"
-    },
-    {
-      route: "tools/code-minifier",
-      cat: "builders",
-      title: "Code Minifier & Beautifier",
-      desc: "Compact or format HTML, CSS, JavaScript, and JSON with indentation customizer and byte savings counter.",
-      badge: "Optimizer",
-      badgeColor: "bg-violet-500/10 text-violet-400 border-violet-500/30",
-      iconColor: "text-violet-400",
-      icon: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>`,
-      tags: "code minifier beautifier html css js javascript json compress format"
-    },
-    {
-      route: "tools/sql-formatter",
-      cat: "builders",
-      title: "SQL Formatter & Schema",
-      desc: "Beautify SQL queries with keyword uppercasing and build mock database table schemas with SQL DDL export.",
-      badge: "Database",
-      badgeColor: "bg-orange-500/10 text-orange-400 border-orange-500/30",
-      iconColor: "text-orange-400",
-      icon: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"/>`,
-      tags: "sql formatter schema builder database query beautify ddl postgres mysql"
-    },
+    // 27-29: cURL, API Tester, Code Diff
     {
       route: "tools/curl-converter",
-      cat: "builders",
-      title: "cURL to Fetch / Python",
-      desc: "Parse raw cURL commands and convert them instantly into modern JavaScript fetch(), Python requests, and Axios.",
-      badge: "API Script",
+      cat: "web",
+      title: "cURL Converter",
+      desc: "Convert cURL commands into JavaScript Fetch, Axios, Python Requests, and Node HTTP.",
+      badge: "cURL",
       badgeColor: "bg-green-500/10 text-green-400 border-green-500/30",
-      iconColor: "text-green-400",
-      icon: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>`,
-      tags: "curl fetch python requests axios api converter script parse"
-    },
-    {
-      route: "tools/hash-generator",
-      cat: "builders",
-      title: "SHA & MD5 Hash Generator",
-      desc: "Compute SHA-256, SHA-512, SHA-384, and MD5 cryptographic hashes using the Web Crypto API with live match verifier.",
-      badge: "Crypto",
-      badgeColor: "bg-red-500/10 text-red-400 border-red-500/30",
-      iconColor: "text-red-400",
-      icon: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4"/>`,
-      tags: "sha256 sha512 md5 hash crypto generator web crypto verify checksum"
-    },
-    {
-      route: "tools/glassmorphism-animator",
-      cat: "builders",
-      title: "Glassmorphism & Keyframes",
-      desc: "Slider-driven CSS glass blur, opacity, shadow generator and visual keyframe animation builder with CSS export.",
-      badge: "CSS FX",
-      badgeColor: "bg-indigo-400/10 text-indigo-300 border-indigo-400/30",
-      iconColor: "text-indigo-400",
-      icon: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>`,
-      tags: "glassmorphism keyframes animation css blur shadow generator effects"
-    },
-
-    // AI Suite & Debuggers
-    {
-      route: "tools/ai-design-suggester",
-      cat: "ai",
-      title: "AI Code Design Suggester",
-      desc: "Paste ANY HTML/CSS/React snippet. Gemini 3.7 AI suggests 3 unique, modern, and 100% responsive redesigns with live sandbox.",
-      badge: "AI Powered",
-      badgeColor: "bg-indigo-500/20 text-indigo-300 border-indigo-500/40",
-      iconColor: "text-indigo-400",
-      icon: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>`,
-      tags: "ai design suggester responsive redesign code unique modern mobile first"
-    },
-    {
-      route: "tools/ui-prompt-engine",
-      cat: "ai",
-      title: "AI UI Prompt to Design",
-      desc: "Generate complete HTML + Tailwind CSS + React JSX components from natural language prompts with interactive preview.",
-      badge: "AI Generator",
-      badgeColor: "bg-purple-500/20 text-purple-300 border-purple-500/40",
-      iconColor: "text-purple-400",
-      icon: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4 5 5 0 015-5 4 4 0 014 4 5 5 0 01-5 5zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/>`,
-      tags: "ai ui prompt design component tailwind react jsx generator cards"
-    },
-    {
-      route: "tools/zip-debugger",
-      cat: "ai",
-      title: "ZIP Project Debugger",
-      desc: "Client-side ZIP extraction using JSZip to parse text files, browse directory tree, and run 1-click AI codebase audits.",
-      badge: "AI Code Audit",
-      badgeColor: "bg-cyan-500/20 text-cyan-300 border-cyan-500/40",
-      iconColor: "text-cyan-400",
-      icon: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>`,
-      tags: "zip debugger jszip project audit code review bug scanner security inspect"
-    },
-    {
-      route: "tools/responsive-converter",
-      cat: "ai",
-      title: "Responsive Converter",
-      desc: "Refactor fixed-width code into mobile-first responsive layouts with interactive Mobile/Tablet/Desktop sandbox.",
-      badge: "Mobile-First",
-      badgeColor: "bg-teal-500/20 text-teal-300 border-teal-500/40",
-      iconColor: "text-teal-400",
-      icon: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"/>`,
-      tags: "responsive converter mobile first media queries fluid layout refactor"
+      tags: "curl converter fetch axios python requests node http"
     },
     {
       route: "tools/api-tester",
-      cat: "ai",
-      title: "REST API HTTP Client",
-      desc: "Test REST API endpoints with custom headers, JSON body, CORS-bypass proxy, and detailed execution timing metrics.",
-      badge: "HTTP Client",
-      badgeColor: "bg-emerald-500/20 text-emerald-300 border-emerald-500/40",
-      iconColor: "text-emerald-400",
-      icon: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>`,
-      tags: "api tester rest http client proxy postman curl request json"
+      cat: "web",
+      title: "API Tester",
+      desc: "Client-side REST HTTP client supporting GET, POST, PUT, PATCH, and DELETE with custom headers.",
+      badge: "REST",
+      badgeColor: "bg-emerald-500/10 text-emerald-400 border-emerald-500/30",
+      tags: "api tester rest client http postman endpoint request headers"
+    },
+    {
+      route: "tools/code-diff",
+      cat: "web",
+      title: "Code Diff & Comparator",
+      desc: "Side-by-side text and code comparator highlighting line additions, deletions, and modifications.",
+      badge: "Diff",
+      badgeColor: "bg-violet-500/10 text-violet-400 border-violet-500/30",
+      tags: "code diff comparator text compare git diff changes"
+    },
+
+    // 30-40: CSS Tools
+    {
+      route: "tools/flexbox-builder",
+      cat: "css",
+      title: "Flexbox Builder",
+      desc: "Interactive visual flexbox playground with direction, wrap, justify, and align controls.",
+      badge: "CSS",
+      badgeColor: "bg-indigo-500/10 text-indigo-400 border-indigo-500/30",
+      tags: "flexbox builder playground css layout flex justify align"
+    },
+    {
+      route: "tools/grid-builder",
+      cat: "css",
+      title: "CSS Grid Builder",
+      desc: "Visual 2D grid matrix generator with template columns, rows, gap controls, and CSS output.",
+      badge: "CSS",
+      badgeColor: "bg-indigo-500/10 text-indigo-400 border-indigo-500/30",
+      tags: "css grid builder columns rows matrix template gap"
+    },
+    {
+      route: "tools/gradient-maker",
+      cat: "css",
+      title: "Gradient Maker",
+      desc: "Generate linear, radial, and conic gradients with angle dials, color stops, and CSS copy.",
+      badge: "CSS",
+      badgeColor: "bg-indigo-500/10 text-indigo-400 border-indigo-500/30",
+      tags: "gradient maker linear radial conic color stops css"
+    },
+    {
+      route: "tools/color-picker",
+      cat: "css",
+      title: "Color Picker & Palette",
+      desc: "RGB, HSL, and HEX color palette inspector with harmony schemes and contrast check.",
+      badge: "CSS",
+      badgeColor: "bg-indigo-500/10 text-indigo-400 border-indigo-500/30",
+      tags: "color picker palette rgb hsl hex harmony"
+    },
+    {
+      route: "tools/color-converter",
+      cat: "css",
+      title: "Color Converter",
+      desc: "Convert color formats between HEX, RGB, RGBA, HSL, and HSLA.",
+      badge: "CSS",
+      badgeColor: "bg-indigo-500/10 text-indigo-400 border-indigo-500/30",
+      tags: "color converter hex rgb hsl hsla convert"
+    },
+    {
+      route: "tools/shadow-maker",
+      cat: "css",
+      title: "Box Shadow Maker",
+      desc: "Custom multi-layer CSS box-shadow generator with blur, spread, offset, and inset toggles.",
+      badge: "CSS",
+      badgeColor: "bg-indigo-500/10 text-indigo-400 border-indigo-500/30",
+      tags: "box shadow maker blur spread inset elevation css"
+    },
+    {
+      route: "tools/border-maker",
+      cat: "css",
+      title: "Border Radius Maker",
+      desc: "Configure 8-point individual corner border-radius curves with interactive preview.",
+      badge: "CSS",
+      badgeColor: "bg-indigo-500/10 text-indigo-400 border-indigo-500/30",
+      tags: "border radius maker corners curves shape css"
+    },
+    {
+      route: "tools/css-clamp",
+      cat: "css",
+      title: "CSS Clamp Calculator",
+      desc: "Generate fluid typography and dynamic viewport scaling snippets with CSS clamp().",
+      badge: "CSS",
+      badgeColor: "bg-indigo-500/10 text-indigo-400 border-indigo-500/30",
+      tags: "css clamp calculator fluid typography rem px scaling"
+    },
+    {
+      route: "tools/px-to-rem",
+      cat: "css",
+      title: "PX to REM Converter",
+      desc: "Instant pixel to scalable REM / EM calculation with custom base font size setting.",
+      badge: "CSS",
+      badgeColor: "bg-indigo-500/10 text-indigo-400 border-indigo-500/30",
+      tags: "px to rem converter pixels rem em font size"
+    },
+    {
+      route: "tools/glass-effect",
+      cat: "css",
+      title: "Glass Effect Maker",
+      desc: "Craft modern backdrop-filter frosted glassmorphism cards with border opacity controls.",
+      badge: "CSS",
+      badgeColor: "bg-indigo-500/10 text-indigo-400 border-indigo-500/30",
+      tags: "glass effect glassmorphism backdrop blur frosted css"
+    },
+    {
+      route: "tools/css-minifier",
+      cat: "css",
+      title: "CSS Minifier",
+      desc: "Minify stylesheets, eliminate comments, and compress rule blocks for fast page loads.",
+      badge: "CSS",
+      badgeColor: "bg-indigo-500/10 text-indigo-400 border-indigo-500/30",
+      tags: "css minifier minify compress styles optimize"
+    },
+
+    // 41-47: Image & Media Tools
+    {
+      route: "tools/image-compress",
+      cat: "image",
+      title: "Image Compress",
+      desc: "Lossless and lossy client-side image compression to shrink file sizes before web publishing.",
+      badge: "Media",
+      badgeColor: "bg-yellow-500/10 text-yellow-400 border-yellow-500/30",
+      tags: "image compress reduce file size jpeg png webp"
+    },
+    {
+      route: "tools/image-resize",
+      cat: "image",
+      title: "Image Resize",
+      desc: "Scale image dimensions with custom width, height, and aspect ratio locking in the browser.",
+      badge: "Media",
+      badgeColor: "bg-yellow-500/10 text-yellow-400 border-yellow-500/30",
+      tags: "image resize dimensions width height aspect ratio"
+    },
+    {
+      route: "tools/convert-image",
+      cat: "image",
+      title: "Image Format Converter",
+      desc: "Convert image files between PNG, JPEG, WebP, and Base64 format instantly.",
+      badge: "Media",
+      badgeColor: "bg-yellow-500/10 text-yellow-400 border-yellow-500/30",
+      tags: "convert image png jpeg webp format converter"
+    },
+    {
+      route: "tools/svg-optimizer",
+      cat: "image",
+      title: "SVG Optimizer",
+      desc: "Strip unnecessary metadata, editor comments, and minify vector SVG XML paths.",
+      badge: "Media",
+      badgeColor: "bg-yellow-500/10 text-yellow-400 border-yellow-500/30",
+      tags: "svg optimizer clean vector minify path svgo"
+    },
+    {
+      route: "tools/svg-data-uri",
+      cat: "image",
+      title: "SVG Data URI",
+      desc: "Convert raw SVG into CSS background-image Data URIs and Base64 strings.",
+      badge: "Media",
+      badgeColor: "bg-yellow-500/10 text-yellow-400 border-yellow-500/30",
+      tags: "svg data uri background image css inline"
+    },
+    {
+      route: "tools/favicon-maker",
+      cat: "image",
+      title: "Favicon Maker",
+      desc: "Generate multi-size web favicons (16x16, 32x32, 48x48) with HTML link tags.",
+      badge: "Media",
+      badgeColor: "bg-yellow-500/10 text-yellow-400 border-yellow-500/30",
+      tags: "favicon maker icon generate web manifest browser"
+    },
+
+    // 48-52: Security Tools
+    {
+      route: "tools/hash-generator",
+      cat: "security",
+      title: "Hash Generator",
+      desc: "Generate cryptographic SHA-256, SHA-512, and MD5 hashes from text input.",
+      badge: "Security",
+      badgeColor: "bg-red-500/10 text-red-400 border-red-500/30",
+      tags: "hash generator sha256 sha512 md5 crypto checksum"
+    },
+    {
+      route: "tools/sha256-generator",
+      cat: "security",
+      title: "SHA-256 Checksum",
+      desc: "Generate deterministic 256-bit hash digests using Web Crypto API.",
+      badge: "Security",
+      badgeColor: "bg-red-500/10 text-red-400 border-red-500/30",
+      tags: "sha256 generator checksum digest crypto security"
+    },
+    {
+      route: "tools/sha512-generator",
+      cat: "security",
+      title: "SHA-512 Generator",
+      desc: "Generate high-entropy 512-bit cryptographic hash representations.",
+      badge: "Security",
+      badgeColor: "bg-red-500/10 text-red-400 border-red-500/30",
+      tags: "sha512 generator crypto secure hash"
+    },
+    {
+      route: "tools/password-generator",
+      cat: "security",
+      title: "Password Generator",
+      desc: "Generate cryptographically secure random passwords with symbols, numbers, and entropy scores.",
+      badge: "Security",
+      badgeColor: "bg-red-500/10 text-red-400 border-red-500/30",
+      tags: "password generator random secure entropy symbols"
+    },
+    {
+      route: "tools/uuid-generator",
+      cat: "security",
+      title: "UUID v4 Generator",
+      desc: "Generate universally unique identifiers (UUID v4 / GUID) with bulk creation mode.",
+      badge: "Security",
+      badgeColor: "bg-red-500/10 text-red-400 border-red-500/30",
+      tags: "uuid generator v4 guid random identifier database"
+    },
+
+    // 53-61: Developer Essentials
+    {
+      route: "tools/timestamp-converter",
+      cat: "dev",
+      title: "Timestamp Converter",
+      desc: "Convert POSIX Unix timestamps to human-readable dates (UTC and local) and vice versa.",
+      badge: "Essentials",
+      badgeColor: "bg-amber-500/10 text-amber-400 border-amber-500/30",
+      tags: "timestamp converter unix epoch posix date time"
+    },
+    {
+      route: "tools/base-converter",
+      cat: "dev",
+      title: "Base Converter",
+      desc: "Translate numbers between Binary (Base 2), Octal (Base 8), Decimal (Base 10), and Hex (Base 16).",
+      badge: "Essentials",
+      badgeColor: "bg-amber-500/10 text-amber-400 border-amber-500/30",
+      tags: "base converter binary hex decimal octal radix"
+    },
+    {
+      route: "tools/text-case",
+      cat: "dev",
+      title: "Text Case Converter",
+      desc: "Transform strings into camelCase, kebab-case, snake_case, PascalCase, UPPERCASE, and lowercase.",
+      badge: "Essentials",
+      badgeColor: "bg-amber-500/10 text-amber-400 border-amber-500/30",
+      tags: "text case converter camel kebab snake pascal uppercase lowercase"
+    },
+    {
+      route: "tools/word-counter",
+      cat: "dev",
+      title: "Word & Byte Counter",
+      desc: "Real-time count of words, characters, lines, reading time, and byte payload sizes.",
+      badge: "Essentials",
+      badgeColor: "bg-amber-500/10 text-amber-400 border-amber-500/30",
+      tags: "word counter character byte size lines length"
+    },
+    {
+      route: "tools/lorem-ipsum",
+      cat: "dev",
+      title: "Lorem Ipsum Generator",
+      desc: "Generate dummy placeholder copy paragraphs for mockups, prototypes, and typography tests.",
+      badge: "Essentials",
+      badgeColor: "bg-amber-500/10 text-amber-400 border-amber-500/30",
+      tags: "lorem ipsum generator placeholder dummy text copy"
+    },
+    {
+      route: "tools/sql-formatter",
+      cat: "dev",
+      title: "SQL Formatter",
+      desc: "Beautify complex SQL queries, capitalize keywords, and indent JOIN/WHERE clauses cleanly.",
+      badge: "Essentials",
+      badgeColor: "bg-amber-500/10 text-amber-400 border-amber-500/30",
+      tags: "sql formatter format queries database postgres mysql"
+    },
+
+    // 62-67: Website & SEO Tools
+    {
+      route: "tools/meta-tag-generator",
+      cat: "seo",
+      title: "Meta Tag Generator",
+      desc: "Generate canonical tags, viewport definitions, title tags, and meta descriptions for SEO.",
+      badge: "SEO",
+      badgeColor: "bg-blue-500/10 text-blue-400 border-blue-500/30",
+      tags: "meta tag generator seo head title description canonical"
+    },
+    {
+      route: "tools/open-graph",
+      cat: "seo",
+      title: "Open Graph Generator",
+      desc: "Generate Facebook, LinkedIn, and Discord Open Graph tags with real-time card previews.",
+      badge: "SEO",
+      badgeColor: "bg-blue-500/10 text-blue-400 border-blue-500/30",
+      tags: "open graph og meta preview tags facebook social"
+    },
+    {
+      route: "tools/twitter-card",
+      cat: "seo",
+      title: "Twitter Card Maker",
+      desc: "Create summary_large_image and standard Twitter Card meta tags for rich tweets.",
+      badge: "SEO",
+      badgeColor: "bg-blue-500/10 text-blue-400 border-blue-500/30",
+      tags: "twitter card maker summary large image meta"
+    },
+    {
+      route: "tools/robots-txt",
+      cat: "seo",
+      title: "robots.txt Generator",
+      desc: "Build search engine crawler directives, allow/disallow paths, and sitemap references.",
+      badge: "SEO",
+      badgeColor: "bg-blue-500/10 text-blue-400 border-blue-500/30",
+      tags: "robots txt generator search engine crawler indexing directives"
+    },
+    {
+      route: "tools/sitemap-generator",
+      cat: "seo",
+      title: "Sitemap.xml Generator",
+      desc: "Generate clean XML sitemap documents conforming to sitemaps.org standards.",
+      badge: "SEO",
+      badgeColor: "bg-blue-500/10 text-blue-400 border-blue-500/30",
+      tags: "sitemap xml generator search engine indexing urls"
+    },
+
+    // 68-74: Cheat Sheets & Vault
+    {
+      route: "tools/git-cheat-sheet",
+      cat: "ref",
+      title: "Git Cheat Sheet",
+      desc: "Quick syntax reference for branch checkouts, cherry-picks, rebases, stashes, and commit resets.",
+      badge: "Reference",
+      badgeColor: "bg-sky-500/10 text-sky-400 border-sky-500/30",
+      tags: "git cheat sheet version control branch commit rebase stash"
+    },
+    {
+      route: "tools/docker-cheat-sheet",
+      cat: "ref",
+      title: "Docker Cheat Sheet",
+      desc: "Essential Docker build, run, exec, volume, network, and system prune commands.",
+      badge: "Reference",
+      badgeColor: "bg-sky-500/10 text-sky-400 border-sky-500/30",
+      tags: "docker cheat sheet container build run exec compose prune"
+    },
+    {
+      route: "tools/linux-cheat-sheet",
+      cat: "ref",
+      title: "Linux Command Cheat Sheet",
+      desc: "Top bash commands for process inspection (lsof, ps, kill), permissions (chmod), and archiving.",
+      badge: "Reference",
+      badgeColor: "bg-sky-500/10 text-sky-400 border-sky-500/30",
+      tags: "linux cheat sheet bash terminal commands lsof grep tar"
+    },
+    {
+      route: "tools/cheat-sheets",
+      cat: "ref",
+      title: "Developer Cheat Sheets Hub",
+      desc: "All-in-one searchable reference for HTTP status codes, SQL queries, Docker, and Git.",
+      badge: "Reference",
+      badgeColor: "bg-sky-500/10 text-sky-400 border-sky-500/30",
+      tags: "cheat sheets hub http status codes sql queries commands reference"
     },
     {
       route: "tools/cloud-vault",
-      cat: "ai",
-      title: "Firestore Cloud Vault",
-      desc: "Store and manage your custom CSS rules, regex patterns, notes, and API configurations securely with Firebase sync.",
-      badge: "Cloud DB",
-      badgeColor: "bg-amber-500/20 text-amber-300 border-amber-500/40",
-      iconColor: "text-amber-400",
-      icon: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>`,
-      tags: "cloud vault firestore database sync snippets storage notes css regex"
+      cat: "ref",
+      title: "Snippet Vault",
+      desc: "Locally persisted and Firestore-ready code snippet manager with tags, instant search, and one-click copy.",
+      badge: "Vault",
+      badgeColor: "bg-indigo-500/10 text-indigo-400 border-indigo-500/30",
+      tags: "snippet vault cloud storage snippets code save tags search"
     }
   ];
 
-  return tools.map(t => `
-    <a href="#${t.route}" data-route="${t.route}" data-category="${t.cat}" data-title="${t.title}" data-tags="${t.tags}" class="tool-card group p-5 bg-slate-900/80 hover:bg-slate-900 border border-slate-800 hover:border-indigo-500/50 rounded-2xl shadow-xl transition-all duration-200 hover:-translate-y-1 flex flex-col justify-between">
-      <div class="space-y-3">
-        <div class="flex items-center justify-between">
-          <div class="w-10 h-10 rounded-xl bg-slate-800 border border-slate-700/60 flex items-center justify-center ${t.iconColor} group-hover:scale-105 transition-transform">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              ${t.icon}
+  return allTools
+    .map(
+      (tool) => `
+      <a 
+        href="#${tool.route}" 
+        data-route="${tool.route}"
+        data-title="${tool.title}" 
+        data-tags="${tool.tags}" 
+        data-category="${tool.cat}"
+        class="tool-card group relative p-5 rounded-3xl bg-slate-900/80 border border-slate-800/80 hover:border-indigo-500/50 hover:bg-slate-900 transition-all duration-200 flex flex-col justify-between hover:shadow-xl hover:shadow-indigo-500/5"
+      >
+        <div class="space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold border ${tool.badgeColor}">
+              ${tool.badge}
+            </span>
+            <svg class="w-4 h-4 text-slate-500 group-hover:text-indigo-400 group-hover:translate-x-0.5 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
             </svg>
           </div>
-          <span class="px-2 py-0.5 rounded-md text-[10px] font-mono font-bold border ${t.badgeColor}">${t.badge}</span>
+          <h3 class="text-base font-bold text-white group-hover:text-indigo-300 transition-colors tracking-tight">
+            ${tool.title}
+          </h3>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            ${tool.desc}
+          </p>
         </div>
-        <div>
-          <h3 class="text-base font-bold text-white group-hover:text-indigo-400 transition-colors">${t.title}</h3>
-          <p class="text-xs text-slate-400 mt-1 leading-relaxed line-clamp-2">${t.desc}</p>
+        
+        <div class="pt-4 mt-2 border-t border-slate-800/50 flex items-center justify-between text-[11px] font-mono text-slate-500 group-hover:text-slate-400">
+          <span>Open Utility</span>
+          <span class="text-indigo-400 font-bold">&rarr;</span>
         </div>
-      </div>
-      <div class="pt-4 mt-2 border-t border-slate-800/80 flex items-center justify-between text-xs font-semibold text-indigo-400 group-hover:text-indigo-300">
-        <span>Launch Engine</span>
-        <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-      </div>
-    </a>
-  `).join("");
+      </a>
+    `
+    )
+    .join("");
 }

@@ -1,6 +1,6 @@
 {
   "name": "Web Developer Hub",
-  "description": "All-in-One Web Developer Hub with CSS Generator, Text Analyzer, Screen Resizer, AI Responsive Code Converter, API Tester, AI Dev Assistant, and Firebase Firestore Cloud Persistence.",
+  "description": "All-in-One Web Developer Hub with CSS Generator, Text Analyzer, Screen Resizer, AI Responsive Code Converter, API Tester, AI Dev Assistant, Code Sign & Approve Gatekeeper, and Fix My GitHub Project Repair Engine.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

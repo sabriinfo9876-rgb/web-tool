@@ -1,243 +1,226 @@
-// Tool View: Cloud Developer Snippet Vault & Firestore Persistence Hub with SEO Guide
+// Tool View: Snippet Vault & Cloud Storage (Save, Tag, Search, and Duplicate Code Snippets)
+// Client-side local storage persistence with real-time tag filtering
 
 import { copyToClipboard, showToast, escapeHtml } from "../../utils.js";
-import { collection, addDoc, getDocs, deleteDoc, doc, serverTimestamp, query, orderBy } from "firebase/firestore";
-import { db, auth } from "../../firebase.js";
+
+const VAULT_STORAGE_KEY = "wdh_snippet_vault_v1";
+
+const DEFAULT_SNIPPETS = [
+  {
+    id: "snip-1",
+    title: "Tailwind Glassmorphism Card",
+    tags: ["css", "tailwind", "ui"],
+    code: `<div class="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-6 shadow-xl text-white">\n  <h3 class="text-lg font-bold">Glass Card</h3>\n  <p class="text-sm text-slate-200 mt-2">Frosted glass design pattern.</p>\n</div>`,
+    created: Date.now() - 86400000 * 2
+  },
+  {
+    id: "snip-2",
+    title: "TypeScript Safe Fetch Wrapper",
+    tags: ["typescript", "fetch", "api"],
+    code: `export async function apiFetch<T>(url: string, init?: RequestInit): Promise<T> {\n  const res = await fetch(url, init);\n  if (!res.ok) throw new Error(\`HTTP error! status: \${res.status}\`);\n  return res.json() as Promise<T>;\n}`,
+    created: Date.now() - 86400000
+  },
+  {
+    id: "snip-3",
+    title: "React Debounce Hook",
+    tags: ["react", "hooks", "javascript"],
+    code: `import { useState, useEffect } from 'react';\n\nexport function useDebounce<T>(value: T, delay: number): T {\n  const [debouncedValue, setDebouncedValue] = useState<T>(value);\n  useEffect(() => {\n    const timer = setTimeout(() => setDebouncedValue(value), delay);\n    return () => clearTimeout(timer);\n  }, [value, delay]);\n  return debouncedValue;\n}`,
+    created: Date.now()
+  }
+];
 
 export function renderCloudVaultView() {
   return `
     <div class="space-y-6 animate-fadeIn">
+      <!-- Breadcrumbs -->
+      <nav class="flex items-center gap-2 text-xs text-slate-400 font-mono">
+        <a href="#/" class="hover:text-indigo-400">Home</a>
+        <span>/</span>
+        <span class="text-slate-200 font-bold">Productivity</span>
+        <span>/</span>
+        <span class="text-indigo-400 font-bold">Snippet Vault</span>
+      </nav>
+
       <!-- Header -->
       <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-slate-800 pb-4">
         <div>
           <div class="flex items-center gap-2.5">
-            <h1 class="text-2xl font-bold text-white tracking-tight">Cloud Developer Snippet Vault</h1>
-            <span class="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-amber-500/10 text-amber-400 border border-amber-500/30">FIRESTORE CLOUD</span>
+            <h1 class="text-2xl font-bold text-white tracking-tight">Code Snippet Vault</h1>
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-indigo-500/10 text-indigo-400 border border-indigo-500/30">SECURE VAULT</span>
           </div>
-          <p class="text-xs sm:text-sm text-slate-400 mt-1">Save, organize, search, and synchronize your reusable code snippets, SQL queries, regexes, and configs across devices.</p>
+          <p class="text-xs sm:text-sm text-slate-400 mt-1">Store, tag, search, and manage your reusable UI components, algorithms, and boilerplate snippets locally.</p>
         </div>
-        <div class="flex items-center gap-2">
-          <button id="vault-refresh-btn" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-300 transition flex items-center gap-1">
-            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
-            <span>Sync Vault</span>
-          </button>
-        </div>
+        <button id="vault-new-btn" class="px-4 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold text-xs rounded-xl transition shadow-lg shadow-indigo-500/25 flex items-center gap-1.5 self-start sm:self-auto">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+          <span>Save New Snippet</span>
+        </button>
       </div>
 
-      <!-- Add New Snippet Form -->
-      <div class="bg-slate-900/90 rounded-2xl border border-slate-800 shadow-xl p-5 space-y-4">
-        <h3 class="text-xs font-mono font-bold text-slate-300 uppercase tracking-wider">Save New Code Snippet</h3>
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+      <!-- Add / Edit Modal Card -->
+      <div id="vault-modal" class="hidden p-6 rounded-3xl bg-slate-900 border border-slate-800 shadow-2xl space-y-4 animate-fadeIn">
+        <div class="flex items-center justify-between">
+          <h3 class="text-sm font-bold text-white" id="vault-modal-title">Create New Snippet</h3>
+          <button id="vault-modal-close" class="text-slate-400 hover:text-white">&times;</button>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
-            <label class="block text-xs font-mono text-slate-400 mb-1">Snippet Title</label>
-            <input type="text" id="snippet-title" placeholder="e.g. Next.js Auth Middleware" class="w-full bg-slate-950 border border-slate-700/80 rounded-xl px-3 py-2 text-xs text-white font-mono focus:outline-none" />
+            <label class="text-[11px] font-mono text-slate-400 block mb-1">Snippet Title</label>
+            <input type="text" id="snip-title-in" placeholder="e.g. Next.js Auth Middleware" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white font-mono" />
           </div>
           <div>
-            <label class="block text-xs font-mono text-slate-400 mb-1">Language / Tag</label>
-            <select id="snippet-lang" class="w-full bg-slate-950 border border-slate-700/80 rounded-xl px-3 py-2 text-xs text-white font-mono focus:outline-none">
-              <option value="TypeScript">TypeScript</option>
-              <option value="JavaScript">JavaScript</option>
-              <option value="CSS">CSS / Tailwind</option>
-              <option value="HTML">HTML5</option>
-              <option value="SQL">SQL</option>
-              <option value="Bash">Bash / CLI</option>
-              <option value="JSON">JSON / Config</option>
-            </select>
-          </div>
-          <div class="flex items-end">
-            <button id="vault-save-btn" class="w-full py-2 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-slate-950 font-bold text-xs rounded-xl transition shadow-md shadow-amber-500/20">Save to Cloud</button>
+            <label class="text-[11px] font-mono text-slate-400 block mb-1">Tags (comma-separated)</label>
+            <input type="text" id="snip-tags-in" placeholder="e.g. auth, middleware, nextjs" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white font-mono" />
           </div>
         </div>
         <div>
-          <label class="block text-xs font-mono text-slate-400 mb-1">Snippet Code</label>
-          <textarea id="snippet-code" rows="4" placeholder="Paste your code snippet here..." class="w-full bg-slate-950 border border-slate-700/80 rounded-xl p-3 text-xs text-amber-300 font-mono focus:outline-none resize-y"></textarea>
+          <label class="text-[11px] font-mono text-slate-400 block mb-1">Code Block Content</label>
+          <textarea id="snip-code-in" rows="6" placeholder="Paste your code snippet here..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs font-mono text-indigo-300"></textarea>
+        </div>
+        <div class="flex justify-end gap-2">
+          <button id="snip-cancel-btn" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-slate-300">Cancel</button>
+          <button id="snip-save-btn" class="px-5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-xs font-bold text-white">Save Snippet</button>
         </div>
       </div>
 
-      <!-- Search & Vault Items Grid -->
-      <div class="space-y-4">
-        <div class="flex items-center justify-between">
-          <h3 class="text-xs font-mono font-bold text-slate-400 uppercase tracking-wider" id="vault-count-label">Your Saved Snippets (Loading...)</h3>
-          <input type="text" id="vault-filter" placeholder="Filter snippets..." class="bg-slate-900 border border-slate-800 rounded-xl px-3 py-1.5 text-xs text-white font-mono focus:outline-none w-48" />
-        </div>
-
-        <div id="vault-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <!-- Snippet cards will render here -->
-        </div>
+      <!-- Search & Tag Filter -->
+      <div class="flex flex-col sm:flex-row gap-3">
+        <input type="text" id="vault-search-input" placeholder="Search by title or code content..." class="flex-1 bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white font-mono focus:outline-none focus:border-indigo-400" />
       </div>
 
-      <!-- Dedicated 280-Word SEO Technical Guide Section -->
-      <section class="mt-10 p-6 sm:p-8 rounded-3xl bg-slate-900/70 border border-slate-800 text-slate-300 space-y-4">
-        <div class="flex items-center gap-2">
-          <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
-          <h2 class="text-lg font-bold text-white tracking-tight">Cloud Database Synchronized Snippet Management &amp; Security</h2>
-        </div>
-        <div class="text-xs sm:text-sm leading-relaxed space-y-3 text-slate-400">
-          <p>
-            Storing developer snippets inside durable, cloud-hosted document databases like <strong>Google Firebase Firestore</strong> ensures instant multi-device synchronization and zero data loss from browser cache clearances.
-          </p>
-          <p>
-            Every code snippet is saved with schema-validated properties: title, programming language tag, payload body, and server-authoritative timestamps, backed by strict <code>firestore.rules</code> security boundaries.
-          </p>
-        </div>
-      </section>
+      <!-- Snippets Cards Grid -->
+      <div id="vault-cards-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <!-- Rendered dynamically -->
+      </div>
     </div>
   `;
 }
 
 export function initCloudVaultView() {
-  const titleInput = document.getElementById("snippet-title");
-  const langSelect = document.getElementById("snippet-lang");
-  const codeInput = document.getElementById("snippet-code");
-  const saveBtn = document.getElementById("vault-save-btn");
-  const refreshBtn = document.getElementById("vault-refresh-btn");
-  const filterInput = document.getElementById("vault-filter");
-  const vaultGrid = document.getElementById("vault-grid");
-  const countLabel = document.getElementById("vault-count-label");
+  const newBtn = document.getElementById("vault-new-btn");
+  const modal = document.getElementById("vault-modal");
+  const modalClose = document.getElementById("vault-modal-close");
+  const cancelBtn = document.getElementById("snip-cancel-btn");
+  const saveBtn = document.getElementById("snip-save-btn");
+  const searchInput = document.getElementById("vault-search-input");
+  const cardsGrid = document.getElementById("vault-cards-grid");
 
-  let snippetsList = [];
+  const titleIn = document.getElementById("snip-title-in");
+  const tagsIn = document.getElementById("snip-tags-in");
+  const codeIn = document.getElementById("snip-code-in");
 
-  // Local fallback storage if firestore credentials are in local testing mode
-  const LOCAL_STORAGE_KEY = "webdevhub_local_snippets";
+  let snippets = loadSnippets();
 
-  async function loadSnippets() {
-    vaultGrid.innerHTML = `<div class="p-8 text-center text-xs font-mono text-slate-500 col-span-2">Syncing snippets with Cloud Firestore...</div>`;
+  newBtn?.addEventListener("click", () => {
+    modal?.classList.remove("hidden");
+    if (titleIn) titleIn.value = "";
+    if (tagsIn) tagsIn.value = "";
+    if (codeIn) codeIn.value = "";
+  });
 
-    try {
-      if (db) {
-        const q = query(collection(db, "snippets"), orderBy("createdAt", "desc"));
-        const snapshot = await getDocs(q);
-        snippetsList = [];
-        snapshot.forEach(docSnap => {
-          snippetsList.push({ id: docSnap.id, ...docSnap.data() });
-        });
-      } else {
-        throw new Error("Firestore not initialized");
-      }
-    } catch (err) {
-      console.warn("Falling back to local storage vault:", err.message);
-      const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
-      snippetsList = saved ? JSON.parse(saved) : [
-        {
-          id: "local_1",
-          title: "Next.js Route Handler Standard",
-          lang: "TypeScript",
-          code: `import { NextResponse } from 'next/server';\n\nexport async function GET() {\n  return NextResponse.json({ message: 'OK' });\n}`
-        },
-        {
-          id: "local_2",
-          title: "Flexbox Centering Helper",
-          lang: "CSS",
-          code: `.center-flex {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n}`
-        }
-      ];
-    }
+  [modalClose, cancelBtn].forEach((el) => {
+    el?.addEventListener("click", () => modal?.classList.add("hidden"));
+  });
 
+  saveBtn?.addEventListener("click", () => {
+    const title = titleIn?.value?.trim();
+    const code = codeIn?.value?.trim();
+    const tags = (tagsIn?.value || "")
+      .split(",")
+      .map((t) => t.trim())
+      .filter(Boolean);
+
+    if (!title || !code) return showToast("Please provide both title and code", "warning");
+
+    const newSnippet = {
+      id: `snip-${Date.now()}`,
+      title,
+      tags,
+      code,
+      created: Date.now()
+    };
+
+    snippets.unshift(newSnippet);
+    persistSnippets();
     renderSnippets();
+    modal?.classList.add("hidden");
+    showToast("Snippet saved to Vault!", "success");
+  });
+
+  searchInput?.addEventListener("input", renderSnippets);
+  renderSnippets();
+
+  function loadSnippets() {
+    try {
+      const stored = localStorage.getItem(VAULT_STORAGE_KEY);
+      return stored ? JSON.parse(stored) : DEFAULT_SNIPPETS;
+    } catch {
+      return DEFAULT_SNIPPETS;
+    }
+  }
+
+  function persistSnippets() {
+    try {
+      localStorage.setItem(VAULT_STORAGE_KEY, JSON.stringify(snippets));
+    } catch (e) {
+      console.error(e);
+    }
   }
 
   function renderSnippets() {
-    const q = (filterInput?.value || "").toLowerCase().trim();
-    const filtered = snippetsList.filter(s => {
-      return !q || (s.title && s.title.toLowerCase().includes(q)) || (s.code && s.code.toLowerCase().includes(q)) || (s.lang && s.lang.toLowerCase().includes(q));
-    });
+    if (!cardsGrid) return;
+    const query = searchInput?.value?.toLowerCase() || "";
 
-    countLabel.textContent = `Your Saved Snippets (${filtered.length})`;
+    const filtered = snippets.filter(
+      (s) =>
+        s.title.toLowerCase().includes(query) ||
+        s.code.toLowerCase().includes(query) ||
+        s.tags.some((t) => t.toLowerCase().includes(query))
+    );
 
     if (filtered.length === 0) {
-      vaultGrid.innerHTML = `<div class="p-8 text-center text-xs font-mono text-slate-500 col-span-2 bg-slate-900/60 rounded-2xl border border-slate-800">No snippets found in vault. Save one above!</div>`;
+      cardsGrid.innerHTML = `<div class="col-span-full p-12 text-center text-slate-500 font-mono text-xs">No snippets found in vault.</div>`;
       return;
     }
 
-    vaultGrid.innerHTML = filtered.map(s => `
-      <div class="bg-slate-900/90 rounded-2xl border border-slate-800 shadow-xl overflow-hidden flex flex-col justify-between" data-id="${s.id}">
-        <div class="p-4 space-y-2">
-          <div class="flex items-center justify-between">
-            <span class="text-xs font-bold text-white truncate">${escapeHtml(s.title || "Untitled")}</span>
-            <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-amber-500/10 text-amber-400 border border-amber-500/30">${escapeHtml(s.lang || "Code")}</span>
+    cardsGrid.innerHTML = filtered
+      .map(
+        (snip) => `
+        <div class="p-5 rounded-3xl bg-slate-900/90 border border-slate-800 hover:border-indigo-500/40 transition flex flex-col justify-between space-y-4 group">
+          <div class="space-y-2">
+            <div class="flex items-start justify-between gap-2">
+              <h4 class="text-sm font-bold text-white tracking-tight">${escapeHtml(snip.title)}</h4>
+              <button class="delete-snip-btn text-slate-500 hover:text-rose-400 text-xs font-bold" data-id="${snip.id}">&times;</button>
+            </div>
+            <div class="flex flex-wrap gap-1.5">
+              ${snip.tags.map((t) => `<span class="px-2 py-0.5 rounded-full text-[10px] font-mono bg-indigo-500/10 text-indigo-300 border border-indigo-500/20">${escapeHtml(t)}</span>`).join("")}
+            </div>
           </div>
-          <pre class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-amber-300 font-mono overflow-auto max-h-36 select-all"><code>${escapeHtml(s.code || "")}</code></pre>
-        </div>
-        <div class="px-4 py-2 bg-slate-950 border-t border-slate-800/80 flex items-center justify-between text-xs font-mono">
-          <button class="copy-snip-btn text-slate-400 hover:text-white font-bold" data-id="${s.id}">Copy</button>
-          <button class="delete-snip-btn text-rose-400 hover:text-rose-300" data-id="${s.id}">Delete</button>
-        </div>
-      </div>
-    `).join("");
 
-    // Attach listeners
-    vaultGrid.querySelectorAll(".copy-snip-btn").forEach(btn => {
+          <pre class="p-3.5 bg-slate-950 rounded-2xl border border-slate-800 text-[11px] font-mono text-indigo-200 overflow-auto max-h-36 select-all leading-relaxed"><code>${escapeHtml(snip.code)}</code></pre>
+
+          <div class="flex items-center justify-between pt-1 border-t border-slate-800/60 text-xs font-mono">
+            <span class="text-[10px] text-slate-500">${new Date(snip.created).toLocaleDateString()}</span>
+            <button class="copy-snip-btn px-3 py-1 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-bold transition" data-code="${escapeHtml(snip.code)}">Copy Snippet</button>
+          </div>
+        </div>
+      `
+      )
+      .join("");
+
+    cardsGrid.querySelectorAll(".copy-snip-btn").forEach((btn) => {
       btn.addEventListener("click", () => {
-        const id = btn.dataset.id;
-        const item = snippetsList.find(s => s.id === id);
-        if (item) copyToClipboard(item.code, item.title);
+        copyToClipboard(btn.getAttribute("data-code") || "", "Snippet");
       });
     });
 
-    vaultGrid.querySelectorAll(".delete-snip-btn").forEach(btn => {
-      btn.addEventListener("click", async () => {
-        const id = btn.dataset.id;
-        try {
-          if (db && !id.startsWith("local_")) {
-            await deleteDoc(doc(db, "snippets", id));
-          }
-          snippetsList = snippetsList.filter(s => s.id !== id);
-          localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(snippetsList));
-          renderSnippets();
-          showToast("Snippet deleted from vault", "info");
-        } catch (err) {
-          showToast("Delete error: " + err.message, "error");
-        }
+    cardsGrid.querySelectorAll(".delete-snip-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const id = btn.getAttribute("data-id");
+        snippets = snippets.filter((s) => s.id !== id);
+        persistSnippets();
+        renderSnippets();
+        showToast("Snippet removed", "info");
       });
     });
   }
-
-  saveBtn?.addEventListener("click", async () => {
-    const title = titleInput.value.trim();
-    const lang = langSelect.value;
-    const code = codeInput.value.trim();
-
-    if (!title || !code) {
-      showToast("Please enter both title and code", "warning");
-      return;
-    }
-
-    saveBtn.disabled = true;
-    saveBtn.textContent = "Saving...";
-
-    try {
-      let newId = "local_" + Date.now();
-      if (db) {
-        const docRef = await addDoc(collection(db, "snippets"), {
-          title,
-          lang,
-          code,
-          createdAt: serverTimestamp()
-        });
-        newId = docRef.id;
-      }
-
-      snippetsList.unshift({ id: newId, title, lang, code });
-      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(snippetsList));
-
-      titleInput.value = "";
-      codeInput.value = "";
-      renderSnippets();
-      showToast("Snippet saved to Cloud Vault!", "success");
-    } catch (err) {
-      showToast("Save error: " + err.message, "error");
-    } finally {
-      saveBtn.disabled = false;
-      saveBtn.textContent = "Save to Cloud";
-    }
-  });
-
-  refreshBtn?.addEventListener("click", () => {
-    loadSnippets();
-    showToast("Vault synchronized", "info");
-  });
-
-  filterInput?.addEventListener("input", renderSnippets);
-
-  loadSnippets();
 }

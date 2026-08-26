@@ -143,6 +143,31 @@ export function setCustomGeminiKey(key) {
   }
 }
 
+// Simple Line-by-Line Diff Computer for visual diffing
+export function computeSimpleLineDiff(originalText = "", modifiedText = "") {
+  const origLines = (originalText || "").split("\n");
+  const modLines = (modifiedText || "").split("\n");
+  const diff = [];
+  
+  const maxLen = Math.max(origLines.length, modLines.length);
+  for (let i = 0; i < maxLen; i++) {
+    const o = origLines[i];
+    const m = modLines[i];
+    
+    if (o === undefined) {
+      diff.push({ type: "added", text: m, lineNum: i + 1 });
+    } else if (m === undefined) {
+      diff.push({ type: "removed", text: o, lineNum: i + 1 });
+    } else if (o !== m) {
+      diff.push({ type: "removed", text: o, lineNum: i + 1 });
+      diff.push({ type: "added", text: m, lineNum: i + 1 });
+    } else {
+      diff.push({ type: "unchanged", text: o, lineNum: i + 1 });
+    }
+  }
+  return diff;
+}
+
 // Global API Helper for AI tasks
 export async function callAiAssist(task, prompt, context = "") {
   const customKey = getCustomGeminiKey();
@@ -164,3 +189,4 @@ export async function callAiAssist(task, prompt, context = "") {
   }
   return await res.json();
 }
+

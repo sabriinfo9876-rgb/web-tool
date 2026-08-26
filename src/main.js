@@ -1,32 +1,53 @@
-// Web Developer Hub — SPA Router & Application Engine
+// Web Developer Hub — SPA Router & Complete 74-Tool Hub Registry
 // Handles hash routing, dynamic view rendering, modal handlers, and global search
 
 import { showToast, getRemainingDailyQuota, getCustomGeminiKey, setCustomGeminiKey, updateHeaderQuotaDisplay } from "./utils.js";
 
-// Views & Tools
+// Core View
 import { renderHomeView, initHomeView } from "./views/home.js";
-import { renderJsonFormatterView, initJsonFormatterView } from "./views/tools/jsonFormatter.js";
-import { renderPxToRemView, initPxToRemView } from "./views/tools/pxToRem.js";
-import { renderSvgDataUriView, initSvgDataUriView } from "./views/tools/svgDataUri.js";
-import { renderOpenGraphView, initOpenGraphView } from "./views/tools/openGraph.js";
-import { renderFlexboxGridView, initFlexboxGridView } from "./views/tools/flexboxGrid.js";
-import { renderHtmlMarkdownJsxView, initHtmlMarkdownJsxView } from "./views/tools/htmlMarkdownJsx.js";
-import { renderGradientPaletteView, initGradientPaletteView } from "./views/tools/gradientPalette.js";
-import { renderJwtDecoderView, initJwtDecoderView } from "./views/tools/jwtDecoder.js";
-import { renderRegexTesterView, initRegexTesterView } from "./views/tools/regexTester.js";
-import { renderCheatSheetsView, initCheatSheetsView } from "./views/tools/cheatSheets.js";
-import { renderImageBase64View, initImageBase64View } from "./views/tools/imageBase64.js";
-import { renderCodeMinifierView, initCodeMinifierView } from "./views/tools/codeMinifier.js";
-import { renderSqlFormatterView, initSqlFormatterView } from "./views/tools/sqlFormatter.js";
-import { renderCurlConverterView, initCurlConverterView } from "./views/tools/curlConverter.js";
-import { renderHashGeneratorView, initHashGeneratorView } from "./views/tools/hashGenerator.js";
-import { renderGlassmorphismAnimatorView, initGlassmorphismAnimatorView } from "./views/tools/glassmorphismAnimator.js";
-import { renderUiPromptEngineView, initUiPromptEngineView } from "./views/tools/uiPromptEngine.js";
-import { renderZipDebuggerView, initZipDebuggerView } from "./views/tools/zipDebugger.js";
+
+// AI Tools Views
 import { renderAiDesignSuggesterView, initAiDesignSuggesterView } from "./views/tools/aiDesignSuggester.js";
+import { renderUiPromptEngineView, initUiPromptEngineView } from "./views/tools/uiPromptEngine.js";
 import { renderResponsiveConverterView, initResponsiveConverterView } from "./views/tools/responsiveConverter.js";
+import { renderFlexGridFixView, initFlexGridFixView } from "./views/tools/flexGridFix.js";
+import { renderFixHtmlView, initFixHtmlView } from "./views/tools/fixHtml.js";
+import { renderCleanCodeView, initCleanCodeView } from "./views/tools/cleanCode.js";
+import { renderZipDebuggerView, initZipDebuggerView } from "./views/tools/zipDebugger.js";
+import { renderCodeSignApproveView, initCodeSignApproveView } from "./views/tools/codeSignApprove.js";
+import { renderFixGithubProjectView, initFixGithubProjectView } from "./views/tools/fixGithubProject.js";
+
+// Web Tools Views
+import { renderJsonSuiteView, initJsonSuiteView } from "./views/tools/jsonSuite.js";
+import { renderHtmlSuiteView, initHtmlSuiteView } from "./views/tools/htmlSuite.js";
+import { renderJwtSuiteView, initJwtSuiteView } from "./views/tools/jwtSuite.js";
+import { renderRegexSuiteView, initRegexSuiteView } from "./views/tools/regexSuite.js";
+import { renderUrlSuiteView, initUrlSuiteView } from "./views/tools/urlSuite.js";
+import { renderBase64SuiteView, initBase64SuiteView } from "./views/tools/base64Suite.js";
+import { renderCurlSuiteView, initCurlSuiteView } from "./views/tools/curlSuite.js";
+import { renderApiTesterSuiteView, initApiTesterSuiteView } from "./views/tools/apiTesterSuite.js";
+import { renderCodeDiffSuiteView, initCodeDiffSuiteView } from "./views/tools/codeDiffSuite.js";
+
+// CSS Tools Suite
+import { renderCssSuiteView, initCssSuiteView } from "./views/tools/cssSuite.js";
+
+// Image & Media Tools Suite
+import { renderImageSuiteView, initImageSuiteView } from "./views/tools/imageSuite.js";
+
+// Security Tools Suite
+import { renderSecuritySuiteView, initSecuritySuiteView } from "./views/tools/securitySuite.js";
+
+// Developer Essentials Suite
+import { renderDevSuiteView, initDevSuiteView } from "./views/tools/devSuite.js";
+
+// Website & SEO Suite
+import { renderWebsiteSuiteView, initWebsiteSuiteView } from "./views/tools/websiteSuite.js";
+
+// Cheat Sheets Suite
+import { renderCheatSheetsSuiteView, initCheatSheetsSuiteView } from "./views/tools/cheatSheetsSuite.js";
+
+// Cloud Vault
 import { renderCloudVaultView, initCloudVaultView } from "./views/tools/cloudVault.js";
-import { renderApiTesterView, initApiTesterView } from "./views/tools/apiTester.js";
 
 // Pages
 import { renderPrivacyPolicyView, initPrivacyPolicyView } from "./views/pages/privacyPolicy.js";
@@ -34,32 +55,126 @@ import { renderAboutView, initAboutView } from "./views/pages/about.js";
 import { renderContactView, initContactView } from "./views/pages/contact.js";
 
 const routes = {
-  "": { render: renderHomeView, init: initHomeView, title: "Web Developer Hub - Ultimate Developer Toolkit" },
-  "home": { render: renderHomeView, init: initHomeView, title: "Web Developer Hub - Ultimate Developer Toolkit" },
+  "": { render: renderHomeView, init: initHomeView, title: "Web Developer Hub - AI Developer Tools & 74 Developer Utilities" },
+  "home": { render: renderHomeView, init: initHomeView, title: "Web Developer Hub - AI Developer Tools & 74 Developer Utilities" },
   
-  // Tools
-  "tools/json-formatter": { render: renderJsonFormatterView, init: initJsonFormatterView, title: "JSON Formatter & Validator - WebDevHub" },
-  "tools/px-to-rem": { render: renderPxToRemView, init: initPxToRemView, title: "PX to REM / EM Converter - WebDevHub" },
-  "tools/svg-data-uri": { render: renderSvgDataUriView, init: initSvgDataUriView, title: "SVG to CSS Data URI Converter - WebDevHub" },
-  "tools/open-graph": { render: renderOpenGraphView, init: initOpenGraphView, title: "Open Graph Meta Generator - WebDevHub" },
-  "tools/flexbox-grid": { render: renderFlexboxGridView, init: initFlexboxGridView, title: "CSS Flexbox & Grid Builder - WebDevHub" },
-  "tools/html-markdown-jsx": { render: renderHtmlMarkdownJsxView, init: initHtmlMarkdownJsxView, title: "HTML to Markdown & React JSX Converter - WebDevHub" },
-  "tools/gradient-palette": { render: renderGradientPaletteView, init: initGradientPaletteView, title: "CSS Gradient & Color Palette Generator - WebDevHub" },
-  "tools/jwt-decoder": { render: renderJwtDecoderView, init: initJwtDecoderView, title: "JWT Safe Client Decoder - WebDevHub" },
-  "tools/regex-tester": { render: renderRegexTesterView, init: initRegexTesterView, title: "RegEx Pattern Tester & Sandbox - WebDevHub" },
-  "tools/cheat-sheets": { render: renderCheatSheetsView, init: initCheatSheetsView, title: "Developer Cheat Sheets Hub - WebDevHub" },
-  "tools/image-base64": { render: renderImageBase64View, init: initImageBase64View, title: "Image to Base64 URI Converter - WebDevHub" },
-  "tools/code-minifier": { render: renderCodeMinifierView, init: initCodeMinifierView, title: "Code Minifier & Beautifier - WebDevHub" },
-  "tools/sql-formatter": { render: renderSqlFormatterView, init: initSqlFormatterView, title: "SQL Formatter & Schema Builder - WebDevHub" },
-  "tools/curl-converter": { render: renderCurlConverterView, init: initCurlConverterView, title: "cURL to JS Fetch & Python Converter - WebDevHub" },
-  "tools/hash-generator": { render: renderHashGeneratorView, init: initHashGeneratorView, title: "SHA-256 Hash & Checksum Generator - WebDevHub" },
-  "tools/glassmorphism-animator": { render: renderGlassmorphismAnimatorView, init: initGlassmorphismAnimatorView, title: "Glassmorphism & Keyframe Generator - WebDevHub" },
-  "tools/ui-prompt-engine": { render: renderUiPromptEngineView, init: initUiPromptEngineView, title: "AI UI Prompt to Component Engine - WebDevHub" },
-  "tools/zip-debugger": { render: renderZipDebuggerView, init: initZipDebuggerView, title: "ZIP Project Architecture Inspector - WebDevHub" },
-  "tools/ai-design-suggester": { render: renderAiDesignSuggesterView, init: initAiDesignSuggesterView, title: "AI Code to Responsive & Unique Design Suggester - WebDevHub" },
-  "tools/responsive-converter": { render: renderResponsiveConverterView, init: initResponsiveConverterView, title: "Responsive Code Converter & Mobile Transformer - WebDevHub" },
-  "tools/cloud-vault": { render: renderCloudVaultView, init: initCloudVaultView, title: "Cloud Developer Snippet Vault - WebDevHub" },
-  "tools/api-tester": { render: renderApiTesterView, init: initApiTesterView, title: "REST API Endpoint Tester - WebDevHub" },
+  // 1-9: AI Tools
+  "tools/fix-github-project": { render: renderFixGithubProjectView, init: initFixGithubProjectView, title: "Fix My GitHub Project - Automated Project Repair Engine - WebDevHub" },
+  "tools/fix-my-github-project": { render: renderFixGithubProjectView, init: initFixGithubProjectView, title: "Fix My GitHub Project - WebDevHub" },
+  "tools/github-repair": { render: renderFixGithubProjectView, init: initFixGithubProjectView, title: "Fix My GitHub Project - WebDevHub" },
+  "tools/github-project-repair": { render: renderFixGithubProjectView, init: initFixGithubProjectView, title: "Fix My GitHub Project - WebDevHub" },
+  "tools/ai-design-suggester": { render: renderAiDesignSuggesterView, init: initAiDesignSuggesterView, title: "Code to Design - AI Design Suggester - WebDevHub" },
+  "tools/code-to-design": { render: renderAiDesignSuggesterView, init: initAiDesignSuggesterView, title: "Code to Design - WebDevHub" },
+  "tools/ui-prompt-engine": { render: renderUiPromptEngineView, init: initUiPromptEngineView, title: "Prompt to UI - AI UI Generator - WebDevHub" },
+  "tools/prompt-to-ui": { render: renderUiPromptEngineView, init: initUiPromptEngineView, title: "Prompt to UI - WebDevHub" },
+  "tools/responsive-converter": { render: renderResponsiveConverterView, init: initResponsiveConverterView, title: "Make Responsive - Mobile Transformer - WebDevHub" },
+  "tools/make-responsive": { render: renderResponsiveConverterView, init: initResponsiveConverterView, title: "Make Responsive - WebDevHub" },
+  "tools/flex-grid-fix": { render: renderFlexGridFixView, init: initFlexGridFixView, title: "Flex & Grid Fix - AI CSS Layout Fixer - WebDevHub" },
+  "tools/fix-html": { render: renderFixHtmlView, init: initFixHtmlView, title: "Fix HTML - AI DOM Cleaner - WebDevHub" },
+  "tools/clean-code": { render: renderCleanCodeView, init: initCleanCodeView, title: "Clean My Code - Quality & Refactoring - WebDevHub" },
+  "tools/clean-my-code": { render: renderCleanCodeView, init: initCleanCodeView, title: "Clean My Code - WebDevHub" },
+  "tools/zip-debugger": { render: renderZipDebuggerView, init: initZipDebuggerView, title: "Check ZIP Project - Architecture Scanner - WebDevHub" },
+  "tools/check-zip-project": { render: renderZipDebuggerView, init: initZipDebuggerView, title: "Check ZIP Project - WebDevHub" },
+  "tools/code-sign-approve": { render: renderCodeSignApproveView, init: initCodeSignApproveView, title: "Code Sign & Approve - AI Authorization & Cryptographic Gatekeeper - WebDevHub" },
+  "tools/code-approval": { render: renderCodeSignApproveView, init: initCodeSignApproveView, title: "Code Sign & Approve - WebDevHub" },
+  "tools/sign-approve": { render: renderCodeSignApproveView, init: initCodeSignApproveView, title: "Code Sign & Approve - WebDevHub" },
+
+  // 8-13: JSON Tools
+  "tools/json-formatter": { render: renderJsonSuiteView, init: initJsonSuiteView, title: "JSON Formatter & Tree - WebDevHub" },
+  "tools/json-validator": { render: renderJsonSuiteView, init: initJsonSuiteView, title: "JSON Validator - WebDevHub" },
+  "tools/json-minifier": { render: renderJsonSuiteView, init: initJsonSuiteView, title: "JSON Minifier - WebDevHub" },
+  "tools/json-viewer": { render: renderJsonSuiteView, init: initJsonSuiteView, title: "JSON Viewer - WebDevHub" },
+  "tools/json-to-csv": { render: renderJsonSuiteView, init: initJsonSuiteView, title: "JSON to CSV Converter - WebDevHub" },
+  "tools/csv-to-json": { render: renderJsonSuiteView, init: initJsonSuiteView, title: "CSV to JSON Converter - WebDevHub" },
+
+  // 14-18: HTML Tools
+  "tools/html-formatter": { render: renderHtmlSuiteView, init: initHtmlSuiteView, title: "HTML Formatter - WebDevHub" },
+  "tools/html-minifier": { render: renderHtmlSuiteView, init: initHtmlSuiteView, title: "HTML Minifier - WebDevHub" },
+  "tools/html-checker": { render: renderHtmlSuiteView, init: initHtmlSuiteView, title: "HTML Checker - WebDevHub" },
+  "tools/html-to-markdown": { render: renderHtmlSuiteView, init: initHtmlSuiteView, title: "HTML to Markdown - WebDevHub" },
+  "tools/html-to-jsx": { render: renderHtmlSuiteView, init: initHtmlSuiteView, title: "HTML to JSX Converter - WebDevHub" },
+  "tools/html-markdown-jsx": { render: renderHtmlSuiteView, init: initHtmlSuiteView, title: "HTML to JSX / Markdown - WebDevHub" },
+
+  // 19-20: JWT Tools
+  "tools/jwt-decoder": { render: renderJwtSuiteView, init: initJwtSuiteView, title: "JWT Decoder - WebDevHub" },
+  "tools/jwt-expiry": { render: renderJwtSuiteView, init: initJwtSuiteView, title: "JWT Expiry Inspector - WebDevHub" },
+
+  // 21: Regex Tools
+  "tools/regex-tester": { render: renderRegexSuiteView, init: initRegexSuiteView, title: "Regex Tester - WebDevHub" },
+
+  // 22-24: URL Tools
+  "tools/url-encoder": { render: renderUrlSuiteView, init: initUrlSuiteView, title: "URL Encoder - WebDevHub" },
+  "tools/url-decoder": { render: renderUrlSuiteView, init: initUrlSuiteView, title: "URL Decoder - WebDevHub" },
+  "tools/url-parser": { render: renderUrlSuiteView, init: initUrlSuiteView, title: "URL Parser - WebDevHub" },
+
+  // 25-26: Base64 Tools
+  "tools/base64-encoder": { render: renderBase64SuiteView, init: initBase64SuiteView, title: "Base64 Encoder - WebDevHub" },
+  "tools/base64-decoder": { render: renderBase64SuiteView, init: initBase64SuiteView, title: "Base64 Decoder - WebDevHub" },
+  "tools/image-base64": { render: renderBase64SuiteView, init: initBase64SuiteView, title: "Image to Base64 - WebDevHub" },
+
+  // 27-29: cURL, API Tester, Code Diff
+  "tools/curl-converter": { render: renderCurlSuiteView, init: initCurlSuiteView, title: "cURL Converter - WebDevHub" },
+  "tools/api-tester": { render: renderApiTesterSuiteView, init: initApiTesterSuiteView, title: "API Tester - WebDevHub" },
+  "tools/code-diff": { render: renderCodeDiffSuiteView, init: initCodeDiffSuiteView, title: "Code Diff & Comparator - WebDevHub" },
+
+  // 30-40: CSS Tools
+  "tools/flexbox-builder": { render: renderCssSuiteView, init: initCssSuiteView, title: "Flexbox Builder - WebDevHub" },
+  "tools/flexbox-grid": { render: renderCssSuiteView, init: initCssSuiteView, title: "Flexbox & Grid Builder - WebDevHub" },
+  "tools/grid-builder": { render: renderCssSuiteView, init: initCssSuiteView, title: "CSS Grid Builder - WebDevHub" },
+  "tools/gradient-maker": { render: renderCssSuiteView, init: initCssSuiteView, title: "Gradient Maker - WebDevHub" },
+  "tools/gradient-palette": { render: renderCssSuiteView, init: initCssSuiteView, title: "CSS Gradient Maker - WebDevHub" },
+  "tools/color-picker": { render: renderCssSuiteView, init: initCssSuiteView, title: "Color Picker - WebDevHub" },
+  "tools/color-converter": { render: renderCssSuiteView, init: initCssSuiteView, title: "Color Converter - WebDevHub" },
+  "tools/shadow-maker": { render: renderCssSuiteView, init: initCssSuiteView, title: "Box Shadow Maker - WebDevHub" },
+  "tools/border-maker": { render: renderCssSuiteView, init: initCssSuiteView, title: "Border Maker - WebDevHub" },
+  "tools/css-clamp": { render: renderCssSuiteView, init: initCssSuiteView, title: "CSS Clamp Calculator - WebDevHub" },
+  "tools/px-to-rem": { render: renderCssSuiteView, init: initCssSuiteView, title: "PX to REM Converter - WebDevHub" },
+  "tools/keyframe-maker": { render: renderCssSuiteView, init: initCssSuiteView, title: "CSS Keyframe Maker - WebDevHub" },
+  "tools/glass-effect": { render: renderCssSuiteView, init: initCssSuiteView, title: "Glass Effect Maker - WebDevHub" },
+  "tools/glassmorphism-animator": { render: renderCssSuiteView, init: initCssSuiteView, title: "Glassmorphism Generator - WebDevHub" },
+  "tools/css-minifier": { render: renderCssSuiteView, init: initCssSuiteView, title: "CSS Minifier - WebDevHub" },
+  "tools/code-minifier": { render: renderCssSuiteView, init: initCssSuiteView, title: "CSS Minifier - WebDevHub" },
+
+  // 41-47: Image & Media Tools
+  "tools/image-compress": { render: renderImageSuiteView, init: initImageSuiteView, title: "Image Compress - WebDevHub" },
+  "tools/image-resize": { render: renderImageSuiteView, init: initImageSuiteView, title: "Image Resize - WebDevHub" },
+  "tools/image-crop": { render: renderImageSuiteView, init: initImageSuiteView, title: "Image Crop - WebDevHub" },
+  "tools/convert-image": { render: renderImageSuiteView, init: initImageSuiteView, title: "Image Converter - WebDevHub" },
+  "tools/svg-optimizer": { render: renderImageSuiteView, init: initImageSuiteView, title: "SVG Optimizer - WebDevHub" },
+  "tools/svg-data-uri": { render: renderImageSuiteView, init: initImageSuiteView, title: "SVG Data URI - WebDevHub" },
+  "tools/favicon-maker": { render: renderImageSuiteView, init: initImageSuiteView, title: "Favicon Maker - WebDevHub" },
+
+  // 48-52: Security Tools
+  "tools/hash-generator": { render: renderSecuritySuiteView, init: initSecuritySuiteView, title: "Hash Generator - WebDevHub" },
+  "tools/sha256-generator": { render: renderSecuritySuiteView, init: initSecuritySuiteView, title: "SHA-256 Generator - WebDevHub" },
+  "tools/sha512-generator": { render: renderSecuritySuiteView, init: initSecuritySuiteView, title: "SHA-512 Generator - WebDevHub" },
+  "tools/password-generator": { render: renderSecuritySuiteView, init: initSecuritySuiteView, title: "Password Generator - WebDevHub" },
+  "tools/uuid-generator": { render: renderSecuritySuiteView, init: initSecuritySuiteView, title: "UUID v4 Generator - WebDevHub" },
+
+  // 53-61: Developer Essentials
+  "tools/timestamp-converter": { render: renderDevSuiteView, init: initDevSuiteView, title: "Unix Timestamp Converter - WebDevHub" },
+  "tools/base-converter": { render: renderDevSuiteView, init: initDevSuiteView, title: "Base Converter - WebDevHub" },
+  "tools/text-case": { render: renderDevSuiteView, init: initDevSuiteView, title: "Text Case Converter - WebDevHub" },
+  "tools/word-counter": { render: renderDevSuiteView, init: initDevSuiteView, title: "Word Counter - WebDevHub" },
+  "tools/lorem-ipsum": { render: renderDevSuiteView, init: initDevSuiteView, title: "Lorem Ipsum Generator - WebDevHub" },
+  "tools/sql-formatter": { render: renderDevSuiteView, init: initDevSuiteView, title: "SQL Formatter - WebDevHub" },
+
+  // 62-67: Website & SEO Tools
+  "tools/seo-checker": { render: renderWebsiteSuiteView, init: initWebsiteSuiteView, title: "SEO Checker - WebDevHub" },
+  "tools/meta-tag-generator": { render: renderWebsiteSuiteView, init: initWebsiteSuiteView, title: "Meta Tag Generator - WebDevHub" },
+  "tools/open-graph": { render: renderWebsiteSuiteView, init: initWebsiteSuiteView, title: "Open Graph Generator - WebDevHub" },
+  "tools/twitter-card": { render: renderWebsiteSuiteView, init: initWebsiteSuiteView, title: "Twitter Card Maker - WebDevHub" },
+  "tools/robots-txt": { render: renderWebsiteSuiteView, init: initWebsiteSuiteView, title: "robots.txt Generator - WebDevHub" },
+  "tools/sitemap-generator": { render: renderWebsiteSuiteView, init: initWebsiteSuiteView, title: "Sitemap.xml Generator - WebDevHub" },
+
+  // 68-73: Cheat Sheets
+  "tools/cheat-sheets": { render: renderCheatSheetsSuiteView, init: initCheatSheetsSuiteView, title: "Developer Cheat Sheets - WebDevHub" },
+  "tools/git-cheat-sheet": { render: renderCheatSheetsSuiteView, init: initCheatSheetsSuiteView, title: "Git Cheat Sheet - WebDevHub" },
+  "tools/docker-cheat-sheet": { render: renderCheatSheetsSuiteView, init: initCheatSheetsSuiteView, title: "Docker Cheat Sheet - WebDevHub" },
+  "tools/linux-cheat-sheet": { render: renderCheatSheetsSuiteView, init: initCheatSheetsSuiteView, title: "Linux Cheat Sheet - WebDevHub" },
+
+  // 74: Cloud Vault
+  "tools/cloud-vault": { render: renderCloudVaultView, init: initCloudVaultView, title: "Cloud Snippet Vault - WebDevHub" },
 
   // Pages & Aliases
   "privacy-policy": { render: renderPrivacyPolicyView, init: initPrivacyPolicyView, title: "Privacy Policy - WebDevHub" },
@@ -74,7 +189,6 @@ const routes = {
 
 function normalizeRouteKey(hash) {
   if (!hash) return "";
-  // Strip leading #, then leading / and trailing /
   let cleaned = hash.replace(/^#\/?/, "").replace(/\/+$/, "");
   return cleaned;
 }
@@ -91,7 +205,7 @@ function router() {
   document.title = route.title || "Web Developer Hub";
 
   // Update Active Link State in Sidebar and Header
-  document.querySelectorAll("aside a, nav a").forEach(link => {
+  document.querySelectorAll("aside a, nav a").forEach((link) => {
     const linkHref = link.getAttribute("href");
     const linkKey = normalizeRouteKey(linkHref);
     if (linkKey === routeKey || (routeKey === "" && linkKey === "home")) {
@@ -154,7 +268,6 @@ function setupQuotaModal() {
 
   window.openCustomKeyModal = openModal;
 
-  // Bind to all possible trigger buttons
   document.getElementById("quota-modal-btn")?.addEventListener("click", openModal);
   document.getElementById("header-quota-btn")?.addEventListener("click", openModal);
   document.getElementById("settings-key-btn")?.addEventListener("click", openModal);
@@ -184,7 +297,7 @@ function setupQuotaModal() {
   });
 }
 
-// Global Keyboard Shortcut (Cmd+K / Ctrl+K to jump to tool search)
+// Global Keyboard Shortcut (Cmd+K / Ctrl+K)
 function setupGlobalSearch() {
   const searchInput = document.getElementById("global-tool-search");
   window.addEventListener("keydown", (e) => {
@@ -222,7 +335,6 @@ window.addEventListener("DOMContentLoaded", () => {
   router();
 });
 
-// Run router immediately if DOM already loaded
 if (document.readyState === "complete" || document.readyState === "interactive") {
   setupSidebar();
   setupQuotaModal();

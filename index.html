@@ -242,142 +242,188 @@
   <div class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 flex gap-6">
 
     <!-- Sticky Navigation Sidebar -->
-    <aside id="app-sidebar" class="hidden lg:block w-64 shrink-0 space-y-6">
+    <aside id="app-sidebar" class="hidden lg:block w-64 shrink-0 space-y-5 max-h-[calc(100vh-6rem)] overflow-y-auto pr-1">
       
-      <!-- Category 1: Core Utilities -->
+      <!-- Category 1: AI Tools (1-9) -->
       <div class="space-y-1">
         <div class="px-3 py-1 text-[11px] font-bold text-slate-400 uppercase tracking-wider font-mono flex items-center justify-between">
-          <span>Core Utilities</span>
-          <span class="text-indigo-400">5</span>
+          <span>AI Studio</span>
+          <span class="text-indigo-400 font-bold">9</span>
         </div>
-        <nav class="space-y-0.5 text-xs font-medium" id="sidebar-nav-core">
-          <a href="#tools/json-formatter" data-route="tools/json-formatter" class="nav-link flex items-center px-3 py-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-900 border border-transparent transition">
-            <span class="w-2 h-2 rounded-full bg-cyan-400 mr-2.5"></span>
-            JSON Formatter &amp; Tree
+        <nav class="space-y-0.5 text-xs font-medium" id="sidebar-nav-ai">
+          <a href="#tools/fix-github-project" data-route="tools/fix-github-project" class="nav-link flex items-center px-3 py-1.5 rounded-xl text-indigo-300 hover:text-white hover:bg-slate-900 border border-indigo-500/30 transition bg-indigo-950/20">
+            <span class="w-2 h-2 rounded-full bg-indigo-400 mr-2.5 animate-pulse"></span>
+            Fix My GitHub Project
           </a>
-          <a href="#tools/px-to-rem" data-route="tools/px-to-rem" class="nav-link flex items-center px-3 py-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-900 border border-transparent transition">
-            <span class="w-2 h-2 rounded-full bg-indigo-400 mr-2.5"></span>
-            PX to REM / EM
-          </a>
-          <a href="#tools/svg-data-uri" data-route="tools/svg-data-uri" class="nav-link flex items-center px-3 py-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-900 border border-transparent transition">
-            <span class="w-2 h-2 rounded-full bg-purple-400 mr-2.5"></span>
-            SVG to Data URI &amp; CSS
-          </a>
-          <a href="#tools/open-graph" data-route="tools/open-graph" class="nav-link flex items-center px-3 py-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-900 border border-transparent transition">
-            <span class="w-2 h-2 rounded-full bg-blue-400 mr-2.5"></span>
-            Open Graph &amp; Meta Tags
-          </a>
-          <a href="#tools/flexbox-grid" data-route="tools/flexbox-grid" class="nav-link flex items-center px-3 py-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-900 border border-transparent transition">
+          <a href="#tools/code-sign-approve" data-route="tools/code-sign-approve" class="nav-link flex items-center px-3 py-1.5 rounded-xl text-emerald-300 hover:text-white hover:bg-slate-900 border border-emerald-500/20 transition">
             <span class="w-2 h-2 rounded-full bg-emerald-400 mr-2.5"></span>
-            Flexbox &amp; Grid Playground
+            Code Sign &amp; Approve
+          </a>
+          <a href="#tools/code-to-design" data-route="tools/code-to-design" class="nav-link flex items-center px-3 py-1.5 rounded-xl text-slate-300 hover:text-white hover:bg-slate-900 border border-transparent transition">
+            <span class="w-2 h-2 rounded-full bg-indigo-400 mr-2.5"></span>
+            Code to Design
+          </a>
+          <a href="#tools/prompt-to-ui" data-route="tools/prompt-to-ui" class="nav-link flex items-center px-3 py-1.5 rounded-xl text-slate-300 hover:text-white hover:bg-slate-900 border border-transparent transition">
+            <span class="w-2 h-2 rounded-full bg-purple-400 mr-2.5"></span>
+            Prompt to UI
+          </a>
+          <a href="#tools/make-responsive" data-route="tools/make-responsive" class="nav-link flex items-center px-3 py-1.5 rounded-xl text-slate-300 hover:text-white hover:bg-slate-900 border border-transparent transition">
+            <span class="w-2 h-2 rounded-full bg-teal-400 mr-2.5"></span>
+            Make Responsive
+          </a>
+          <a href="#tools/flex-grid-fix" data-route="tools/flex-grid-fix" class="nav-link flex items-center px-3 py-1.5 rounded-xl text-slate-300 hover:text-white hover:bg-slate-900 border border-transparent transition">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 mr-2.5"></span>
+            Flex &amp; Grid Fix
+          </a>
+          <a href="#tools/fix-html" data-route="tools/fix-html" class="nav-link flex items-center px-3 py-1.5 rounded-xl text-slate-300 hover:text-white hover:bg-slate-900 border border-transparent transition">
+            <span class="w-2 h-2 rounded-full bg-amber-400 mr-2.5"></span>
+            Fix HTML
+          </a>
+          <a href="#tools/clean-my-code" data-route="tools/clean-my-code" class="nav-link flex items-center px-3 py-1.5 rounded-xl text-slate-300 hover:text-white hover:bg-slate-900 border border-transparent transition">
+            <span class="w-2 h-2 rounded-full bg-rose-400 mr-2.5"></span>
+            Clean My Code
+          </a>
+          <a href="#tools/check-zip-project" data-route="tools/check-zip-project" class="nav-link flex items-center px-3 py-1.5 rounded-xl text-slate-300 hover:text-white hover:bg-slate-900 border border-transparent transition">
+            <span class="w-2 h-2 rounded-full bg-cyan-400 mr-2.5"></span>
+            Check ZIP Project
           </a>
         </nav>
       </div>
 
-      <!-- Category 2: Converters & Security -->
+      <!-- Category 2: Web Tools (8-29) -->
       <div class="space-y-1">
         <div class="px-3 py-1 text-[11px] font-bold text-slate-400 uppercase tracking-wider font-mono flex items-center justify-between">
-          <span>Converters &amp; Security</span>
-          <span class="text-purple-400">5</span>
+          <span>Web &amp; APIs</span>
+          <span class="text-cyan-400 font-bold">22</span>
         </div>
-        <nav class="space-y-0.5 text-xs font-medium" id="sidebar-nav-converters">
-          <a href="#tools/html-markdown-jsx" data-route="tools/html-markdown-jsx" class="nav-link flex items-center px-3 py-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-900 border border-transparent transition">
+        <nav class="space-y-0.5 text-xs font-medium" id="sidebar-nav-web">
+          <a href="#tools/json-formatter" data-route="tools/json-formatter" class="nav-link flex items-center px-3 py-1.5 rounded-xl text-slate-300 hover:text-white hover:bg-slate-900 border border-transparent transition">
+            <span class="w-2 h-2 rounded-full bg-cyan-400 mr-2.5"></span>
+            JSON Formatter &amp; Tree
+          </a>
+          <a href="#tools/html-to-jsx" data-route="tools/html-to-jsx" class="nav-link flex items-center px-3 py-1.5 rounded-xl text-slate-300 hover:text-white hover:bg-slate-900 border border-transparent transition">
             <span class="w-2 h-2 rounded-full bg-pink-400 mr-2.5"></span>
-            HTML to Markdown / JSX
+            HTML to JSX / Markdown
           </a>
-          <a href="#tools/gradient-palette" data-route="tools/gradient-palette" class="nav-link flex items-center px-3 py-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-900 border border-transparent transition">
-            <span class="w-2 h-2 rounded-full bg-rose-400 mr-2.5"></span>
-            CSS Gradients &amp; Palette
-          </a>
-          <a href="#tools/jwt-decoder" data-route="tools/jwt-decoder" class="nav-link flex items-center px-3 py-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-900 border border-transparent transition">
+          <a href="#tools/jwt-decoder" data-route="tools/jwt-decoder" class="nav-link flex items-center px-3 py-1.5 rounded-xl text-slate-300 hover:text-white hover:bg-slate-900 border border-transparent transition">
             <span class="w-2 h-2 rounded-full bg-amber-400 mr-2.5"></span>
-            JWT Safe Client Decoder
+            JWT Safe Decoder
           </a>
-          <a href="#tools/regex-tester" data-route="tools/regex-tester" class="nav-link flex items-center px-3 py-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-900 border border-transparent transition">
+          <a href="#tools/regex-tester" data-route="tools/regex-tester" class="nav-link flex items-center px-3 py-1.5 rounded-xl text-slate-300 hover:text-white hover:bg-slate-900 border border-transparent transition">
             <span class="w-2 h-2 rounded-full bg-teal-400 mr-2.5"></span>
-            Regex Tester &amp; Matcher
+            Regex Tester
           </a>
-          <a href="#tools/cheat-sheets" data-route="tools/cheat-sheets" class="nav-link flex items-center px-3 py-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-900 border border-transparent transition">
+          <a href="#tools/url-parser" data-route="tools/url-parser" class="nav-link flex items-center px-3 py-1.5 rounded-xl text-slate-300 hover:text-white hover:bg-slate-900 border border-transparent transition">
+            <span class="w-2 h-2 rounded-full bg-blue-400 mr-2.5"></span>
+            URL Encoder &amp; Parser
+          </a>
+          <a href="#tools/curl-converter" data-route="tools/curl-converter" class="nav-link flex items-center px-3 py-1.5 rounded-xl text-slate-300 hover:text-white hover:bg-slate-900 border border-transparent transition">
+            <span class="w-2 h-2 rounded-full bg-green-400 mr-2.5"></span>
+            cURL Converter
+          </a>
+          <a href="#tools/api-tester" data-route="tools/api-tester" class="nav-link flex items-center px-3 py-1.5 rounded-xl text-slate-300 hover:text-white hover:bg-slate-900 border border-transparent transition">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 mr-2.5"></span>
+            REST API Client
+          </a>
+          <a href="#tools/code-diff" data-route="tools/code-diff" class="nav-link flex items-center px-3 py-1.5 rounded-xl text-slate-300 hover:text-white hover:bg-slate-900 border border-transparent transition">
+            <span class="w-2 h-2 rounded-full bg-violet-400 mr-2.5"></span>
+            Code Diff &amp; Comparator
+          </a>
+        </nav>
+      </div>
+
+      <!-- Category 3: CSS Studio (30-40) -->
+      <div class="space-y-1">
+        <div class="px-3 py-1 text-[11px] font-bold text-slate-400 uppercase tracking-wider font-mono flex items-center justify-between">
+          <span>CSS Studio</span>
+          <span class="text-pink-400 font-bold">11</span>
+        </div>
+        <nav class="space-y-0.5 text-xs font-medium" id="sidebar-nav-css">
+          <a href="#tools/flexbox-builder" data-route="tools/flexbox-builder" class="nav-link flex items-center px-3 py-1.5 rounded-xl text-slate-300 hover:text-white hover:bg-slate-900 border border-transparent transition">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 mr-2.5"></span>
+            Flexbox &amp; Grid Builder
+          </a>
+          <a href="#tools/gradient-maker" data-route="tools/gradient-maker" class="nav-link flex items-center px-3 py-1.5 rounded-xl text-slate-300 hover:text-white hover:bg-slate-900 border border-transparent transition">
+            <span class="w-2 h-2 rounded-full bg-rose-400 mr-2.5"></span>
+            CSS Gradient Maker
+          </a>
+          <a href="#tools/shadow-maker" data-route="tools/shadow-maker" class="nav-link flex items-center px-3 py-1.5 rounded-xl text-slate-300 hover:text-white hover:bg-slate-900 border border-transparent transition">
+            <span class="w-2 h-2 rounded-full bg-indigo-400 mr-2.5"></span>
+            Box Shadow &amp; Border
+          </a>
+          <a href="#tools/css-clamp" data-route="tools/css-clamp" class="nav-link flex items-center px-3 py-1.5 rounded-xl text-slate-300 hover:text-white hover:bg-slate-900 border border-transparent transition">
+            <span class="w-2 h-2 rounded-full bg-amber-400 mr-2.5"></span>
+            CSS Clamp &amp; PX to REM
+          </a>
+          <a href="#tools/glass-effect" data-route="tools/glass-effect" class="nav-link flex items-center px-3 py-1.5 rounded-xl text-slate-300 hover:text-white hover:bg-slate-900 border border-transparent transition">
+            <span class="w-2 h-2 rounded-full bg-cyan-400 mr-2.5"></span>
+            Glass Effect Maker
+          </a>
+        </nav>
+      </div>
+
+      <!-- Category 4: Media & Security (41-52) -->
+      <div class="space-y-1">
+        <div class="px-3 py-1 text-[11px] font-bold text-slate-400 uppercase tracking-wider font-mono flex items-center justify-between">
+          <span>Media &amp; Security</span>
+          <span class="text-yellow-400 font-bold">12</span>
+        </div>
+        <nav class="space-y-0.5 text-xs font-medium" id="sidebar-nav-security">
+          <a href="#tools/image-compress" data-route="tools/image-compress" class="nav-link flex items-center px-3 py-1.5 rounded-xl text-slate-300 hover:text-white hover:bg-slate-900 border border-transparent transition">
+            <span class="w-2 h-2 rounded-full bg-yellow-400 mr-2.5"></span>
+            Image Compress &amp; Resize
+          </a>
+          <a href="#tools/svg-optimizer" data-route="tools/svg-optimizer" class="nav-link flex items-center px-3 py-1.5 rounded-xl text-slate-300 hover:text-white hover:bg-slate-900 border border-transparent transition">
+            <span class="w-2 h-2 rounded-full bg-purple-400 mr-2.5"></span>
+            SVG Optimizer &amp; Data URI
+          </a>
+          <a href="#tools/hash-generator" data-route="tools/hash-generator" class="nav-link flex items-center px-3 py-1.5 rounded-xl text-slate-300 hover:text-white hover:bg-slate-900 border border-transparent transition">
+            <span class="w-2 h-2 rounded-full bg-red-400 mr-2.5"></span>
+            SHA-256 &amp; Hashes
+          </a>
+          <a href="#tools/password-generator" data-route="tools/password-generator" class="nav-link flex items-center px-3 py-1.5 rounded-xl text-slate-300 hover:text-white hover:bg-slate-900 border border-transparent transition">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 mr-2.5"></span>
+            Password &amp; UUID Generator
+          </a>
+        </nav>
+      </div>
+
+      <!-- Category 5: Developer Utilities & SEO (53-67) -->
+      <div class="space-y-1">
+        <div class="px-3 py-1 text-[11px] font-bold text-slate-400 uppercase tracking-wider font-mono flex items-center justify-between">
+          <span>Essentials &amp; SEO</span>
+          <span class="text-blue-400 font-bold">15</span>
+        </div>
+        <nav class="space-y-0.5 text-xs font-medium" id="sidebar-nav-dev">
+          <a href="#tools/timestamp-converter" data-route="tools/timestamp-converter" class="nav-link flex items-center px-3 py-1.5 rounded-xl text-slate-300 hover:text-white hover:bg-slate-900 border border-transparent transition">
+            <span class="w-2 h-2 rounded-full bg-amber-400 mr-2.5"></span>
+            Unix Timestamp &amp; Base
+          </a>
+          <a href="#tools/text-case" data-route="tools/text-case" class="nav-link flex items-center px-3 py-1.5 rounded-xl text-slate-300 hover:text-white hover:bg-slate-900 border border-transparent transition">
+            <span class="w-2 h-2 rounded-full bg-blue-400 mr-2.5"></span>
+            Text Case &amp; Word Counter
+          </a>
+          <a href="#tools/meta-tag-generator" data-route="tools/meta-tag-generator" class="nav-link flex items-center px-3 py-1.5 rounded-xl text-slate-300 hover:text-white hover:bg-slate-900 border border-transparent transition">
             <span class="w-2 h-2 rounded-full bg-sky-400 mr-2.5"></span>
+            SEO &amp; Open Graph Suite
+          </a>
+          <a href="#tools/cheat-sheets" data-route="tools/cheat-sheets" class="nav-link flex items-center px-3 py-1.5 rounded-xl text-slate-300 hover:text-white hover:bg-slate-900 border border-transparent transition">
+            <span class="w-2 h-2 rounded-full bg-indigo-400 mr-2.5"></span>
             Developer Cheat Sheets
           </a>
         </nav>
       </div>
 
-      <!-- Category 3: Asset Optimization & Builders -->
-      <div class="space-y-1">
-        <div class="px-3 py-1 text-[11px] font-bold text-slate-400 uppercase tracking-wider font-mono flex items-center justify-between">
-          <span>Asset &amp; Code Builders</span>
-          <span class="text-cyan-400">6</span>
-        </div>
-        <nav class="space-y-0.5 text-xs font-medium" id="sidebar-nav-builders">
-          <a href="#tools/image-base64" data-route="tools/image-base64" class="nav-link flex items-center px-3 py-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-900 border border-transparent transition">
-            <span class="w-2 h-2 rounded-full bg-yellow-400 mr-2.5"></span>
-            WebP / Image Base64
-          </a>
-          <a href="#tools/code-minifier" data-route="tools/code-minifier" class="nav-link flex items-center px-3 py-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-900 border border-transparent transition">
-            <span class="w-2 h-2 rounded-full bg-violet-400 mr-2.5"></span>
-            Code Minifier &amp; Beautifier
-          </a>
-          <a href="#tools/sql-formatter" data-route="tools/sql-formatter" class="nav-link flex items-center px-3 py-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-900 border border-transparent transition">
-            <span class="w-2 h-2 rounded-full bg-orange-400 mr-2.5"></span>
-            SQL Formatter &amp; Schema
-          </a>
-          <a href="#tools/curl-converter" data-route="tools/curl-converter" class="nav-link flex items-center px-3 py-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-900 border border-transparent transition">
-            <span class="w-2 h-2 rounded-full bg-green-400 mr-2.5"></span>
-            cURL to Fetch / Python
-          </a>
-          <a href="#tools/hash-generator" data-route="tools/hash-generator" class="nav-link flex items-center px-3 py-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-900 border border-transparent transition">
-            <span class="w-2 h-2 rounded-full bg-red-400 mr-2.5"></span>
-            SHA &amp; MD5 Hash Generator
-          </a>
-          <a href="#tools/glassmorphism-animator" data-route="tools/glassmorphism-animator" class="nav-link flex items-center px-3 py-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-900 border border-transparent transition">
-            <span class="w-2 h-2 rounded-full bg-indigo-300 mr-2.5"></span>
-            Glassmorphism &amp; Keyframes
-          </a>
-        </nav>
-      </div>
-
-      <!-- Category 4: AI Engine & Debuggers -->
-      <div class="space-y-1">
-        <div class="px-3 py-1 text-[11px] font-bold text-slate-400 uppercase tracking-wider font-mono flex items-center justify-between">
-          <span>AI Engine &amp; Debuggers</span>
-          <span class="text-amber-400">5</span>
-        </div>
-        <nav class="space-y-0.5 text-xs font-medium" id="sidebar-nav-ai">
-          <a href="#tools/ai-design-suggester" data-route="tools/ai-design-suggester" class="nav-link flex items-center px-3 py-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-900 border border-transparent transition">
-            <span class="w-2 h-2 rounded-full bg-indigo-400 mr-2.5 animate-pulse"></span>
-            AI Code Design Suggester
-          </a>
-          <a href="#tools/ui-prompt-engine" data-route="tools/ui-prompt-engine" class="nav-link flex items-center px-3 py-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-900 border border-transparent transition">
-            <span class="w-2 h-2 rounded-full bg-purple-400 mr-2.5"></span>
-            AI UI Prompt to Design
-          </a>
-          <a href="#tools/zip-debugger" data-route="tools/zip-debugger" class="nav-link flex items-center px-3 py-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-900 border border-transparent transition">
-            <span class="w-2 h-2 rounded-full bg-cyan-400 mr-2.5"></span>
-            ZIP Project Debugger
-          </a>
-          <a href="#tools/responsive-converter" data-route="tools/responsive-converter" class="nav-link flex items-center px-3 py-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-900 border border-transparent transition">
-            <span class="w-2 h-2 rounded-full bg-teal-400 mr-2.5"></span>
-            Responsive Converter
-          </a>
-          <a href="#tools/api-tester" data-route="tools/api-tester" class="nav-link flex items-center px-3 py-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-900 border border-transparent transition">
-            <span class="w-2 h-2 rounded-full bg-emerald-400 mr-2.5"></span>
-            REST API HTTP Client
-          </a>
-        </nav>
-      </div>
-
-      <!-- Firebase Cloud Vault Banner -->
+      <!-- Firestore Cloud Snippet Vault Banner -->
       <div class="p-4 rounded-2xl bg-gradient-to-b from-slate-900 to-slate-950 border border-slate-800 shadow-xl space-y-2">
-        <div class="flex items-center space-x-2 text-amber-400">
+        <div class="flex items-center space-x-2 text-indigo-400">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
           </svg>
-          <span class="text-xs font-bold text-white">Firestore Vault</span>
+          <span class="text-xs font-bold text-white">Snippet Vault</span>
         </div>
-        <p class="text-[11px] text-slate-400 leading-relaxed">Save custom CSS, regex, notes &amp; configs securely to Google Firestore.</p>
-        <a href="#tools/cloud-vault" class="block w-full text-center py-1.5 bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 rounded-xl text-xs font-semibold transition">Open Vault</a>
+        <p class="text-[11px] text-slate-400 leading-relaxed">Save snippets, components, and notes locally or sync with Firestore.</p>
+        <a href="#tools/cloud-vault" class="block w-full text-center py-1.5 bg-indigo-500/20 hover:bg-indigo-500/30 text-indigo-300 border border-indigo-500/40 rounded-xl text-xs font-semibold transition">Open Snippet Vault</a>
       </div>
     </aside>
 
