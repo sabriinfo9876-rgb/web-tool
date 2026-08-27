@@ -1,10 +1,20 @@
 // Web Developer Hub — SPA Router & Complete 74-Tool Hub Registry
-// Handles hash routing, dynamic view rendering, modal handlers, and global search
+// Handles hash routing, dynamic view rendering, modal handlers, auth state & monetization
 
 import { showToast, getRemainingDailyQuota, getCustomGeminiKey, setCustomGeminiKey, updateHeaderQuotaDisplay } from "./utils.js";
+import { getCurrentUser, subscribeToAuth, loginWithEmail, registerWithEmail, loginWithGoogle, logoutUser } from "./auth.js";
+import { getPlanLimits } from "./config/plans.js";
 
-// Core View
+// Core Views
 import { renderHomeView, initHomeView } from "./views/home.js";
+
+// Pages & Monetization
+import { renderPricingView, initPricingView } from "./views/pages/pricing.js";
+import { renderDashboardView, initDashboardView } from "./views/pages/dashboard.js";
+import { renderProfileView, initProfileView } from "./views/pages/profile.js";
+import { renderPrivacyPolicyView, initPrivacyPolicyView } from "./views/pages/privacyPolicy.js";
+import { renderAboutView, initAboutView } from "./views/pages/about.js";
+import { renderContactView, initContactView } from "./views/pages/contact.js";
 
 // AI Tools Views
 import { renderAiDesignSuggesterView, initAiDesignSuggesterView } from "./views/tools/aiDesignSuggester.js";
@@ -49,15 +59,17 @@ import { renderCheatSheetsSuiteView, initCheatSheetsSuiteView } from "./views/to
 // Cloud Vault
 import { renderCloudVaultView, initCloudVaultView } from "./views/tools/cloudVault.js";
 
-// Pages
-import { renderPrivacyPolicyView, initPrivacyPolicyView } from "./views/pages/privacyPolicy.js";
-import { renderAboutView, initAboutView } from "./views/pages/about.js";
-import { renderContactView, initContactView } from "./views/pages/contact.js";
-
 const routes = {
   "": { render: renderHomeView, init: initHomeView, title: "Web Developer Hub - AI Developer Tools & 74 Developer Utilities" },
   "home": { render: renderHomeView, init: initHomeView, title: "Web Developer Hub - AI Developer Tools & 74 Developer Utilities" },
   
+  // App Pages & Monetization
+  "pricing": { render: renderPricingView, init: initPricingView, title: "Pricing & Developer Plans - WebDevHub" },
+  "plans": { render: renderPricingView, init: initPricingView, title: "Pricing & Developer Plans - WebDevHub" },
+  "dashboard": { render: renderDashboardView, init: initDashboardView, title: "Developer Dashboard - WebDevHub" },
+  "account": { render: renderProfileView, init: initProfileView, title: "Account Settings - WebDevHub" },
+  "profile": { render: renderProfileView, init: initProfileView, title: "Profile & Settings - WebDevHub" },
+
   // 1-9: AI Tools
   "tools/fix-github-project": { render: renderFixGithubProjectView, init: initFixGithubProjectView, title: "Fix My GitHub Project - Automated Project Repair Engine - WebDevHub" },
   "tools/fix-my-github-project": { render: renderFixGithubProjectView, init: initFixGithubProjectView, title: "Fix My GitHub Project - WebDevHub" },
@@ -73,6 +85,7 @@ const routes = {
   "tools/fix-html": { render: renderFixHtmlView, init: initFixHtmlView, title: "Fix HTML - AI DOM Cleaner - WebDevHub" },
   "tools/clean-code": { render: renderCleanCodeView, init: initCleanCodeView, title: "Clean My Code - Quality & Refactoring - WebDevHub" },
   "tools/clean-my-code": { render: renderCleanCodeView, init: initCleanCodeView, title: "Clean My Code - WebDevHub" },
+  "tools/ai-code-refactor": { render: renderCleanCodeView, init: initCleanCodeView, title: "AI Code Refactor - WebDevHub" },
   "tools/zip-debugger": { render: renderZipDebuggerView, init: initZipDebuggerView, title: "Check ZIP Project - Architecture Scanner - WebDevHub" },
   "tools/check-zip-project": { render: renderZipDebuggerView, init: initZipDebuggerView, title: "Check ZIP Project - WebDevHub" },
   "tools/code-sign-approve": { render: renderCodeSignApproveView, init: initCodeSignApproveView, title: "Code Sign & Approve - AI Authorization & Cryptographic Gatekeeper - WebDevHub" },
@@ -297,6 +310,154 @@ function setupQuotaModal() {
   });
 }
 
+// Pro Upgrade Modal Handler
+function setupProUpgradeModal() {
+  const modal = document.getElementById("pro-upgrade-modal");
+  const closeBtn = document.getElementById("pro-modal-close");
+  const featureLabel = document.getElementById("pro-modal-feature-name");
+
+  window.openProUpgradeModal = (featureName = "Developer Pro Feature") => {
+    if (!modal) {
+      window.location.hash = "#/pricing";
+      return;
+    }
+    if (featureLabel) featureLabel.textContent = featureName;
+    modal.classList.remove("hidden");
+    modal.classList.add("flex");
+  };
+
+  closeBtn?.addEventListener("click", () => {
+    modal?.classList.add("hidden");
+    modal?.classList.remove("flex");
+  });
+
+  modal?.addEventListener("click", (e) => {
+    if (e.target === modal) {
+      modal.classList.add("hidden");
+      modal.classList.remove("flex");
+    }
+  });
+}
+
+// Auth Modal Handler
+function setupAuthModal() {
+  const modal = document.getElementById("auth-modal");
+  const closeBtn = document.getElementById("auth-modal-close");
+  const tabLogin = document.getElementById("auth-tab-login");
+  const tabRegister = document.getElementById("auth-tab-register");
+  const submitBtn = document.getElementById("auth-submit-btn");
+  const googleBtn = document.getElementById("auth-google-btn");
+  const emailInput = document.getElementById("auth-email-input");
+  const passInput = document.getElementById("auth-pass-input");
+  const nameInput = document.getElementById("auth-name-input");
+  const nameGroup = document.getElementById("auth-name-group");
+
+  let isRegisterMode = false;
+
+  const openAuth = () => {
+    if (!modal) return;
+    modal.classList.remove("hidden");
+    modal.classList.add("flex");
+  };
+
+  window.openAuthModal = openAuth;
+
+  document.getElementById("header-auth-btn")?.addEventListener("click", () => {
+    const user = getCurrentUser();
+    if (user) {
+      window.location.hash = "#/dashboard";
+    } else {
+      openAuth();
+    }
+  });
+
+  closeBtn?.addEventListener("click", () => {
+    modal?.classList.add("hidden");
+    modal?.classList.remove("flex");
+  });
+
+  modal?.addEventListener("click", (e) => {
+    if (e.target === modal) {
+      modal.classList.add("hidden");
+      modal.classList.remove("flex");
+    }
+  });
+
+  tabLogin?.addEventListener("click", () => {
+    isRegisterMode = false;
+    tabLogin.classList.add("bg-indigo-600", "text-white");
+    tabLogin.classList.remove("bg-slate-800", "text-slate-400");
+    tabRegister?.classList.remove("bg-indigo-600", "text-white");
+    tabRegister?.classList.add("bg-slate-800", "text-slate-400");
+    nameGroup?.classList.add("hidden");
+    if (submitBtn) submitBtn.textContent = "Sign In";
+  });
+
+  tabRegister?.addEventListener("click", () => {
+    isRegisterMode = true;
+    tabRegister.classList.add("bg-indigo-600", "text-white");
+    tabRegister.classList.remove("bg-slate-800", "text-slate-400");
+    tabLogin?.classList.remove("bg-indigo-600", "text-white");
+    tabLogin?.classList.add("bg-slate-800", "text-slate-400");
+    nameGroup?.classList.remove("hidden");
+    if (submitBtn) submitBtn.textContent = "Create Account";
+  });
+
+  submitBtn?.addEventListener("click", async () => {
+    const email = emailInput?.value?.trim() || "";
+    const pass = passInput?.value?.trim() || "";
+    const name = nameInput?.value?.trim() || "";
+
+    if (!email || !pass) return showToast("Please enter email and password.", "warning");
+
+    try {
+      if (isRegisterMode) {
+        await registerWithEmail(email, pass, name);
+      } else {
+        await loginWithEmail(email, pass);
+      }
+      modal?.classList.add("hidden");
+      modal?.classList.remove("flex");
+      updateHeaderAuthUI();
+    } catch (err) {
+      showToast(err.message, "error");
+    }
+  });
+
+  googleBtn?.addEventListener("click", async () => {
+    try {
+      await loginWithGoogle();
+      modal?.classList.add("hidden");
+      modal?.classList.remove("flex");
+      updateHeaderAuthUI();
+    } catch (err) {
+      showToast(err.message, "error");
+    }
+  });
+}
+
+function updateHeaderAuthUI() {
+  const user = getCurrentUser();
+  const authBtn = document.getElementById("header-auth-btn");
+  const authText = document.getElementById("header-auth-text");
+  const userAvatar = document.getElementById("header-user-avatar");
+
+  if (!authBtn) return;
+
+  if (user) {
+    if (authText) authText.textContent = user.displayName || user.email?.split("@")[0] || "Account";
+    if (userAvatar) {
+      userAvatar.textContent = (user.displayName || user.email || "D").charAt(0).toUpperCase();
+      userAvatar.classList.remove("hidden");
+    }
+    authBtn.classList.add("border-indigo-500/40");
+  } else {
+    if (authText) authText.textContent = "Sign In";
+    if (userAvatar) userAvatar.classList.add("hidden");
+    authBtn.classList.remove("border-indigo-500/40");
+  }
+}
+
 // Global Keyboard Shortcut (Cmd+K / Ctrl+K)
 function setupGlobalSearch() {
   const searchInput = document.getElementById("global-tool-search");
@@ -326,19 +487,26 @@ function setupGlobalSearch() {
 }
 
 // Initialize Single Page Application Engine
-window.addEventListener("hashchange", router);
-window.addEventListener("DOMContentLoaded", () => {
+function initApp() {
   setupSidebar();
   setupQuotaModal();
+  setupProUpgradeModal();
+  setupAuthModal();
   setupGlobalSearch();
   updateHeaderQuotaDisplay();
+  updateHeaderAuthUI();
+
+  subscribeToAuth((user) => {
+    updateHeaderAuthUI();
+    updateHeaderQuotaDisplay();
+  });
+
   router();
-});
+}
+
+window.addEventListener("hashchange", router);
+window.addEventListener("DOMContentLoaded", initApp);
 
 if (document.readyState === "complete" || document.readyState === "interactive") {
-  setupSidebar();
-  setupQuotaModal();
-  setupGlobalSearch();
-  updateHeaderQuotaDisplay();
-  router();
+  initApp();
 }
