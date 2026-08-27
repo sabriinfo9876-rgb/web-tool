@@ -1,5 +1,5 @@
 // Secret Scanner & Redaction Utility
-// Scans code strings for API keys, tokens, private keys, and passwords
+// Scans code strings for API keys, tokens, private keys, Safepay secrets, and passwords
 // Prevents accidental leakage into Cloud Snippet Vault or prompts
 
 export function detectSecretsInCode(code) {
@@ -12,11 +12,12 @@ export function detectSecretsInCode(code) {
     { type: "GitHub Token (ghp / gho / pat)", pattern: /(ghp_[a-zA-Z0-9]{36}|gho_[a-zA-Z0-9]{36}|github_pat_[a-zA-Z0-9_]{40,})/ },
     { type: "Google / Gemini API Key (AIza...)", pattern: /AIza[0-9A-Za-z-_]{35}/ },
     { type: "OpenAI Secret Key (sk-...)", pattern: /sk-[a-zA-Z0-9]{20,}/ },
-    { type: "Stripe Secret Key (sk_live / rk_live)", pattern: /(sk_live_[0-9a-zA-Z]{24,}|rk_live_[0-9a-zA-Z]{24,})/ },
+    { type: "Safepay Secret Key (sec_... / sec_sandbox_...)", pattern: /(sec_[a-zA-Z0-9_-]{20,}|sec_sandbox_[a-zA-Z0-9_-]{20,})/ },
+    { type: "Safepay Public Key (pub_... / pub_sandbox_...)", pattern: /(pub_[a-zA-Z0-9_-]{20,}|pub_sandbox_[a-zA-Z0-9_-]{20,})/ },
     { type: "Private Key Header", pattern: /-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----/ },
     { type: "Bearer Authorization Token", pattern: /Bearer\s+[a-zA-Z0-9_\-\.]{25,}/i },
     { type: "Database Connection String with Password", pattern: /(postgres(?:ql)?|mongodb(?:\+srv)?|mysql):\/\/[^:]+:[^@\s]+@[^\/\s]+/i },
-    { type: "Hardcoded API Key / Secret Assignment", pattern: /\b(API_KEY|SECRET_KEY|AUTH_TOKEN|PRIVATE_KEY|DB_PASSWORD|PASSWORD)\s*=\s*['"][a-zA-Z0-9_\-]{8,}['"]/i },
+    { type: "Hardcoded API Key / Secret Assignment", pattern: /\b(SAFEPAY_SECRET_KEY|SAFEPAY_WEBHOOK_SECRET|API_KEY|SECRET_KEY|AUTH_TOKEN|PRIVATE_KEY|DB_PASSWORD|PASSWORD)\s*=\s*['"][a-zA-Z0-9_\-]{8,}['"]/i },
   ];
 
   lines.forEach((lineText, index) => {
@@ -44,7 +45,8 @@ export function redactSecretsInCode(code) {
     /(ghp_[a-zA-Z0-9]{36}|gho_[a-zA-Z0-9]{36}|github_pat_[a-zA-Z0-9_]{40,})/g,
     /AIza[0-9A-Za-z-_]{35}/g,
     /sk-[a-zA-Z0-9]{20,}/g,
-    /(sk_live_[0-9a-zA-Z]{24,}|rk_live_[0-9a-zA-Z]{24,})/g,
+    /(sec_[a-zA-Z0-9_-]{20,}|sec_sandbox_[a-zA-Z0-9_-]{20,})/g,
+    /(pub_[a-zA-Z0-9_-]{20,}|pub_sandbox_[a-zA-Z0-9_-]{20,})/g,
     /-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----[\s\S]*?-----END (?:RSA |EC |OPENSSH )?PRIVATE KEY-----/g,
     /(postgres(?:ql)?:\/\/[^:]+:)([^@\s]+)(@[^\/\s]+)/gi,
     /(mongodb(?:\+srv)?:\/\/[^:]+:)([^@\s]+)(@[^\/\s]+)/gi,

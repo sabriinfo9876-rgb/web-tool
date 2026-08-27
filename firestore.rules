@@ -6,9 +6,21 @@ service cloud.firestore {
     match /users/{userId} {
       allow read: if request.auth != null && request.auth.uid == userId;
       allow write: if request.auth != null && request.auth.uid == userId;
+
+      // Usage Tracking Subcollection (users/{userId}/usage/{date})
+      match /usage/{date} {
+        allow read: if request.auth != null && request.auth.uid == userId;
+        allow write: if request.auth != null && request.auth.uid == userId;
+      }
+
+      // Subscription History Subcollection
+      match /subscriptions/{subId} {
+        allow read: if request.auth != null && request.auth.uid == userId;
+        allow write: if false; // Only updated via server / admin SDK
+      }
     }
 
-    // Cloud Snippets Vault Collection (User-owned code store with size bounds)
+    // Cloud Snippets Vault Collection (User-owned code store with strict size bounds)
     match /snippets/{snippetId} {
       allow read: if request.auth != null && (resource.data.userId == request.auth.uid || resource.data.userId == 'anonymous');
       

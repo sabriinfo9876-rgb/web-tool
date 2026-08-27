@@ -1,5 +1,5 @@
 // Web Developer Hub — User Authentication & State Manager
-// Firebase Auth (Email/Password & Google OAuth) + Subscription Profile
+// Firebase Auth (Email/Password & Google OAuth) + Safepay Subscription Synchronization
 
 import { auth, db } from "./firebase.js";
 import { 
@@ -35,6 +35,29 @@ function notifyAuthListeners() {
       console.error("Auth listener error:", e);
     }
   });
+}
+
+// Fetch verified subscription status from server
+export async function syncVerifiedSubscriptionStatus(userId) {
+  if (!userId) return null;
+  try {
+    const res = await fetch(`/api/safepay/subscription-status?userId=${encodeURIComponent(userId)}`, {
+      headers: { "x-user-id": userId },
+    });
+    if (res.ok) {
+      const data = await res.json();
+      if (currentUserState && currentUserState.uid === userId && data.plan) {
+        currentUserState.plan = data.plan;
+        currentUserState.isPaid = Boolean(data.isPaid);
+        currentUserState.currentPeriodEnd = data.currentPeriodEnd;
+        notifyAuthListeners();
+      }
+      return data;
+    }
+  } catch (err) {
+    console.warn("Could not sync verified Safepay subscription status:", err);
+  }
+  return null;
 }
 
 // Listen to Firebase Auth state
@@ -89,6 +112,9 @@ if (auth) {
         githubConnected: Boolean(userDocData?.githubConnected),
         githubUsername: userDocData?.githubUsername || undefined,
       };
+
+      // Sync server-verified Safepay subscription state
+      syncVerifiedSubscriptionStatus(user.uid);
     } else {
       currentUserState = null;
     }
@@ -129,18 +155,55 @@ export async function logoutUser() {
   showToast("You have been signed out.", "info");
 }
 
-export async function upgradePlanSimulation(targetPlan) {
+export async function initiateCheckout(targetPlan = "pro", interval = "month") {
   if (!currentUserState) {
-    showToast("Please sign in to upgrade your plan.", "warning");
+    showToast("Please sign in or create an account first.", "warning");
+    if (typeof window.openAuthModal === "function") {
+      window.openAuthModal();
+    } else {
+      window.location.hash = "#/";
+    }
     return;
   }
+
+  showToast("Connecting to Safepay secure checkout...", "info");
   try {
-    const userRef = doc(db, "users", currentUserState.uid);
-    await setDoc(userRef, { plan: targetPlan }, { merge: true });
-    currentUserState.plan = targetPlan;
-    notifyAuthListeners();
-    showToast(`Successfully upgraded to ${targetPlan.toUpperCase()} Plan!`, "success");
+    const successUrl = `${window.location.origin}/#/billing/success`;
+    const cancelUrl = `${window.location.origin}/#/billing/cancel`;
+
+    const res = await fetch("/api/safepay/create-checkout-session", {
+      method: "POST",
+      headers: { 
+        "Content-Type": "application/json",
+        "x-user-id": currentUserState.uid,
+      },
+      body: JSON.stringify({
+        plan: targetPlan,
+        interval,
+        userId: currentUserState.uid,
+        userEmail: currentUserState.email,
+        successUrl,
+        cancelUrl,
+      }),
+    });
+
+    const data = await res.json();
+    if (data.url) {
+      window.location.href = data.url;
+      return;
+    }
+
+    if (data.configured === false && data.sandboxUrl) {
+      window.location.href = data.sandboxUrl;
+      return;
+    }
+
+    throw new Error(data.error || data.message || "Failed to initialize Safepay checkout.");
   } catch (err) {
-    showToast("Error upgrading plan: " + err.message, "error");
+    showToast("Safepay checkout error: " + err.message, "error");
   }
+}
+
+export async function upgradePlanSimulation(targetPlan) {
+  return initiateCheckout(targetPlan, "month");
 }

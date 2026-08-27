@@ -15,6 +15,7 @@ import { renderProfileView, initProfileView } from "./views/pages/profile.js";
 import { renderPrivacyPolicyView, initPrivacyPolicyView } from "./views/pages/privacyPolicy.js";
 import { renderAboutView, initAboutView } from "./views/pages/about.js";
 import { renderContactView, initContactView } from "./views/pages/contact.js";
+import { renderBillingSuccessView, initBillingSuccessView, renderBillingCancelView, initBillingCancelView } from "./views/pages/billingResult.js";
 
 // AI Tools Views
 import { renderAiDesignSuggesterView, initAiDesignSuggesterView } from "./views/tools/aiDesignSuggester.js";
@@ -69,6 +70,10 @@ const routes = {
   "dashboard": { render: renderDashboardView, init: initDashboardView, title: "Developer Dashboard - WebDevHub" },
   "account": { render: renderProfileView, init: initProfileView, title: "Account Settings - WebDevHub" },
   "profile": { render: renderProfileView, init: initProfileView, title: "Profile & Settings - WebDevHub" },
+  "billing/success": { render: renderBillingSuccessView, init: initBillingSuccessView, title: "Payment Successful - WebDevHub" },
+  "billing/cancel": { render: renderBillingCancelView, init: initBillingCancelView, title: "Payment Canceled - WebDevHub" },
+  "payment/success": { render: renderBillingSuccessView, init: initBillingSuccessView, title: "Payment Successful - WebDevHub" },
+  "payment/cancel": { render: renderBillingCancelView, init: initBillingCancelView, title: "Payment Canceled - WebDevHub" },
 
   // 1-9: AI Tools
   "tools/fix-github-project": { render: renderFixGithubProjectView, init: initFixGithubProjectView, title: "Fix My GitHub Project - Automated Project Repair Engine - WebDevHub" },

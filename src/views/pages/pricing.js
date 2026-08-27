@@ -1,7 +1,7 @@
-// Pricing View: Free vs Pro vs Team Plans with Monthly/Annual Toggle and Feature Comparison
+// Pricing View: Free vs Pro vs Team Plans with Safepay Integration & Dynamic Monthly/Annual Toggle
 
 import { PLANS } from "../../config/plans.js";
-import { getCurrentUser, upgradePlanSimulation } from "../../auth.js";
+import { getCurrentUser, initiateCheckout } from "../../auth.js";
 import { showToast } from "../../utils.js";
 
 export function renderPricingView() {
@@ -14,13 +14,13 @@ export function renderPricingView() {
       <!-- Pricing Header -->
       <div class="text-center space-y-3 max-w-2xl mx-auto">
         <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 text-xs font-semibold">
-          <span>Flexible Developer Plans</span>
+          <span>Official Safepay Merchant Gateway</span>
         </div>
         <h1 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
           Supercharge Your Workflow with <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-300 to-cyan-300">WebDevHub Pro</span>
         </h1>
         <p class="text-slate-400 text-sm sm:text-base leading-relaxed">
-          Start free with 74+ developer utilities, or upgrade to Pro for higher AI limits, automated GitHub project repair, and unlimited cloud storage.
+          Start free with all 74 developer utilities and 74 daily AI operations, or upgrade to Pro for 3,000 monthly AI operations, automated GitHub project repair, and unlimited cloud vault storage.
         </p>
 
         <!-- Billing Toggle (Monthly / Annual) -->
@@ -29,7 +29,7 @@ export function renderPricingView() {
           <button id="billing-toggle-btn" class="w-12 h-6 bg-slate-800 rounded-full p-1 border border-slate-700 transition relative">
             <div id="toggle-thumb" class="w-4 h-4 rounded-full bg-indigo-500 transition-transform"></div>
           </button>
-          <span id="label-annual" class="text-slate-400">Annual Billing <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Save 20%</span></span>
+          <span id="label-annual" class="text-slate-400">Annual Billing <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Save ~38%</span></span>
         </div>
       </div>
 
@@ -44,7 +44,7 @@ export function renderPricingView() {
               <h3 class="text-lg font-bold text-white">${PLANS.FREE.name}</h3>
               <span class="px-2.5 py-1 rounded-lg text-xs font-mono font-bold bg-slate-800 text-slate-300 border border-slate-700">Free Forever</span>
             </div>
-            <p class="text-xs text-slate-400">Essential client-side developer toolbox and light AI access.</p>
+            <p class="text-xs text-slate-400">Essential client-side developer toolbox and generous daily AI access.</p>
             <div class="py-2">
               <span class="text-4xl font-extrabold text-white font-mono">$0</span>
               <span class="text-xs text-slate-400">/ month</span>
@@ -59,8 +59,8 @@ export function renderPricingView() {
             </ul>
           </div>
           <div class="pt-6">
-            <button class="w-full py-2.5 rounded-xl bg-slate-800 text-slate-300 hover:text-white text-xs font-bold transition cursor-default">
-              ${currentPlan === "free" ? "Active Plan" : "Downgrade to Free"}
+            <button class="w-full py-2.5 rounded-xl bg-slate-800 text-slate-300 text-xs font-bold transition cursor-default">
+              ${currentPlan === "free" ? "Current Plan" : "Downgrade to Free"}
             </button>
           </div>
         </div>
@@ -77,9 +77,9 @@ export function renderPricingView() {
                 <span class="px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">PRO</span>
               </h3>
             </div>
-            <p class="text-xs text-slate-300">For active developers needing high AI limits and GitHub automation.</p>
+            <p class="text-xs text-slate-300">For active developers needing high AI limits and GitHub repair automation.</p>
             <div class="py-2">
-              <span id="price-pro" class="text-4xl font-extrabold text-white font-mono">$19</span>
+              <span id="price-pro" class="text-4xl font-extrabold text-white font-mono">$7.99</span>
               <span id="period-pro" class="text-xs text-slate-400">/ month</span>
             </div>
             <ul class="space-y-2.5 text-xs text-slate-200 pt-2 border-t border-slate-800/80">
@@ -93,7 +93,7 @@ export function renderPricingView() {
           </div>
           <div class="pt-6">
             <button id="upgrade-pro-btn" class="w-full py-3 rounded-xl bg-gradient-to-r from-indigo-500 via-purple-500 to-cyan-500 hover:opacity-95 text-white text-xs font-bold transition shadow-lg shadow-indigo-500/25 flex items-center justify-center gap-2">
-              <span>${currentPlan === "pro" ? "Current Active Plan" : "Upgrade to Pro"}</span>
+              <span id="btn-text-pro">${currentPlan === "pro" ? "Current Active Plan" : "Upgrade to Pro"}</span>
             </button>
           </div>
         </div>
@@ -107,7 +107,7 @@ export function renderPricingView() {
             </div>
             <p class="text-xs text-slate-400">Shared workspace, team snippet libraries, and unified billing.</p>
             <div class="py-2">
-              <span id="price-team" class="text-4xl font-extrabold text-white font-mono">$49</span>
+              <span id="price-team" class="text-4xl font-extrabold text-white font-mono">$29</span>
               <span id="period-team" class="text-xs text-slate-400">/ month</span>
             </div>
             <ul class="space-y-2.5 text-xs text-slate-300 pt-2 border-t border-slate-800/80">
@@ -128,25 +128,22 @@ export function renderPricingView() {
 
       </div>
 
-      <!-- FAQ Section -->
+      <!-- Secure Payment Gateways Badge -->
       <div class="p-6 sm:p-8 rounded-3xl bg-slate-900/60 border border-slate-800 space-y-4 text-slate-300">
-        <h2 class="text-lg font-bold text-white tracking-tight">Frequently Asked Questions</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs leading-relaxed text-slate-400">
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
           <div>
-            <h4 class="font-bold text-slate-200 mb-1">Can I use my own Gemini API Key?</h4>
-            <p>Yes! Entering your personal Gemini API key provides unlimited AI usage without requiring a paid subscription.</p>
+            <h4 class="text-sm font-bold text-white flex items-center gap-2">
+              <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+              Safepay Enterprise Security
+            </h4>
+            <p class="text-xs text-slate-400 mt-0.5">
+              Encrypted end-to-end checkout with Pakistan &amp; International card support, mobile wallets, and instant settlement.
+            </p>
           </div>
-          <div>
-            <h4 class="font-bold text-slate-200 mb-1">What payment methods are supported?</h4>
-            <p>We support all major credit cards, Apple Pay, Google Pay, and PayPal via secure payment gateways.</p>
-          </div>
-          <div>
-            <h4 class="font-bold text-slate-200 mb-1">How does the GitHub Repair Engine work?</h4>
-            <p>The repair engine connects via GitHub OAuth to create a dedicated branch, commit signed fixes, and open a Pull Request for your review.</p>
-          </div>
-          <div>
-            <h4 class="font-bold text-slate-200 mb-1">Can I cancel anytime?</h4>
-            <p>Yes, you can cancel your subscription anytime with a single click in your Account settings.</p>
+          <div class="flex items-center gap-2 text-xs font-mono text-slate-400">
+            <span class="px-2.5 py-1 rounded bg-slate-800 border border-slate-700 text-slate-300">Visa / Mastercard</span>
+            <span class="px-2.5 py-1 rounded bg-slate-800 border border-slate-700 text-slate-300">PayPak</span>
+            <span class="px-2.5 py-1 rounded bg-slate-800 border border-slate-700 text-slate-300">Safepay Checkout</span>
           </div>
         </div>
       </div>
@@ -166,6 +163,7 @@ export function initPricingView() {
   const periodTeam = document.getElementById("period-team");
   const upgradeProBtn = document.getElementById("upgrade-pro-btn");
   const upgradeTeamBtn = document.getElementById("upgrade-team-btn");
+  const btnTextPro = document.getElementById("btn-text-pro");
 
   let isAnnual = false;
 
@@ -180,10 +178,11 @@ export function initPricingView() {
       labelAnnual?.classList.replace("text-slate-400", "text-white");
       labelAnnual?.classList.add("font-bold");
 
-      if (pricePro) pricePro.textContent = `$${Math.round(PLANS.PRO.priceAnnual / 12)}`;
-      if (periodPro) periodPro.textContent = "/ month (billed annually)";
-      if (priceTeam) priceTeam.textContent = `$${Math.round(PLANS.TEAM.priceAnnual / 12)}`;
-      if (periodTeam) periodTeam.textContent = "/ month (billed annually)";
+      if (pricePro) pricePro.textContent = `$${PLANS.PRO.priceAnnual}`;
+      if (periodPro) periodPro.textContent = "/ year ($4.92/mo billed annually)";
+      if (priceTeam) priceTeam.textContent = `$${PLANS.TEAM.priceAnnual}`;
+      if (periodTeam) periodTeam.textContent = "/ year ($24.16/mo billed annually)";
+      if (btnTextPro) btnTextPro.textContent = "Get Pro Annual ($59/yr)";
     } else {
       toggleThumb?.classList.remove("translate-x-6");
       toggleBtn?.classList.remove("bg-indigo-600");
@@ -197,6 +196,7 @@ export function initPricingView() {
       if (periodPro) periodPro.textContent = "/ month";
       if (priceTeam) priceTeam.textContent = `$${PLANS.TEAM.priceMonthly}`;
       if (periodTeam) periodTeam.textContent = "/ month";
+      if (btnTextPro) btnTextPro.textContent = "Upgrade to Pro";
     }
   });
 
@@ -207,7 +207,7 @@ export function initPricingView() {
       if (typeof window.openAuthModal === "function") window.openAuthModal();
       return;
     }
-    await upgradePlanSimulation("pro");
+    await initiateCheckout("pro", isAnnual ? "year" : "month");
   });
 
   upgradeTeamBtn?.addEventListener("click", async () => {
@@ -217,6 +217,6 @@ export function initPricingView() {
       if (typeof window.openAuthModal === "function") window.openAuthModal();
       return;
     }
-    await upgradePlanSimulation("team");
+    await initiateCheckout("team", isAnnual ? "year" : "month");
   });
 }

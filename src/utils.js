@@ -1,8 +1,8 @@
 // Global UI Utilities, Toast Notification, Quota & AI Service Client
-import { PLANS, QUOTA_CONFIG, getPlanLimits } from "./config/plans.js";
+import { PLANS, QUOTA_CONFIG, getPlanLimits, isProTool } from "./config/plans.js";
 import { getCurrentUser } from "./auth.js";
 
-export { getPlanLimits };
+export { getPlanLimits, isProTool };
 
 export function showToast(message, type = "info") {
   const container = document.getElementById("toast-container");
@@ -63,8 +63,16 @@ export function escapeHtml(str) {
     .replace(/'/g, "&#039;");
 }
 
-// Daily Usage Quota Manager
+// Daily Usage Quota State Cache
 const QUOTA_KEY = "webdevhub_daily_quota";
+let serverQuotaCache = null;
+
+export function getHoursUntilMidnightUtc() {
+  const now = new Date();
+  const utcMidnight = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1, 0, 0, 0));
+  const diffMs = utcMidnight.getTime() - now.getTime();
+  return Math.max(1, Math.ceil(diffMs / (1000 * 60 * 60)));
+}
 
 export function getDailyQuotaDetails() {
   const user = getCurrentUser();
@@ -73,18 +81,20 @@ export function getDailyQuotaDetails() {
   const today = new Date().toISOString().split("T")[0];
 
   let used = 0;
-  try {
-    const raw = localStorage.getItem(QUOTA_KEY);
-    if (raw) {
-      const data = JSON.parse(raw);
-      if (data.date === today) {
-        used = data.used || 0;
-      } else {
-        localStorage.setItem(QUOTA_KEY, JSON.stringify({ date: today, used: 0 }));
+  if (serverQuotaCache && serverQuotaCache.date === today) {
+    used = serverQuotaCache.used;
+  } else {
+    try {
+      const raw = localStorage.getItem(QUOTA_KEY);
+      if (raw) {
+        const data = JSON.parse(raw);
+        if (data.date === today) {
+          used = data.used || 0;
+        }
       }
+    } catch {
+      used = 0;
     }
-  } catch {
-    used = 0;
   }
 
   const customKey = getCustomGeminiKey();
@@ -105,32 +115,9 @@ export function getRemainingDailyQuota() {
   return details.remaining;
 }
 
-export function getHoursUntilMidnightUtc() {
-  const now = new Date();
-  const utcMidnight = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1, 0, 0, 0));
-  const diffMs = utcMidnight.getTime() - now.getTime();
-  const diffHours = Math.max(1, Math.round(diffMs / (1000 * 60 * 60)));
-  return diffHours;
-}
-
+// Pass-through for tools — server-side proxy handles authoritative atomic quota checks
 export function consumeDailyQuota() {
-  const customKey = getCustomGeminiKey();
-  if (customKey) return true; // Custom key has unlimited quota
-
-  const details = getDailyQuotaDetails();
-  if (details.used >= details.maxDaily) {
-    openUpgradeModal("AI Daily Limit Reached");
-    return false;
-  }
-
-  const today = new Date().toISOString().split("T")[0];
-  try {
-    localStorage.setItem(QUOTA_KEY, JSON.stringify({ date: today, used: details.used + 1 }));
-    updateHeaderQuotaDisplay();
-    return true;
-  } catch {
-    return true;
-  }
+  return true;
 }
 
 export function updateHeaderQuotaDisplay() {
@@ -145,9 +132,9 @@ export function updateHeaderQuotaDisplay() {
     return;
   }
 
-  const text = `${details.used}/${details.maxDaily} used (${details.plan.badge})`;
+  const text = `${details.used}/${details.maxDaily} AI used (${details.plan.badge})`;
   if (headerElem) headerElem.textContent = text;
-  if (modalElem) modalElem.textContent = `${details.remaining} of ${details.maxDaily} remaining today (Resets in ${details.resetInHours}h)`;
+  if (modalElem) modalElem.textContent = `${details.used} / ${details.maxDaily} used today (${details.remaining} remaining, resets in ${details.resetInHours}h)`;
 }
 
 export function getCustomGeminiKey() {
@@ -198,17 +185,18 @@ export function computeSimpleLineDiff(originalText = "", modifiedText = "") {
   return diff;
 }
 
-// Global API Helper for AI tasks via secure backend proxy
+// Global API Helper for AI tasks via server-side Gemini proxy with atomic quota enforcement
 export async function callAiAssist(task, prompt, context = "") {
   const customKey = getCustomGeminiKey();
   const user = getCurrentUser();
+  const today = new Date().toISOString().split("T")[0];
 
   const res = await fetch("/api/ai/assist", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      ...(customKey ? { "x-gemini-api-key": customKey } : {}),
-      ...(user ? { "x-user-plan": user.plan } : {}),
+      ...(customKey ? { "x-gemini-api-key": customKey, "x-has-custom-key": "true" } : {}),
+      ...(user ? { "x-user-id": user.uid, "x-user-plan": user.plan } : {}),
     },
     body: JSON.stringify({
       task,
@@ -221,12 +209,40 @@ export async function callAiAssist(task, prompt, context = "") {
 
   if (!res.ok) {
     if (res.status === 429) {
-      throw new Error("Daily AI quota reached. Please upgrade to Pro or provide your own Gemini API Key.");
+      const errJson = await res.json().catch(() => ({}));
+      const quotaMsg = errJson.error || "DAILY AI LIMIT REACHED\n\nYou've used all 74 free AI operations for today.\n\nYour free AI allowance resets automatically tomorrow.\n\nUpgrade to PRO for a higher AI allowance.";
+      
+      // Update local quota count to max
+      serverQuotaCache = { date: today, used: 74 };
+      try {
+        localStorage.setItem(QUOTA_KEY, JSON.stringify({ date: today, used: 74 }));
+      } catch {}
+      updateHeaderQuotaDisplay();
+
+      openUpgradeModal("Daily AI Limit Reached (74 Operations)");
+      throw new Error(quotaMsg);
     }
     const errJson = await res.json().catch(() => ({}));
     throw new Error(errJson.error || `Server returned status ${res.status}`);
   }
-  return await res.json();
+
+  const result = await res.json();
+
+  // Sync server quota response
+  if (result.quota && !result.quota.isUnlimited) {
+    serverQuotaCache = {
+      date: today,
+      used: result.quota.used,
+      limit: result.quota.limit,
+      remaining: result.quota.remaining,
+    };
+    try {
+      localStorage.setItem(QUOTA_KEY, JSON.stringify({ date: today, used: result.quota.used }));
+    } catch {}
+    updateHeaderQuotaDisplay();
+  }
+
+  return result;
 }
 
 // Global Upgrade Modal Trigger
