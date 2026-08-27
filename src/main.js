@@ -13,9 +13,12 @@ import { renderPricingView, initPricingView } from "./views/pages/pricing.js";
 import { renderDashboardView, initDashboardView } from "./views/pages/dashboard.js";
 import { renderProfileView, initProfileView } from "./views/pages/profile.js";
 import { renderPrivacyPolicyView, initPrivacyPolicyView } from "./views/pages/privacyPolicy.js";
+import { renderTermsOfServiceView, initTermsOfServiceView } from "./views/pages/termsOfService.js";
+import { renderRefundPolicyView, initRefundPolicyView } from "./views/pages/refundPolicy.js";
 import { renderAboutView, initAboutView } from "./views/pages/about.js";
 import { renderContactView, initContactView } from "./views/pages/contact.js";
 import { renderBillingSuccessView, initBillingSuccessView, renderBillingCancelView, initBillingCancelView } from "./views/pages/billingResult.js";
+import { initAdUnits } from "./components/AdUnit.js";
 
 // AI Tools Views
 import { renderAiDesignSuggesterView, initAiDesignSuggesterView } from "./views/tools/aiDesignSuggester.js";
@@ -197,11 +200,15 @@ const routes = {
   // Pages & Aliases
   "privacy-policy": { render: renderPrivacyPolicyView, init: initPrivacyPolicyView, title: "Privacy Policy - WebDevHub" },
   "privacy": { render: renderPrivacyPolicyView, init: initPrivacyPolicyView, title: "Privacy Policy - WebDevHub" },
+  "terms": { render: renderTermsOfServiceView, init: initTermsOfServiceView, title: "Terms of Service - WebDevHub" },
+  "terms-of-service": { render: renderTermsOfServiceView, init: initTermsOfServiceView, title: "Terms of Service - WebDevHub" },
+  "refund-policy": { render: renderRefundPolicyView, init: initRefundPolicyView, title: "Refund & Cancellation Policy - WebDevHub" },
+  "cancellation": { render: renderRefundPolicyView, init: initRefundPolicyView, title: "Refund & Cancellation Policy - WebDevHub" },
+  "refunds": { render: renderRefundPolicyView, init: initRefundPolicyView, title: "Refund & Cancellation Policy - WebDevHub" },
   "about": { render: renderAboutView, init: initAboutView, title: "About Us - WebDevHub" },
   "about-us": { render: renderAboutView, init: initAboutView, title: "About Us - WebDevHub" },
   "contact": { render: renderContactView, init: initContactView, title: "Contact Us - WebDevHub" },
   "contact-us": { render: renderContactView, init: initContactView, title: "Contact Us - WebDevHub" },
-  "terms": { render: renderPrivacyPolicyView, init: initPrivacyPolicyView, title: "Terms of Service - WebDevHub" },
   "security": { render: renderPrivacyPolicyView, init: initPrivacyPolicyView, title: "Security Architecture - WebDevHub" }
 };
 
@@ -248,6 +255,13 @@ function router() {
     } catch (err) {
       console.error("View initialization error:", err);
     }
+  }
+
+  // Initialize Google AdSense units for Free visitors (or suppress for Pro/Team)
+  try {
+    initAdUnits();
+  } catch (adErr) {
+    console.warn("AdUnit initialization notice:", adErr);
   }
 
   // Close mobile sidebar if open
@@ -491,6 +505,42 @@ function setupGlobalSearch() {
   });
 }
 
+// Cookie & Privacy Compliance Banner
+function setupCookieConsent() {
+  const CONSENT_KEY = "webdevhub_cookie_consent_v1";
+  if (localStorage.getItem(CONSENT_KEY)) return;
+
+  const banner = document.createElement("div");
+  banner.id = "cookie-consent-banner";
+  banner.className = "fixed bottom-4 left-4 right-4 md:left-auto md:right-6 md:max-w-md z-50 bg-slate-900/95 border border-slate-700/80 backdrop-blur-md rounded-2xl p-4 shadow-2xl animate-fadeIn flex flex-col gap-3 text-xs text-slate-300";
+  banner.innerHTML = `
+    <div class="flex items-start justify-between gap-2">
+      <div class="flex items-center gap-2">
+        <span class="text-base">🍪</span>
+        <span class="font-bold text-white tracking-tight">Privacy &amp; Cookie Preferences</span>
+      </div>
+      <button id="cookie-close-btn" class="text-slate-500 hover:text-white">&times;</button>
+    </div>
+    <p class="text-[11px] text-slate-400 leading-relaxed">
+      We use strictly necessary cookies for authentication and performance. Free tier is supported by privacy-respecting developer advertising. Read our <a href="#/privacy" class="text-indigo-400 hover:underline">Privacy Policy</a> and <a href="#/terms" class="text-indigo-400 hover:underline">Terms</a>.
+    </p>
+    <div class="flex items-center justify-end gap-2 pt-1 border-t border-slate-800">
+      <a href="#/privacy" class="px-3 py-1.5 rounded-xl text-[11px] font-medium text-slate-400 hover:text-white">Learn More</a>
+      <button id="cookie-accept-btn" class="px-4 py-1.5 rounded-xl text-[11px] font-bold bg-indigo-600 hover:bg-indigo-500 text-white transition shadow-sm">Got It</button>
+    </div>
+  `;
+
+  document.body.appendChild(banner);
+
+  const dismiss = () => {
+    localStorage.setItem(CONSENT_KEY, "accepted");
+    banner.remove();
+  };
+
+  document.getElementById("cookie-accept-btn")?.addEventListener("click", dismiss);
+  document.getElementById("cookie-close-btn")?.addEventListener("click", dismiss);
+}
+
 // Initialize Single Page Application Engine
 function initApp() {
   setupSidebar();
@@ -498,12 +548,16 @@ function initApp() {
   setupProUpgradeModal();
   setupAuthModal();
   setupGlobalSearch();
+  setupCookieConsent();
   updateHeaderQuotaDisplay();
   updateHeaderAuthUI();
 
   subscribeToAuth((user) => {
     updateHeaderAuthUI();
     updateHeaderQuotaDisplay();
+    try {
+      initAdUnits();
+    } catch (e) {}
   });
 
   router();

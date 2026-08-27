@@ -2,6 +2,7 @@
 // High-density quick reference cards with search filter and click-to-copy
 
 import { copyToClipboard, showToast, escapeHtml } from "../../utils.js";
+import { renderAdUnit } from "../../components/AdUnit.js";
 
 const CHEAT_DATA = {
   git: [
@@ -84,6 +85,9 @@ export function renderCheatSheetsSuiteView() {
         <button data-cat="http" class="cheat-cat-btn px-3 py-1.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">HTTP Status Codes</button>
         <button data-cat="sql" class="cheat-cat-btn px-3 py-1.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">SQL Queries</button>
       </div>
+
+      <!-- Google AdSense Unit (Free Tier Only) -->
+      ${renderAdUnit({ slotId: "cheat-sheets-banner", format: "horizontal" })}
 
       <!-- Commands Grid -->
       <div id="cheat-cards-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">

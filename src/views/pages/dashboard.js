@@ -150,6 +150,36 @@ export function renderDashboardView() {
         </div>
       </div>
 
+      <!-- Monetization & System Telemetry -->
+      <div class="p-6 rounded-3xl bg-slate-900/60 border border-slate-800 shadow-xl space-y-4">
+        <div class="flex items-center justify-between">
+          <h2 class="text-sm font-bold text-white uppercase tracking-wider font-mono flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+            Monetization &amp; Architecture Status
+          </h2>
+          <span class="text-[10px] font-mono text-slate-500">Safepay Active &bull; Gemini 2.5/3.7 &bull; Firestore</span>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+          <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800/80 space-y-1">
+            <div class="text-slate-400 text-[11px]">Payment Gateway</div>
+            <div class="font-bold text-emerald-400 flex items-center gap-1.5">
+              <span>Safepay Verified</span>
+              <span class="text-[10px] px-1.5 py-0.2 bg-emerald-500/20 rounded text-emerald-300">Active</span>
+            </div>
+          </div>
+          <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800/80 space-y-1">
+            <div class="text-slate-400 text-[11px]">AI Model Engine</div>
+            <div class="font-bold text-indigo-300 font-mono">Server-Side Proxy (Gemini)</div>
+          </div>
+          <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800/80 space-y-1">
+            <div class="text-slate-400 text-[11px]">Advertising Status</div>
+            <div class="font-bold ${plan.id === "free" ? "text-amber-400" : "text-emerald-400"}">
+              ${plan.id === "free" ? "Google AdSense (Free Tier)" : "100% Ad-Free (Pro)"}
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   `;
 }

@@ -1,0 +1,11 @@
+# Google AdSense ads.txt Configuration for Web Developer Hub
+# Once your Google AdSense account is approved, replace the line below with your authorized publisher details:
+# Example: google.com, pub-XXXXXXXXXXXXXXXX, DIRECT, f08c47fec0942fa0
+#
+# Field 1: Domain name of the advertising system (e.g. google.com)
+# Field 2: Your AdSense Publisher ID (pub-XXXXXXXXXXXXXXXX)
+# Field 3: Relationship (DIRECT for direct account holders)
+# Field 4: Certification Authority ID (f08c47fec0942fa0 for Google)
+#
+# Uncomment and insert your valid publisher ID when configured:
+# google.com, pub-YOUR_ACTUAL_PUBLISHER_ID, DIRECT, f08c47fec0942fa0

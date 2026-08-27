@@ -2,6 +2,7 @@
 // 100% Client-side interactive visual CSS builders and code generators
 
 import { copyToClipboard, showToast, escapeHtml } from "../../utils.js";
+import { renderAdUnit } from "../../components/AdUnit.js";
 
 export function renderCssSuiteView() {
   return `
@@ -223,6 +224,9 @@ export function renderCssSuiteView() {
         </div>
 
       </div>
+
+      <!-- Google AdSense Unit (Free Tier Only) -->
+      ${renderAdUnit({ slotId: "css-suite-banner", format: "horizontal" })}
 
       <!-- 250+ Word Technical Guide Section -->
       <section class="mt-8 p-6 sm:p-8 rounded-3xl bg-slate-900/70 border border-slate-800 text-slate-300 space-y-4">

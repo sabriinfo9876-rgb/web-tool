@@ -3,6 +3,7 @@
 // Provides Original Code, Improved Code, Changes Breakdown, Live Responsive Sandboxed Preview across 1440px, 1024px, 768px, 390px, 320px
 
 import { copyToClipboard, showToast, callAiAssist, consumeDailyQuota, getRemainingDailyQuota, escapeHtml } from "../../utils.js";
+import { renderAdUnit } from "../../components/AdUnit.js";
 
 export function renderAiDesignSuggesterView() {
   return `
@@ -153,6 +154,9 @@ export function renderAiDesignSuggesterView() {
           <a href="#/tools/gradient-palette" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition">Gradient Maker</a>
         </div>
       </div>
+
+      <!-- Google AdSense Unit (Free Tier Only) -->
+      ${renderAdUnit({ slotId: "design-suggester-banner", format: "horizontal" })}
 
       <!-- 250+ Word Technical Guide & FAQ -->
       <section class="mt-8 p-6 sm:p-8 rounded-3xl bg-slate-900/70 border border-slate-800 text-slate-300 space-y-6">

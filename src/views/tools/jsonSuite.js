@@ -2,6 +2,7 @@
 // 100% Client-side, fast, private, with line-error indicator and tree navigator
 
 import { copyToClipboard, showToast, escapeHtml } from "../../utils.js";
+import { renderAdUnit } from "../../components/AdUnit.js";
 
 export function renderJsonSuiteView() {
   return `
@@ -84,6 +85,9 @@ export function renderJsonSuiteView() {
           <a href="#/tools/regex-tester" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition">Regex Tester</a>
         </div>
       </div>
+
+      <!-- Google AdSense Unit (Free Tier Only) -->
+      ${renderAdUnit({ slotId: "json-suite-banner", format: "horizontal" })}
 
       <!-- 250+ Word Technical Guide Section -->
       <section class="mt-8 p-6 sm:p-8 rounded-3xl bg-slate-900/70 border border-slate-800 text-slate-300 space-y-4">

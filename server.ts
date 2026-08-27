@@ -1,5 +1,6 @@
 import express from "express";
 import path from "path";
+import fs from "fs";
 import crypto from "crypto";
 import { createServer as createViteServer } from "vite";
 import { GoogleGenAI } from "@google/genai";
@@ -56,7 +57,44 @@ const snippetStore: SavedSnippet[] = [
   }
 ];
 
-// Lazy Gemini AI Client initialization
+// Lazy Gemini AI Client initialization & Global Cost Protection Config
+const GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-2.5-flash";
+const AI_MAX_REQUEST_LENGTH = parseInt(process.env.AI_MAX_REQUEST_LENGTH || "50000", 10);
+const AI_MAX_OUTPUT_TOKENS = parseInt(process.env.AI_MAX_OUTPUT_TOKENS || "8192", 10);
+const AI_RATE_LIMIT_PER_MINUTE = parseInt(process.env.AI_RATE_LIMIT || "30", 10);
+const AI_GLOBAL_DAILY_LIMIT = parseInt(process.env.AI_GLOBAL_DAILY_LIMIT || "25000", 10);
+
+// In-Memory Monetization & Telemetry Stats
+const monetizationMetrics = {
+  totalAiRequests: 0,
+  successfulAiRequests: 0,
+  fallbackAiRequests: 0,
+  quotaExhaustions: 0,
+  checkoutSessionsCreated: 0,
+  successfulPayments: 0,
+  failedPayments: 0,
+  canceledSubscriptions: 0,
+  uniqueDailyUsers: new Set<string>(),
+  recentAuditLogs: [] as Array<{ type: string; details: string; timestamp: string }>,
+};
+
+// Rate limiter store: Map<userId_or_ip, { count: number; resetAt: number }>
+const rateLimitStore = new Map<string, { count: number; resetAt: number }>();
+
+function checkRateLimit(key: string): { allowed: boolean; remaining: number } {
+  const now = Date.now();
+  const entry = rateLimitStore.get(key);
+  if (!entry || now > entry.resetAt) {
+    rateLimitStore.set(key, { count: 1, resetAt: now + 60000 });
+    return { allowed: true, remaining: AI_RATE_LIMIT_PER_MINUTE - 1 };
+  }
+  if (entry.count >= AI_RATE_LIMIT_PER_MINUTE) {
+    return { allowed: false, remaining: 0 };
+  }
+  entry.count++;
+  return { allowed: true, remaining: AI_RATE_LIMIT_PER_MINUTE - entry.count };
+}
+
 let aiClient: GoogleGenAI | null = null;
 function getAiClient(): GoogleGenAI | null {
   if (!process.env.GEMINI_API_KEY) return null;
@@ -2150,18 +2188,92 @@ app.post("/api/safepay/cancel-subscription", (req, res) => {
 });
 
 // ==========================================
+// 6. INTERNAL MONETIZATION & USAGE ANALYTICS
+// ==========================================
+let quotaExhaustionCount = 0;
+let checkoutAttemptsCount = 0;
+
+app.get("/ads.txt", (req, res) => {
+  const adsTxtPath = path.join(process.cwd(), "public", "ads.txt");
+  if (fs.existsSync(adsTxtPath)) {
+    res.setHeader("Content-Type", "text/plain");
+    return res.sendFile(adsTxtPath);
+  }
+  res.setHeader("Content-Type", "text/plain");
+  res.send("# Google AdSense ads.txt - Web Developer Hub\n# Unconfigured placeholder\n");
+});
+
+app.get("/api/admin/monetization-stats", (req, res) => {
+  const totalSubscribers = userSubscriptions.size;
+  let proCount = 0;
+  let teamCount = 0;
+  let freeActiveCount = 0;
+
+  userSubscriptions.forEach((sub) => {
+    if (sub.status === "active" || sub.status === "trialing") {
+      if (sub.plan === "team") teamCount++;
+      else if (sub.plan === "pro") proCount++;
+      else freeActiveCount++;
+    } else {
+      freeActiveCount++;
+    }
+  });
+
+  const today = getTodayUtcString();
+  let totalAiUsedToday = 0;
+  let activeAiUsersToday = 0;
+
+  dailyUsageStore.forEach((record, key) => {
+    if (key.startsWith(today)) {
+      totalAiUsedToday += record.used;
+      activeAiUsersToday++;
+    }
+  });
+
+  return res.json({
+    metrics: {
+      totalTrackedUsers: Math.max(1, totalSubscribers + activeAiUsersToday),
+      activeAiUsersToday,
+      totalAiUsedToday,
+      quotaExhaustionCount,
+      checkoutAttemptsCount,
+      successfulPaymentsCount: safepayPaymentLogs.filter((l) => l.event.includes("completed") || l.event.includes("paid")).length,
+      subscribers: {
+        free: freeActiveCount,
+        pro: proCount,
+        team: teamCount,
+      },
+    },
+    safepayConfigured: Boolean(process.env.SAFEPAY_SECRET_KEY),
+    geminiConfigured: Boolean(process.env.GEMINI_API_KEY),
+    geminiModel: process.env.GEMINI_MODEL || "gemini-2.5-flash",
+    recentPayments: safepayPaymentLogs.slice(-10),
+  });
+});
+
+// ==========================================
 // 7. SERVER-SIDE GEMINI AI DEVELOPER ASSISTANT WITH ATOMIC QUOTA
 // ==========================================
 app.post("/api/ai/assist", async (req, res) => {
   const { task, prompt, context, customApiKey } = req.body;
   const headerApiKey = req.headers["x-gemini-api-key"] as string | undefined;
 
+  // IP/User rate limit: Max requests per minute
+  const clientIp = req.ip || "unknown";
+  const rateResult = checkRateLimit(clientIp);
+  if (!rateResult.allowed) {
+    return res.status(429).json({
+      error: "Rate limit exceeded. Please wait a moment before sending another AI request.",
+    });
+  }
+
   if (!prompt || typeof prompt !== "string") {
     return res.status(400).json({ error: "Prompt is required." });
   }
 
-  if (prompt.length > 60000) {
-    return res.status(400).json({ error: "Prompt exceeds maximum allowed length (60,000 characters)." });
+  const maxRequestLength = Number(process.env.AI_MAX_REQUEST_LENGTH) || 60000;
+  if (prompt.length > maxRequestLength) {
+    return res.status(400).json({ error: `Prompt exceeds maximum allowed length (${maxRequestLength.toLocaleString()} characters).` });
   }
 
   const effectiveKey = customApiKey || headerApiKey || process.env.GEMINI_API_KEY;
@@ -2177,6 +2289,7 @@ app.post("/api/ai/assist", async (req, res) => {
   if (!hasCustomKey) {
     reservation = checkAndReserveQuota(userId, userPlan);
     if (!reservation.allowed) {
+      quotaExhaustionCount++;
       return res.status(429).json({
         error: `DAILY AI LIMIT REACHED\n\nYou've used all ${reservation.limit} free AI operations for today.\n\nYour free AI allowance resets automatically tomorrow at 00:00 UTC.\n\nUpgrade to PRO for a higher AI allowance.`,
         quotaExceeded: true,
@@ -2364,12 +2477,16 @@ Actionable developer recommendations.`;
       ? `Task: ${task || "General Developer Query"}\nContext/Code:\n${context}\n\nUser Request: ${prompt}`
       : `Task: ${task || "General Developer Query"}\nUser Request: ${prompt}`;
 
+    const modelName = process.env.GEMINI_MODEL || "gemini-2.5-flash";
+    const maxOutputTokens = Number(process.env.AI_MAX_OUTPUT_TOKENS) || 4096;
+
     const response = await ai.models.generateContent({
-      model: "gemini-3.7-flash",
+      model: modelName,
       contents: fullPrompt,
       config: {
         systemInstruction,
         temperature: 0.4,
+        maxOutputTokens,
       },
     });
 
