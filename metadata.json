@@ -1,6 +1,6 @@
 {
-  "name": "Web Developer Hub",
-  "description": "All-in-One Web Developer Hub with CSS Generator, Text Analyzer, Screen Resizer, AI Responsive Code Converter, API Tester, AI Dev Assistant, Code Sign & Approve Gatekeeper, and Fix My GitHub Project Repair Engine.",
+  "name": "NEXORA AI",
+  "description": "NEXORA AI is an autonomous intelligence engine designed for advanced reasoning, development, analysis, and multi-brain problem solving.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

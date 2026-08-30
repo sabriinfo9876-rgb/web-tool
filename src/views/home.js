@@ -1,4 +1,4 @@
-// Home View: Complete 74 Developer Utilities & AI Studio Catalog
+// Home View: Complete 74 Developer Utilities & NEXORA AI Catalog
 // Searchable, filterable directory with real-time fuzzy keyword search and direct routing
 
 export function renderHomeView() {
@@ -6,17 +6,17 @@ export function renderHomeView() {
     <div class="space-y-8 animate-fadeIn">
       
       <!-- Hero Banner -->
-      <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-indigo-950/90 via-slate-900 to-purple-950/90 border border-indigo-500/20 p-6 sm:p-10 shadow-2xl">
+      <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-cyan-950/90 via-slate-900 to-indigo-950/90 border border-cyan-500/20 p-6 sm:p-10 shadow-2xl">
         <div class="relative z-10 max-w-3xl space-y-4">
-          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 text-xs font-semibold">
-            <span class="w-2 h-2 rounded-full bg-indigo-400 animate-ping"></span>
-            <span>AI Developer Tools + Web Developer Toolbox (74 Tools)</span>
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-xs font-semibold">
+            <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+            <span>NEXORA AI &bull; Autonomous Intelligence Engine (74 Tools)</span>
           </div>
           <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight">
-            The Ultimate <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-300 to-cyan-300">Developer Hub</span> for Modern Web Creators.
+            The Autonomous <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-indigo-300 to-purple-300">Intelligence Engine</span> for Modern Developers.
           </h1>
           <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
-            Fast, client-side, zero-telemetry utilities. Format JSON, convert units, debug flexbox, inspect JWTs, test APIs, compress images, and generate responsive UI components with Gemini AI.
+            Fast, client-side, zero-telemetry utilities and multi-brain reasoning. Format JSON, convert units, debug flexbox, inspect JWTs, test APIs, compress images, and generate responsive UI components with NEXORA AI.
           </p>
           
           <!-- Quick Search in Hero -->
@@ -26,29 +26,45 @@ export function renderHomeView() {
                 type="text" 
                 id="hero-tool-search" 
                 placeholder="Search 74 developer tools (e.g. JSON, Flexbox, Regex, JWT, Clean Code, cURL, Image Compress)..." 
-                class="w-full bg-slate-950/90 border border-indigo-500/30 rounded-2xl pl-10 pr-4 py-3 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 shadow-xl"
+                class="w-full bg-slate-950/90 border border-cyan-500/30 rounded-2xl pl-10 pr-4 py-3 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 shadow-xl"
               />
-              <svg class="w-5 h-5 text-indigo-400 absolute left-3.5 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="w-5 h-5 text-cyan-400 absolute left-3.5 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
             </div>
-            <a href="#tools/code-to-design" class="px-5 py-3 rounded-2xl bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-bold text-xs sm:text-sm transition shadow-lg shadow-indigo-500/25 flex items-center justify-center gap-2 shrink-0">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-              <span>Explore AI Studio</span>
+            <a href="#/agent" class="px-5 py-3 rounded-2xl bg-gradient-to-r from-cyan-500 via-indigo-600 to-purple-600 hover:from-cyan-400 hover:to-indigo-500 text-white font-bold text-xs sm:text-sm transition shadow-lg shadow-cyan-500/25 flex items-center justify-center gap-2 shrink-0">
+              <span class="w-2 h-2 rounded-full bg-cyan-300 animate-ping"></span>
+              <span>Launch NEXORA AI Agent</span>
             </a>
           </div>
         </div>
         
         <!-- Decorative Glows -->
-        <div class="absolute -right-20 -bottom-20 w-80 h-80 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
-        <div class="absolute right-40 -top-20 w-60 h-60 bg-purple-500/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -right-20 -bottom-20 w-80 h-80 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute right-40 -top-20 w-60 h-60 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
+      </div>
+
+      <!-- NEXORA Autonomous Agent Feature Highlight Card -->
+      <div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-slate-900 via-cyan-950/40 to-slate-900 border border-cyan-500/30 p-5 sm:p-6 shadow-xl flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div class="space-y-1 text-center sm:text-left">
+          <div class="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-[11px] font-bold">
+            <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
+            <span>AUTONOMOUS DEVELOPER ENGINE</span>
+          </div>
+          <h2 class="text-lg sm:text-xl font-black text-white">Don't know which tool to use? Let NEXORA handle it.</h2>
+          <p class="text-xs text-slate-300 max-w-2xl">Type requests in plain English — "Fix my responsive navbar", "Convert HTML to React", "Find bugs in my project" — NEXORA selects tools, creates a diff, and generates solutions automatically.</p>
+        </div>
+        <a href="#/agent" class="px-4 py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-black text-xs transition shadow-lg shadow-cyan-500/20 shrink-0 flex items-center gap-2">
+          <span>Try NEXORA Agent</span>
+          <span>&rarr;</span>
+        </a>
       </div>
 
       <!-- Category Filter Tabs -->
       <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-4">
         <div class="flex flex-wrap gap-1.5" id="home-category-tabs">
-          <button data-cat="all" class="home-cat-btn px-3.5 py-1.5 rounded-xl text-xs font-bold bg-indigo-600 text-white shadow-lg shadow-indigo-500/20 transition">All Tools (76)</button>
-          <button data-cat="ai" class="home-cat-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-900 transition">AI Tools (9)</button>
+          <button data-cat="all" class="home-cat-btn px-3.5 py-1.5 rounded-xl text-xs font-bold bg-cyan-600 text-white shadow-lg shadow-cyan-500/20 transition">All Tools (76)</button>
+          <button data-cat="ai" class="home-cat-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-900 transition">Autonomous Tools (9)</button>
           <button data-cat="web" class="home-cat-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-900 transition">Web Tools (22)</button>
           <button data-cat="css" class="home-cat-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-900 transition">CSS Tools (11)</button>
           <button data-cat="image" class="home-cat-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-900 transition">Media &amp; Images (7)</button>
@@ -68,20 +84,20 @@ export function renderHomeView() {
       <!-- Features Overview -->
       <section class="mt-12 p-6 sm:p-8 rounded-3xl bg-slate-900/60 border border-slate-800/80 space-y-4 text-slate-300">
         <h2 class="text-xl font-bold text-white tracking-tight flex items-center gap-2">
-          <svg class="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-          Why Modern Engineers Rely on Web Developer Hub
+          <span class="font-mono font-black text-cyan-400">N</span>
+          Why Modern Engineers Rely on NEXORA AI
         </h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2 text-xs leading-relaxed">
           <div class="space-y-2">
-            <h3 class="font-bold text-indigo-300">100% Client-Side Privacy</h3>
+            <h3 class="font-bold text-cyan-300">100% Client-Side Privacy</h3>
             <p class="text-slate-400">All conversion algorithms, image manipulations, token parsing, and formatters execute strictly inside your local browser runtime. No data is stored or logged without your consent.</p>
           </div>
           <div class="space-y-2">
-            <h3 class="font-bold text-purple-300">Smart AI Engineering</h3>
-            <p class="text-slate-400">Integrated with Gemini 3.7 to analyze HTML/CSS, suggest responsive viewport breakpoints, clean codebase anti-patterns, and inspect ZIP project dependencies.</p>
+            <h3 class="font-bold text-indigo-300">Autonomous Neural Engineering</h3>
+            <p class="text-slate-400">Integrated with NEXORA Multi-Brain consensus engine to analyze HTML/CSS, suggest responsive viewport breakpoints, clean codebase anti-patterns, and inspect repository dependencies.</p>
           </div>
           <div class="space-y-2">
-            <h3 class="font-bold text-cyan-300">High-Density Productivity</h3>
+            <h3 class="font-bold text-purple-300">High-Density Productivity</h3>
             <p class="text-slate-400">Instant keyboard navigation (Ctrl+K), zero-dependency client tools, copyable output snippets, and responsive touch/desktop interfaces.</p>
           </div>
         </div>

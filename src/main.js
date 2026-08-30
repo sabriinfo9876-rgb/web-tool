@@ -1,12 +1,13 @@
-// Web Developer Hub — SPA Router & Complete 74-Tool Hub Registry
+// NEXORA AI — SPA Router & Complete 74-Tool Hub Registry
 // Handles hash routing, dynamic view rendering, modal handlers, auth state & monetization
 
 import { showToast, getRemainingDailyQuota, getCustomGeminiKey, setCustomGeminiKey, updateHeaderQuotaDisplay } from "./utils.js";
-import { getCurrentUser, subscribeToAuth, loginWithEmail, registerWithEmail, loginWithGoogle, logoutUser } from "./auth.js";
+import { getCurrentUser, subscribeToAuth, loginWithEmail, registerWithEmail, loginWithGoogle, logoutUser, loginWithSandbox, getFriendlyAuthErrorMessage } from "./auth.js";
 import { getPlanLimits } from "./config/plans.js";
 
 // Core Views
 import { renderHomeView, initHomeView } from "./views/home.js";
+import { renderJarvisAgentView, initJarvisAgentView } from "./views/tools/jarvisAgentView.js";
 
 // Pages & Monetization
 import { renderPricingView, initPricingView } from "./views/pages/pricing.js";
@@ -64,152 +65,157 @@ import { renderCheatSheetsSuiteView, initCheatSheetsSuiteView } from "./views/to
 import { renderCloudVaultView, initCloudVaultView } from "./views/tools/cloudVault.js";
 
 const routes = {
-  "": { render: renderHomeView, init: initHomeView, title: "Web Developer Hub - AI Developer Tools & 74 Developer Utilities" },
-  "home": { render: renderHomeView, init: initHomeView, title: "Web Developer Hub - AI Developer Tools & 74 Developer Utilities" },
+  "": { render: renderHomeView, init: initHomeView, title: "NEXORA AI — Autonomous Intelligence Engine & 74 Developer Utilities" },
+  "home": { render: renderHomeView, init: initHomeView, title: "NEXORA AI — Autonomous Intelligence Engine & 74 Developer Utilities" },
+  "agent": { render: renderJarvisAgentView, init: initJarvisAgentView, title: "NEXORA AI — Autonomous Developer Agent" },
+  "nexora": { render: renderJarvisAgentView, init: initJarvisAgentView, title: "NEXORA AI — Autonomous Developer Agent" },
+  "jarvis": { render: renderJarvisAgentView, init: initJarvisAgentView, title: "NEXORA AI — Autonomous Developer Agent" },
+  "tools/jarvis-agent": { render: renderJarvisAgentView, init: initJarvisAgentView, title: "NEXORA AI — Autonomous Developer Agent" },
+  "tools/nexora-agent": { render: renderJarvisAgentView, init: initJarvisAgentView, title: "NEXORA AI — Autonomous Developer Agent" },
   
   // App Pages & Monetization
-  "pricing": { render: renderPricingView, init: initPricingView, title: "Pricing & Developer Plans - WebDevHub" },
-  "plans": { render: renderPricingView, init: initPricingView, title: "Pricing & Developer Plans - WebDevHub" },
-  "dashboard": { render: renderDashboardView, init: initDashboardView, title: "Developer Dashboard - WebDevHub" },
-  "account": { render: renderProfileView, init: initProfileView, title: "Account Settings - WebDevHub" },
-  "profile": { render: renderProfileView, init: initProfileView, title: "Profile & Settings - WebDevHub" },
-  "billing/success": { render: renderBillingSuccessView, init: initBillingSuccessView, title: "Payment Successful - WebDevHub" },
-  "billing/cancel": { render: renderBillingCancelView, init: initBillingCancelView, title: "Payment Canceled - WebDevHub" },
-  "payment/success": { render: renderBillingSuccessView, init: initBillingSuccessView, title: "Payment Successful - WebDevHub" },
-  "payment/cancel": { render: renderBillingCancelView, init: initBillingCancelView, title: "Payment Canceled - WebDevHub" },
+  "pricing": { render: renderPricingView, init: initPricingView, title: "Pricing & Plans — NEXORA AI" },
+  "plans": { render: renderPricingView, init: initPricingView, title: "Pricing & Plans — NEXORA AI" },
+  "dashboard": { render: renderDashboardView, init: initDashboardView, title: "NEXORA Dashboard — NEXORA AI" },
+  "account": { render: renderProfileView, init: initProfileView, title: "Account Settings — NEXORA AI" },
+  "profile": { render: renderProfileView, init: initProfileView, title: "Profile & Settings — NEXORA AI" },
+  "billing/success": { render: renderBillingSuccessView, init: initBillingSuccessView, title: "Payment Successful — NEXORA AI" },
+  "billing/cancel": { render: renderBillingCancelView, init: initBillingCancelView, title: "Payment Canceled — NEXORA AI" },
+  "payment/success": { render: renderBillingSuccessView, init: initBillingSuccessView, title: "Payment Successful — NEXORA AI" },
+  "payment/cancel": { render: renderBillingCancelView, init: initBillingCancelView, title: "Payment Canceled — NEXORA AI" },
 
   // 1-9: AI Tools
-  "tools/fix-github-project": { render: renderFixGithubProjectView, init: initFixGithubProjectView, title: "Fix My GitHub Project - Automated Project Repair Engine - WebDevHub" },
-  "tools/fix-my-github-project": { render: renderFixGithubProjectView, init: initFixGithubProjectView, title: "Fix My GitHub Project - WebDevHub" },
-  "tools/github-repair": { render: renderFixGithubProjectView, init: initFixGithubProjectView, title: "Fix My GitHub Project - WebDevHub" },
-  "tools/github-project-repair": { render: renderFixGithubProjectView, init: initFixGithubProjectView, title: "Fix My GitHub Project - WebDevHub" },
-  "tools/ai-design-suggester": { render: renderAiDesignSuggesterView, init: initAiDesignSuggesterView, title: "Code to Design - AI Design Suggester - WebDevHub" },
-  "tools/code-to-design": { render: renderAiDesignSuggesterView, init: initAiDesignSuggesterView, title: "Code to Design - WebDevHub" },
-  "tools/ui-prompt-engine": { render: renderUiPromptEngineView, init: initUiPromptEngineView, title: "Prompt to UI - AI UI Generator - WebDevHub" },
-  "tools/prompt-to-ui": { render: renderUiPromptEngineView, init: initUiPromptEngineView, title: "Prompt to UI - WebDevHub" },
-  "tools/responsive-converter": { render: renderResponsiveConverterView, init: initResponsiveConverterView, title: "Make Responsive - Mobile Transformer - WebDevHub" },
-  "tools/make-responsive": { render: renderResponsiveConverterView, init: initResponsiveConverterView, title: "Make Responsive - WebDevHub" },
-  "tools/flex-grid-fix": { render: renderFlexGridFixView, init: initFlexGridFixView, title: "Flex & Grid Fix - AI CSS Layout Fixer - WebDevHub" },
-  "tools/fix-html": { render: renderFixHtmlView, init: initFixHtmlView, title: "Fix HTML - AI DOM Cleaner - WebDevHub" },
-  "tools/clean-code": { render: renderCleanCodeView, init: initCleanCodeView, title: "Clean My Code - Quality & Refactoring - WebDevHub" },
-  "tools/clean-my-code": { render: renderCleanCodeView, init: initCleanCodeView, title: "Clean My Code - WebDevHub" },
-  "tools/ai-code-refactor": { render: renderCleanCodeView, init: initCleanCodeView, title: "AI Code Refactor - WebDevHub" },
-  "tools/zip-debugger": { render: renderZipDebuggerView, init: initZipDebuggerView, title: "Check ZIP Project - Architecture Scanner - WebDevHub" },
-  "tools/check-zip-project": { render: renderZipDebuggerView, init: initZipDebuggerView, title: "Check ZIP Project - WebDevHub" },
-  "tools/code-sign-approve": { render: renderCodeSignApproveView, init: initCodeSignApproveView, title: "Code Sign & Approve - AI Authorization & Cryptographic Gatekeeper - WebDevHub" },
-  "tools/code-approval": { render: renderCodeSignApproveView, init: initCodeSignApproveView, title: "Code Sign & Approve - WebDevHub" },
-  "tools/sign-approve": { render: renderCodeSignApproveView, init: initCodeSignApproveView, title: "Code Sign & Approve - WebDevHub" },
+  "tools/fix-github-project": { render: renderFixGithubProjectView, init: initFixGithubProjectView, title: "Fix My GitHub Project — NEXORA AI" },
+  "tools/fix-my-github-project": { render: renderFixGithubProjectView, init: initFixGithubProjectView, title: "Fix My GitHub Project — NEXORA AI" },
+  "tools/github-repair": { render: renderFixGithubProjectView, init: initFixGithubProjectView, title: "Fix My GitHub Project — NEXORA AI" },
+  "tools/github-project-repair": { render: renderFixGithubProjectView, init: initFixGithubProjectView, title: "Fix My GitHub Project — NEXORA AI" },
+  "tools/ai-design-suggester": { render: renderAiDesignSuggesterView, init: initAiDesignSuggesterView, title: "Code to Design — NEXORA AI" },
+  "tools/code-to-design": { render: renderAiDesignSuggesterView, init: initAiDesignSuggesterView, title: "Code to Design — NEXORA AI" },
+  "tools/ui-prompt-engine": { render: renderUiPromptEngineView, init: initUiPromptEngineView, title: "Prompt to UI — NEXORA AI" },
+  "tools/prompt-to-ui": { render: renderUiPromptEngineView, init: initUiPromptEngineView, title: "Prompt to UI — NEXORA AI" },
+  "tools/responsive-converter": { render: renderResponsiveConverterView, init: initResponsiveConverterView, title: "Make Responsive — NEXORA AI" },
+  "tools/make-responsive": { render: renderResponsiveConverterView, init: initResponsiveConverterView, title: "Make Responsive — NEXORA AI" },
+  "tools/flex-grid-fix": { render: renderFlexGridFixView, init: initFlexGridFixView, title: "Flex & Grid Fix — NEXORA AI" },
+  "tools/fix-html": { render: renderFixHtmlView, init: initFixHtmlView, title: "Fix HTML — NEXORA AI" },
+  "tools/clean-code": { render: renderCleanCodeView, init: initCleanCodeView, title: "Clean My Code — NEXORA AI" },
+  "tools/clean-my-code": { render: renderCleanCodeView, init: initCleanCodeView, title: "Clean My Code — NEXORA AI" },
+  "tools/ai-code-refactor": { render: renderCleanCodeView, init: initCleanCodeView, title: "AI Code Refactor — NEXORA AI" },
+  "tools/zip-debugger": { render: renderZipDebuggerView, init: initZipDebuggerView, title: "Check ZIP Project — NEXORA AI" },
+  "tools/check-zip-project": { render: renderZipDebuggerView, init: initZipDebuggerView, title: "Check ZIP Project — NEXORA AI" },
+  "tools/code-sign-approve": { render: renderCodeSignApproveView, init: initCodeSignApproveView, title: "Code Sign & Approve — NEXORA AI" },
+  "tools/code-approval": { render: renderCodeSignApproveView, init: initCodeSignApproveView, title: "Code Sign & Approve — NEXORA AI" },
+  "tools/sign-approve": { render: renderCodeSignApproveView, init: initCodeSignApproveView, title: "Code Sign & Approve — NEXORA AI" },
 
   // 8-13: JSON Tools
-  "tools/json-formatter": { render: renderJsonSuiteView, init: initJsonSuiteView, title: "JSON Formatter & Tree - WebDevHub" },
-  "tools/json-validator": { render: renderJsonSuiteView, init: initJsonSuiteView, title: "JSON Validator - WebDevHub" },
-  "tools/json-minifier": { render: renderJsonSuiteView, init: initJsonSuiteView, title: "JSON Minifier - WebDevHub" },
-  "tools/json-viewer": { render: renderJsonSuiteView, init: initJsonSuiteView, title: "JSON Viewer - WebDevHub" },
-  "tools/json-to-csv": { render: renderJsonSuiteView, init: initJsonSuiteView, title: "JSON to CSV Converter - WebDevHub" },
-  "tools/csv-to-json": { render: renderJsonSuiteView, init: initJsonSuiteView, title: "CSV to JSON Converter - WebDevHub" },
+  "tools/json-formatter": { render: renderJsonSuiteView, init: initJsonSuiteView, title: "JSON Formatter & Tree — NEXORA AI" },
+  "tools/json-validator": { render: renderJsonSuiteView, init: initJsonSuiteView, title: "JSON Validator — NEXORA AI" },
+  "tools/json-minifier": { render: renderJsonSuiteView, init: initJsonSuiteView, title: "JSON Minifier — NEXORA AI" },
+  "tools/json-viewer": { render: renderJsonSuiteView, init: initJsonSuiteView, title: "JSON Viewer — NEXORA AI" },
+  "tools/json-to-csv": { render: renderJsonSuiteView, init: initJsonSuiteView, title: "JSON to CSV Converter — NEXORA AI" },
+  "tools/csv-to-json": { render: renderJsonSuiteView, init: initJsonSuiteView, title: "CSV to JSON Converter — NEXORA AI" },
 
   // 14-18: HTML Tools
-  "tools/html-formatter": { render: renderHtmlSuiteView, init: initHtmlSuiteView, title: "HTML Formatter - WebDevHub" },
-  "tools/html-minifier": { render: renderHtmlSuiteView, init: initHtmlSuiteView, title: "HTML Minifier - WebDevHub" },
-  "tools/html-checker": { render: renderHtmlSuiteView, init: initHtmlSuiteView, title: "HTML Checker - WebDevHub" },
-  "tools/html-to-markdown": { render: renderHtmlSuiteView, init: initHtmlSuiteView, title: "HTML to Markdown - WebDevHub" },
-  "tools/html-to-jsx": { render: renderHtmlSuiteView, init: initHtmlSuiteView, title: "HTML to JSX Converter - WebDevHub" },
-  "tools/html-markdown-jsx": { render: renderHtmlSuiteView, init: initHtmlSuiteView, title: "HTML to JSX / Markdown - WebDevHub" },
+  "tools/html-formatter": { render: renderHtmlSuiteView, init: initHtmlSuiteView, title: "HTML Formatter — NEXORA AI" },
+  "tools/html-minifier": { render: renderHtmlSuiteView, init: initHtmlSuiteView, title: "HTML Minifier — NEXORA AI" },
+  "tools/html-checker": { render: renderHtmlSuiteView, init: initHtmlSuiteView, title: "HTML Checker — NEXORA AI" },
+  "tools/html-to-markdown": { render: renderHtmlSuiteView, init: initHtmlSuiteView, title: "HTML to Markdown — NEXORA AI" },
+  "tools/html-to-jsx": { render: renderHtmlSuiteView, init: initHtmlSuiteView, title: "HTML to JSX Converter — NEXORA AI" },
+  "tools/html-markdown-jsx": { render: renderHtmlSuiteView, init: initHtmlSuiteView, title: "HTML to JSX / Markdown — NEXORA AI" },
 
   // 19-20: JWT Tools
-  "tools/jwt-decoder": { render: renderJwtSuiteView, init: initJwtSuiteView, title: "JWT Decoder - WebDevHub" },
-  "tools/jwt-expiry": { render: renderJwtSuiteView, init: initJwtSuiteView, title: "JWT Expiry Inspector - WebDevHub" },
+  "tools/jwt-decoder": { render: renderJwtSuiteView, init: initJwtSuiteView, title: "JWT Decoder — NEXORA AI" },
+  "tools/jwt-expiry": { render: renderJwtSuiteView, init: initJwtSuiteView, title: "JWT Expiry Inspector — NEXORA AI" },
 
   // 21: Regex Tools
-  "tools/regex-tester": { render: renderRegexSuiteView, init: initRegexSuiteView, title: "Regex Tester - WebDevHub" },
+  "tools/regex-tester": { render: renderRegexSuiteView, init: initRegexSuiteView, title: "Regex Tester — NEXORA AI" },
 
   // 22-24: URL Tools
-  "tools/url-encoder": { render: renderUrlSuiteView, init: initUrlSuiteView, title: "URL Encoder - WebDevHub" },
-  "tools/url-decoder": { render: renderUrlSuiteView, init: initUrlSuiteView, title: "URL Decoder - WebDevHub" },
-  "tools/url-parser": { render: renderUrlSuiteView, init: initUrlSuiteView, title: "URL Parser - WebDevHub" },
+  "tools/url-encoder": { render: renderUrlSuiteView, init: initUrlSuiteView, title: "URL Encoder — NEXORA AI" },
+  "tools/url-decoder": { render: renderUrlSuiteView, init: initUrlSuiteView, title: "URL Decoder — NEXORA AI" },
+  "tools/url-parser": { render: renderUrlSuiteView, init: initUrlSuiteView, title: "URL Parser — NEXORA AI" },
 
   // 25-26: Base64 Tools
-  "tools/base64-encoder": { render: renderBase64SuiteView, init: initBase64SuiteView, title: "Base64 Encoder - WebDevHub" },
-  "tools/base64-decoder": { render: renderBase64SuiteView, init: initBase64SuiteView, title: "Base64 Decoder - WebDevHub" },
-  "tools/image-base64": { render: renderBase64SuiteView, init: initBase64SuiteView, title: "Image to Base64 - WebDevHub" },
+  "tools/base64-encoder": { render: renderBase64SuiteView, init: initBase64SuiteView, title: "Base64 Encoder — NEXORA AI" },
+  "tools/base64-decoder": { render: renderBase64SuiteView, init: initBase64SuiteView, title: "Base64 Decoder — NEXORA AI" },
+  "tools/image-base64": { render: renderBase64SuiteView, init: initBase64SuiteView, title: "Image to Base64 — NEXORA AI" },
 
   // 27-29: cURL, API Tester, Code Diff
-  "tools/curl-converter": { render: renderCurlSuiteView, init: initCurlSuiteView, title: "cURL Converter - WebDevHub" },
-  "tools/api-tester": { render: renderApiTesterSuiteView, init: initApiTesterSuiteView, title: "API Tester - WebDevHub" },
-  "tools/code-diff": { render: renderCodeDiffSuiteView, init: initCodeDiffSuiteView, title: "Code Diff & Comparator - WebDevHub" },
+  "tools/curl-converter": { render: renderCurlSuiteView, init: initCurlSuiteView, title: "cURL Converter — NEXORA AI" },
+  "tools/api-tester": { render: renderApiTesterSuiteView, init: initApiTesterSuiteView, title: "API Tester — NEXORA AI" },
+  "tools/code-diff": { render: renderCodeDiffSuiteView, init: initCodeDiffSuiteView, title: "Code Diff & Comparator — NEXORA AI" },
 
   // 30-40: CSS Tools
-  "tools/flexbox-builder": { render: renderCssSuiteView, init: initCssSuiteView, title: "Flexbox Builder - WebDevHub" },
-  "tools/flexbox-grid": { render: renderCssSuiteView, init: initCssSuiteView, title: "Flexbox & Grid Builder - WebDevHub" },
-  "tools/grid-builder": { render: renderCssSuiteView, init: initCssSuiteView, title: "CSS Grid Builder - WebDevHub" },
-  "tools/gradient-maker": { render: renderCssSuiteView, init: initCssSuiteView, title: "Gradient Maker - WebDevHub" },
-  "tools/gradient-palette": { render: renderCssSuiteView, init: initCssSuiteView, title: "CSS Gradient Maker - WebDevHub" },
-  "tools/color-picker": { render: renderCssSuiteView, init: initCssSuiteView, title: "Color Picker - WebDevHub" },
-  "tools/color-converter": { render: renderCssSuiteView, init: initCssSuiteView, title: "Color Converter - WebDevHub" },
-  "tools/shadow-maker": { render: renderCssSuiteView, init: initCssSuiteView, title: "Box Shadow Maker - WebDevHub" },
-  "tools/border-maker": { render: renderCssSuiteView, init: initCssSuiteView, title: "Border Maker - WebDevHub" },
-  "tools/css-clamp": { render: renderCssSuiteView, init: initCssSuiteView, title: "CSS Clamp Calculator - WebDevHub" },
-  "tools/px-to-rem": { render: renderCssSuiteView, init: initCssSuiteView, title: "PX to REM Converter - WebDevHub" },
-  "tools/keyframe-maker": { render: renderCssSuiteView, init: initCssSuiteView, title: "CSS Keyframe Maker - WebDevHub" },
-  "tools/glass-effect": { render: renderCssSuiteView, init: initCssSuiteView, title: "Glass Effect Maker - WebDevHub" },
-  "tools/glassmorphism-animator": { render: renderCssSuiteView, init: initCssSuiteView, title: "Glassmorphism Generator - WebDevHub" },
-  "tools/css-minifier": { render: renderCssSuiteView, init: initCssSuiteView, title: "CSS Minifier - WebDevHub" },
-  "tools/code-minifier": { render: renderCssSuiteView, init: initCssSuiteView, title: "CSS Minifier - WebDevHub" },
+  "tools/flexbox-builder": { render: renderCssSuiteView, init: initCssSuiteView, title: "Flexbox Builder — NEXORA AI" },
+  "tools/flexbox-grid": { render: renderCssSuiteView, init: initCssSuiteView, title: "Flexbox & Grid Builder — NEXORA AI" },
+  "tools/grid-builder": { render: renderCssSuiteView, init: initCssSuiteView, title: "CSS Grid Builder — NEXORA AI" },
+  "tools/gradient-maker": { render: renderCssSuiteView, init: initCssSuiteView, title: "Gradient Maker — NEXORA AI" },
+  "tools/gradient-palette": { render: renderCssSuiteView, init: initCssSuiteView, title: "CSS Gradient Maker — NEXORA AI" },
+  "tools/color-picker": { render: renderCssSuiteView, init: initCssSuiteView, title: "Color Picker — NEXORA AI" },
+  "tools/color-converter": { render: renderCssSuiteView, init: initCssSuiteView, title: "Color Converter — NEXORA AI" },
+  "tools/shadow-maker": { render: renderCssSuiteView, init: initCssSuiteView, title: "Box Shadow Maker — NEXORA AI" },
+  "tools/border-maker": { render: renderCssSuiteView, init: initCssSuiteView, title: "Border Maker — NEXORA AI" },
+  "tools/css-clamp": { render: renderCssSuiteView, init: initCssSuiteView, title: "CSS Clamp Calculator — NEXORA AI" },
+  "tools/px-to-rem": { render: renderCssSuiteView, init: initCssSuiteView, title: "PX to REM Converter — NEXORA AI" },
+  "tools/keyframe-maker": { render: renderCssSuiteView, init: initCssSuiteView, title: "CSS Keyframe Maker — NEXORA AI" },
+  "tools/glass-effect": { render: renderCssSuiteView, init: initCssSuiteView, title: "Glass Effect Maker — NEXORA AI" },
+  "tools/glassmorphism-animator": { render: renderCssSuiteView, init: initCssSuiteView, title: "Glassmorphism Generator — NEXORA AI" },
+  "tools/css-minifier": { render: renderCssSuiteView, init: initCssSuiteView, title: "CSS Minifier — NEXORA AI" },
+  "tools/code-minifier": { render: renderCssSuiteView, init: initCssSuiteView, title: "CSS Minifier — NEXORA AI" },
 
   // 41-47: Image & Media Tools
-  "tools/image-compress": { render: renderImageSuiteView, init: initImageSuiteView, title: "Image Compress - WebDevHub" },
-  "tools/image-resize": { render: renderImageSuiteView, init: initImageSuiteView, title: "Image Resize - WebDevHub" },
-  "tools/image-crop": { render: renderImageSuiteView, init: initImageSuiteView, title: "Image Crop - WebDevHub" },
-  "tools/convert-image": { render: renderImageSuiteView, init: initImageSuiteView, title: "Image Converter - WebDevHub" },
-  "tools/svg-optimizer": { render: renderImageSuiteView, init: initImageSuiteView, title: "SVG Optimizer - WebDevHub" },
-  "tools/svg-data-uri": { render: renderImageSuiteView, init: initImageSuiteView, title: "SVG Data URI - WebDevHub" },
-  "tools/favicon-maker": { render: renderImageSuiteView, init: initImageSuiteView, title: "Favicon Maker - WebDevHub" },
+  "tools/image-compress": { render: renderImageSuiteView, init: initImageSuiteView, title: "Image Compress — NEXORA AI" },
+  "tools/image-resize": { render: renderImageSuiteView, init: initImageSuiteView, title: "Image Resize — NEXORA AI" },
+  "tools/image-crop": { render: renderImageSuiteView, init: initImageSuiteView, title: "Image Crop — NEXORA AI" },
+  "tools/convert-image": { render: renderImageSuiteView, init: initImageSuiteView, title: "Image Converter — NEXORA AI" },
+  "tools/svg-optimizer": { render: renderImageSuiteView, init: initImageSuiteView, title: "SVG Optimizer — NEXORA AI" },
+  "tools/svg-data-uri": { render: renderImageSuiteView, init: initImageSuiteView, title: "SVG Data URI — NEXORA AI" },
+  "tools/favicon-maker": { render: renderImageSuiteView, init: initImageSuiteView, title: "Favicon Maker — NEXORA AI" },
 
   // 48-52: Security Tools
-  "tools/hash-generator": { render: renderSecuritySuiteView, init: initSecuritySuiteView, title: "Hash Generator - WebDevHub" },
-  "tools/sha256-generator": { render: renderSecuritySuiteView, init: initSecuritySuiteView, title: "SHA-256 Generator - WebDevHub" },
-  "tools/sha512-generator": { render: renderSecuritySuiteView, init: initSecuritySuiteView, title: "SHA-512 Generator - WebDevHub" },
-  "tools/password-generator": { render: renderSecuritySuiteView, init: initSecuritySuiteView, title: "Password Generator - WebDevHub" },
-  "tools/uuid-generator": { render: renderSecuritySuiteView, init: initSecuritySuiteView, title: "UUID v4 Generator - WebDevHub" },
+  "tools/hash-generator": { render: renderSecuritySuiteView, init: initSecuritySuiteView, title: "Hash Generator — NEXORA AI" },
+  "tools/sha256-generator": { render: renderSecuritySuiteView, init: initSecuritySuiteView, title: "SHA-256 Generator — NEXORA AI" },
+  "tools/sha512-generator": { render: renderSecuritySuiteView, init: initSecuritySuiteView, title: "SHA-512 Generator — NEXORA AI" },
+  "tools/password-generator": { render: renderSecuritySuiteView, init: initSecuritySuiteView, title: "Password Generator — NEXORA AI" },
+  "tools/uuid-generator": { render: renderSecuritySuiteView, init: initSecuritySuiteView, title: "UUID v4 Generator — NEXORA AI" },
 
   // 53-61: Developer Essentials
-  "tools/timestamp-converter": { render: renderDevSuiteView, init: initDevSuiteView, title: "Unix Timestamp Converter - WebDevHub" },
-  "tools/base-converter": { render: renderDevSuiteView, init: initDevSuiteView, title: "Base Converter - WebDevHub" },
-  "tools/text-case": { render: renderDevSuiteView, init: initDevSuiteView, title: "Text Case Converter - WebDevHub" },
-  "tools/word-counter": { render: renderDevSuiteView, init: initDevSuiteView, title: "Word Counter - WebDevHub" },
-  "tools/lorem-ipsum": { render: renderDevSuiteView, init: initDevSuiteView, title: "Lorem Ipsum Generator - WebDevHub" },
-  "tools/sql-formatter": { render: renderDevSuiteView, init: initDevSuiteView, title: "SQL Formatter - WebDevHub" },
+  "tools/timestamp-converter": { render: renderDevSuiteView, init: initDevSuiteView, title: "Unix Timestamp Converter — NEXORA AI" },
+  "tools/base-converter": { render: renderDevSuiteView, init: initDevSuiteView, title: "Base Converter — NEXORA AI" },
+  "tools/text-case": { render: renderDevSuiteView, init: initDevSuiteView, title: "Text Case Converter — NEXORA AI" },
+  "tools/word-counter": { render: renderDevSuiteView, init: initDevSuiteView, title: "Word Counter — NEXORA AI" },
+  "tools/lorem-ipsum": { render: renderDevSuiteView, init: initDevSuiteView, title: "Lorem Ipsum Generator — NEXORA AI" },
+  "tools/sql-formatter": { render: renderDevSuiteView, init: initDevSuiteView, title: "SQL Formatter — NEXORA AI" },
 
   // 62-67: Website & SEO Tools
-  "tools/seo-checker": { render: renderWebsiteSuiteView, init: initWebsiteSuiteView, title: "SEO Checker - WebDevHub" },
-  "tools/meta-tag-generator": { render: renderWebsiteSuiteView, init: initWebsiteSuiteView, title: "Meta Tag Generator - WebDevHub" },
-  "tools/open-graph": { render: renderWebsiteSuiteView, init: initWebsiteSuiteView, title: "Open Graph Generator - WebDevHub" },
-  "tools/twitter-card": { render: renderWebsiteSuiteView, init: initWebsiteSuiteView, title: "Twitter Card Maker - WebDevHub" },
-  "tools/robots-txt": { render: renderWebsiteSuiteView, init: initWebsiteSuiteView, title: "robots.txt Generator - WebDevHub" },
-  "tools/sitemap-generator": { render: renderWebsiteSuiteView, init: initWebsiteSuiteView, title: "Sitemap.xml Generator - WebDevHub" },
+  "tools/seo-checker": { render: renderWebsiteSuiteView, init: initWebsiteSuiteView, title: "SEO Checker — NEXORA AI" },
+  "tools/meta-tag-generator": { render: renderWebsiteSuiteView, init: initWebsiteSuiteView, title: "Meta Tag Generator — NEXORA AI" },
+  "tools/open-graph": { render: renderWebsiteSuiteView, init: initWebsiteSuiteView, title: "Open Graph Generator — NEXORA AI" },
+  "tools/twitter-card": { render: renderWebsiteSuiteView, init: initWebsiteSuiteView, title: "Twitter Card Maker — NEXORA AI" },
+  "tools/robots-txt": { render: renderWebsiteSuiteView, init: initWebsiteSuiteView, title: "robots.txt Generator — NEXORA AI" },
+  "tools/sitemap-generator": { render: renderWebsiteSuiteView, init: initWebsiteSuiteView, title: "Sitemap.xml Generator — NEXORA AI" },
 
   // 68-73: Cheat Sheets
-  "tools/cheat-sheets": { render: renderCheatSheetsSuiteView, init: initCheatSheetsSuiteView, title: "Developer Cheat Sheets - WebDevHub" },
-  "tools/git-cheat-sheet": { render: renderCheatSheetsSuiteView, init: initCheatSheetsSuiteView, title: "Git Cheat Sheet - WebDevHub" },
-  "tools/docker-cheat-sheet": { render: renderCheatSheetsSuiteView, init: initCheatSheetsSuiteView, title: "Docker Cheat Sheet - WebDevHub" },
-  "tools/linux-cheat-sheet": { render: renderCheatSheetsSuiteView, init: initCheatSheetsSuiteView, title: "Linux Cheat Sheet - WebDevHub" },
+  "tools/cheat-sheets": { render: renderCheatSheetsSuiteView, init: initCheatSheetsSuiteView, title: "Developer Cheat Sheets — NEXORA AI" },
+  "tools/git-cheat-sheet": { render: renderCheatSheetsSuiteView, init: initCheatSheetsSuiteView, title: "Git Cheat Sheet — NEXORA AI" },
+  "tools/docker-cheat-sheet": { render: renderCheatSheetsSuiteView, init: initCheatSheetsSuiteView, title: "Docker Cheat Sheet — NEXORA AI" },
+  "tools/linux-cheat-sheet": { render: renderCheatSheetsSuiteView, init: initCheatSheetsSuiteView, title: "Linux Cheat Sheet — NEXORA AI" },
 
   // 74: Cloud Vault
-  "tools/cloud-vault": { render: renderCloudVaultView, init: initCloudVaultView, title: "Cloud Snippet Vault - WebDevHub" },
+  "tools/cloud-vault": { render: renderCloudVaultView, init: initCloudVaultView, title: "Cloud Snippet Vault — NEXORA AI" },
 
   // Pages & Aliases
-  "privacy-policy": { render: renderPrivacyPolicyView, init: initPrivacyPolicyView, title: "Privacy Policy - WebDevHub" },
-  "privacy": { render: renderPrivacyPolicyView, init: initPrivacyPolicyView, title: "Privacy Policy - WebDevHub" },
-  "terms": { render: renderTermsOfServiceView, init: initTermsOfServiceView, title: "Terms of Service - WebDevHub" },
-  "terms-of-service": { render: renderTermsOfServiceView, init: initTermsOfServiceView, title: "Terms of Service - WebDevHub" },
-  "refund-policy": { render: renderRefundPolicyView, init: initRefundPolicyView, title: "Refund & Cancellation Policy - WebDevHub" },
-  "cancellation": { render: renderRefundPolicyView, init: initRefundPolicyView, title: "Refund & Cancellation Policy - WebDevHub" },
-  "refunds": { render: renderRefundPolicyView, init: initRefundPolicyView, title: "Refund & Cancellation Policy - WebDevHub" },
-  "about": { render: renderAboutView, init: initAboutView, title: "About Us - WebDevHub" },
-  "about-us": { render: renderAboutView, init: initAboutView, title: "About Us - WebDevHub" },
-  "contact": { render: renderContactView, init: initContactView, title: "Contact Us - WebDevHub" },
-  "contact-us": { render: renderContactView, init: initContactView, title: "Contact Us - WebDevHub" },
-  "security": { render: renderPrivacyPolicyView, init: initPrivacyPolicyView, title: "Security Architecture - WebDevHub" }
+  "privacy-policy": { render: renderPrivacyPolicyView, init: initPrivacyPolicyView, title: "Privacy Policy — NEXORA AI" },
+  "privacy": { render: renderPrivacyPolicyView, init: initPrivacyPolicyView, title: "Privacy Policy — NEXORA AI" },
+  "terms": { render: renderTermsOfServiceView, init: initTermsOfServiceView, title: "Terms of Service — NEXORA AI" },
+  "terms-of-service": { render: renderTermsOfServiceView, init: initTermsOfServiceView, title: "Terms of Service — NEXORA AI" },
+  "refund-policy": { render: renderRefundPolicyView, init: initRefundPolicyView, title: "Refund & Cancellation Policy — NEXORA AI" },
+  "cancellation": { render: renderRefundPolicyView, init: initRefundPolicyView, title: "Refund & Cancellation Policy — NEXORA AI" },
+  "refunds": { render: renderRefundPolicyView, init: initRefundPolicyView, title: "Refund & Cancellation Policy — NEXORA AI" },
+  "about": { render: renderAboutView, init: initAboutView, title: "About Us — NEXORA AI" },
+  "about-us": { render: renderAboutView, init: initAboutView, title: "About Us — NEXORA AI" },
+  "contact": { render: renderContactView, init: initContactView, title: "Contact Us — NEXORA AI" },
+  "contact-us": { render: renderContactView, init: initContactView, title: "Contact Us — NEXORA AI" },
+  "security": { render: renderPrivacyPolicyView, init: initPrivacyPolicyView, title: "Security Architecture — NEXORA AI" }
 };
 
 function normalizeRouteKey(hash) {
@@ -227,7 +233,7 @@ function router() {
   const route = routes[routeKey] || routes[""];
 
   // Update Page Title
-  document.title = route.title || "Web Developer Hub";
+  document.title = route.title || "NEXORA AI — Autonomous Intelligence Engine";
 
   // Update Active Link State in Sidebar and Header
   document.querySelectorAll("aside a, nav a").forEach((link) => {
@@ -370,11 +376,54 @@ function setupAuthModal() {
   const passInput = document.getElementById("auth-pass-input");
   const nameInput = document.getElementById("auth-name-input");
   const nameGroup = document.getElementById("auth-name-group");
+  const alertBox = document.getElementById("auth-alert-box");
+  const alertTitle = document.getElementById("auth-alert-title");
+  const alertDesc = document.getElementById("auth-alert-desc");
+  const currentDomainEl = document.getElementById("auth-current-domain");
+  const copyDomainBtn = document.getElementById("auth-copy-domain-btn");
+  const demoFreeBtn = document.getElementById("auth-demo-free-btn");
+  const demoProBtn = document.getElementById("auth-demo-pro-btn");
 
   let isRegisterMode = false;
 
+  if (currentDomainEl) {
+    currentDomainEl.textContent = window.location.hostname || "localhost";
+  }
+
+  copyDomainBtn?.addEventListener("click", () => {
+    const domain = window.location.hostname || "localhost";
+    navigator.clipboard.writeText(domain).then(() => {
+      showToast(`Copied '${domain}'! Add it to Firebase Console -> Authentication -> Settings -> Authorized domains`, "success");
+    }).catch(() => {
+      showToast(`Domain: ${domain}`, "info");
+    });
+  });
+
+  demoFreeBtn?.addEventListener("click", () => {
+    loginWithSandbox("free", {
+      displayName: "Ada Lovelace",
+      email: "developer@example.com",
+    });
+    modal?.classList.add("hidden");
+    modal?.classList.remove("flex");
+    updateHeaderAuthUI();
+  });
+
+  demoProBtn?.addEventListener("click", () => {
+    loginWithSandbox("pro", {
+      displayName: "Alan Turing",
+      email: "pro-developer@example.com",
+    });
+    modal?.classList.add("hidden");
+    modal?.classList.remove("flex");
+    updateHeaderAuthUI();
+  });
+
   const openAuth = () => {
     if (!modal) return;
+    if (currentDomainEl) {
+      currentDomainEl.textContent = window.location.hostname || "localhost";
+    }
     modal.classList.remove("hidden");
     modal.classList.add("flex");
   };
@@ -435,21 +484,48 @@ function setupAuthModal() {
       } else {
         await loginWithEmail(email, pass);
       }
+      alertBox?.classList.add("hidden");
       modal?.classList.add("hidden");
       modal?.classList.remove("flex");
       updateHeaderAuthUI();
     } catch (err) {
-      showToast(err.message, "error");
+      const isDomainOrMethodIssue = err.message?.includes("Domain Unauthorized") || 
+                                    err.message?.includes("Sign-In Method Disabled") ||
+                                    err.message?.includes("unauthorized-domain") ||
+                                    err.message?.includes("operation-not-allowed");
+
+      if (isDomainOrMethodIssue) {
+        if (alertBox) {
+          alertBox.classList.remove("hidden");
+          if (alertTitle) alertTitle.textContent = "Firebase Configuration / Domain Notice";
+          if (alertDesc) alertDesc.textContent = `${err.message} You can also click '⚡ Free Developer' below to sign in instantly in sandbox mode.`;
+        }
+        // Graceful sandbox fallback for developer testing
+        showToast(err.message, "warning");
+      } else {
+        showToast(err.message, "error");
+      }
     }
   });
 
   googleBtn?.addEventListener("click", async () => {
     try {
       await loginWithGoogle();
+      alertBox?.classList.add("hidden");
       modal?.classList.add("hidden");
       modal?.classList.remove("flex");
       updateHeaderAuthUI();
     } catch (err) {
+      const isDomainOrPopupIssue = err.message?.includes("Domain Unauthorized") || 
+                                   err.message?.includes("Popup Blocked") ||
+                                   err.message?.includes("unauthorized-domain") ||
+                                   err.message?.includes("popup-blocked");
+
+      if (isDomainOrPopupIssue && alertBox) {
+        alertBox.classList.remove("hidden");
+        if (alertTitle) alertTitle.textContent = "Firebase Domain Authorization Required";
+        if (alertDesc) alertDesc.textContent = `${err.message} Copy this domain into Firebase Console > Authentication > Settings > Authorized domains, or use the 1-click Instant Demo Sign-In below.`;
+      }
       showToast(err.message, "error");
     }
   });

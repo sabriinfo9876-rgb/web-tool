@@ -1,4 +1,4 @@
-// Web Developer Hub — Monetization, Plans & Limits Configuration
+// NEXORA AI — Monetization, Plans & Limits Configuration
 // Single source of truth for Quotas, Pricing, Tiers & Centralized Access Control (Powered by Safepay)
 
 export const PLANS = {
@@ -17,7 +17,7 @@ export const PLANS = {
     ads: true,
     features: [
       "68 core developer utilities & formatters (unlimited usage)",
-      "74 AI operations per day (Gemini 2.5/3.7 Flash)",
+      "74 Neural AI operations per day (NEXORA Neural Engine)",
       "JSON Formatter, HTML, CSS, Regex, JWT & API testing suites",
       "Up to 5 Cloud Snippet Vault entries",
       "Client-side Secret Scanner & Redactor",

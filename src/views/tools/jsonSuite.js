@@ -126,7 +126,7 @@ export function initJsonSuiteView() {
   let lastOutput = "";
 
   const sampleJson = {
-    appName: "WebDevHub",
+    appName: "NEXORA AI",
     version: "2.0.0",
     productionReady: true,
     userStats: {

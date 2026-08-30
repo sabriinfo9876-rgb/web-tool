@@ -30,22 +30,22 @@ export function renderOpenGraphView() {
           <div class="space-y-3 text-xs">
             <div>
               <label class="block text-slate-400 font-mono mb-1">Site / App Title</label>
-              <input type="text" id="og-title" value="Web Developer Hub — Modern Developer Utilities & AI" class="w-full bg-slate-950 border border-slate-700/80 rounded-xl px-3 py-2 text-white font-sans focus:outline-none focus:border-blue-400" />
+              <input type="text" id="og-title" value="NEXORA AI — Autonomous Intelligence Engine" class="w-full bg-slate-950 border border-slate-700/80 rounded-xl px-3 py-2 text-white font-sans focus:outline-none focus:border-blue-400" />
             </div>
 
             <div>
               <label class="block text-slate-400 font-mono mb-1">Description (Max 160 chars recommended)</label>
-              <textarea id="og-desc" rows="3" class="w-full bg-slate-950 border border-slate-700/80 rounded-xl px-3 py-2 text-white font-sans focus:outline-none focus:border-blue-400 leading-relaxed">20+ client-side web developer utilities including JSON Formatter, PX to REM converter, JWT decoder, ZIP debugger, and AI UI design suggester.</textarea>
+              <textarea id="og-desc" rows="3" class="w-full bg-slate-950 border border-slate-700/80 rounded-xl px-3 py-2 text-white font-sans focus:outline-none focus:border-blue-400 leading-relaxed">Autonomous intelligence engine and 74 developer utilities including JSON Formatter, PX to REM converter, JWT decoder, ZIP debugger, and 10-node consensus.</textarea>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label class="block text-slate-400 font-mono mb-1">Canonical URL</label>
-                <input type="url" id="og-url" value="https://webdevhub.app/" class="w-full bg-slate-950 border border-slate-700/80 rounded-xl px-3 py-2 text-white font-mono focus:outline-none focus:border-blue-400" />
+                <input type="url" id="og-url" value="https://nexora.ai/" class="w-full bg-slate-950 border border-slate-700/80 rounded-xl px-3 py-2 text-white font-mono focus:outline-none focus:border-blue-400" />
               </div>
               <div>
                 <label class="block text-slate-400 font-mono mb-1">Site Name</label>
-                <input type="text" id="og-sitename" value="Web Developer Hub" class="w-full bg-slate-950 border border-slate-700/80 rounded-xl px-3 py-2 text-white font-sans focus:outline-none focus:border-blue-400" />
+                <input type="text" id="og-sitename" value="NEXORA AI" class="w-full bg-slate-950 border border-slate-700/80 rounded-xl px-3 py-2 text-white font-sans focus:outline-none focus:border-blue-400" />
               </div>
             </div>
 
@@ -87,9 +87,9 @@ export function renderOpenGraphView() {
                 <img id="card-preview-img" src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1200&h=630&fit=crop" class="w-full h-full object-cover" alt="Open Graph Banner" />
               </div>
               <div class="p-3 space-y-1">
-                <div class="text-[10px] text-slate-500 uppercase font-mono" id="card-preview-domain">webdevhub.app</div>
-                <div class="text-xs font-bold text-white truncate" id="card-preview-title">Web Developer Hub</div>
-                <div class="text-[11px] text-slate-400 line-clamp-2 leading-relaxed" id="card-preview-desc">20+ client-side web developer utilities.</div>
+                <div class="text-[10px] text-slate-500 uppercase font-mono" id="card-preview-domain">nexora.ai</div>
+                <div class="text-xs font-bold text-white truncate" id="card-preview-title">NEXORA AI</div>
+                <div class="text-[11px] text-slate-400 line-clamp-2 leading-relaxed" id="card-preview-desc">Autonomous intelligence engine and 74 developer utilities.</div>
               </div>
             </div>
           </div>
@@ -192,12 +192,12 @@ export function initOpenGraphView() {
   });
 
   sampleBtn?.addEventListener("click", () => {
-    titleInput.value = "Web Developer Hub — All-in-One Dev Engine";
-    descInput.value = "Fast client-side utilities, converters, JWT inspector, ZIP debugger, and AI UI suggester.";
-    urlInput.value = "https://webdevhub.app/";
-    sitenameInput.value = "Web Developer Hub";
+    titleInput.value = "NEXORA AI — Autonomous Intelligence Engine";
+    descInput.value = "Fast client-side utilities, converters, JWT inspector, ZIP debugger, and 10-node autonomous agent consensus.";
+    urlInput.value = "https://nexora.ai/";
+    sitenameInput.value = "NEXORA AI";
     imageInput.value = "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1200&h=630&fit=crop";
-    twitterInput.value = "@webdevhub";
+    twitterInput.value = "@nexora_ai";
     updateCard();
     showToast("Sample metadata loaded", "info");
   });

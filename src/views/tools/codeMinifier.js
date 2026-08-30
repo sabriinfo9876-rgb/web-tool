@@ -111,10 +111,10 @@ export function initCodeMinifierView() {
     html: `<div class="container">
   <!-- Main Header -->
   <header>
-    <h1>Web Developer Hub</h1>
+    <h1>NEXORA AI</h1>
   </header>
   <main>
-    <p>Fast client tools.</p>
+    <p>Fast client tools and autonomous neural nodes.</p>
   </main>
 </div>`,
     js: `function calculateTotal(items) {
@@ -123,7 +123,7 @@ export function initCodeMinifierView() {
     return acc + item.price * item.quantity;
   }, 0);
 }`,
-    json: `{"name":"WebDevHub","active":true,"version":"2.0.0"}`
+    json: `{"name":"NEXORA AI","active":true,"version":"2.0.0"}`
   };
 
   function minifyCode(code, lang) {

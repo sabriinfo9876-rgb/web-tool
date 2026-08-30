@@ -1,4 +1,4 @@
-// Web Developer Hub — React AdUnit Component
+// NEXORA AI — React AdUnit Component
 import React, { useEffect } from "react";
 import { shouldShowAds } from "../config/plans.js";
 import { getCurrentUser } from "../auth.js";

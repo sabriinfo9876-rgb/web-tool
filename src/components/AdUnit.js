@@ -1,4 +1,4 @@
-// Web Developer Hub — Google AdSense Reusable Component
+// NEXORA AI — Google AdSense Reusable Component
 // Policy Safe: Shows only for FREE & Anonymous visitors; Completely hidden for PRO and TEAM users.
 // Prevents CLS (Cumulative Layout Shift) by reserving container space.
 

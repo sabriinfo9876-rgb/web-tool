@@ -42,22 +42,22 @@ export function renderWebsiteSuiteView() {
           
           <div>
             <label class="text-[11px] font-mono text-slate-400 block mb-1">Page Title (<span id="meta-title-len">35</span>/60 chars)</label>
-            <input type="text" id="meta-title" value="WebDevHub - AI Developer Tools" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white font-mono" />
+            <input type="text" id="meta-title" value="NEXORA AI - Autonomous Intelligence Engine" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white font-mono" />
           </div>
 
           <div>
             <label class="text-[11px] font-mono text-slate-400 block mb-1">Meta Description (<span id="meta-desc-len">78</span>/160 chars)</label>
-            <textarea id="meta-desc" rows="3" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white font-mono leading-relaxed">The all-in-one developer toolbox featuring AI workflows and 74 client utilities.</textarea>
+            <textarea id="meta-desc" rows="3" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white font-mono leading-relaxed">Autonomous intelligence engine and comprehensive suite of 74 developer utilities.</textarea>
           </div>
 
           <div>
             <label class="text-[11px] font-mono text-slate-400 block mb-1">Canonical URL</label>
-            <input type="text" id="meta-url" value="https://webdevhub.app" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white font-mono" />
+            <input type="text" id="meta-url" value="https://nexora.ai" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white font-mono" />
           </div>
 
           <div>
             <label class="text-[11px] font-mono text-slate-400 block mb-1">OG Image URL</label>
-            <input type="text" id="meta-image" value="https://webdevhub.app/og-image.png" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white font-mono" />
+            <input type="text" id="meta-image" value="https://nexora.ai/og-image.png" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white font-mono" />
           </div>
         </div>
 
@@ -68,9 +68,9 @@ export function renderWebsiteSuiteView() {
           <div class="p-4 rounded-2xl bg-slate-900 border border-slate-800 space-y-1.5 font-sans">
             <span class="text-[10px] font-mono text-slate-400 uppercase font-bold block">Google Search Result Preview</span>
             <div class="p-3 bg-slate-950 rounded-xl border border-slate-800/80 space-y-1">
-              <div class="text-xs text-emerald-400 truncate" id="google-prev-url">https://webdevhub.app</div>
-              <div class="text-sm font-semibold text-blue-400 hover:underline cursor-pointer" id="google-prev-title">WebDevHub - AI Developer Tools</div>
-              <div class="text-xs text-slate-300 leading-relaxed" id="google-prev-desc">The all-in-one developer toolbox featuring AI workflows and 74 client utilities.</div>
+              <div class="text-xs text-emerald-400 truncate" id="google-prev-url">https://nexora.ai</div>
+              <div class="text-sm font-semibold text-blue-400 hover:underline cursor-pointer" id="google-prev-title">NEXORA AI - Autonomous Intelligence Engine</div>
+              <div class="text-xs text-slate-300 leading-relaxed" id="google-prev-desc">Autonomous intelligence engine and comprehensive suite of 74 developer utilities.</div>
             </div>
           </div>
 

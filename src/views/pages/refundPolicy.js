@@ -1,11 +1,13 @@
 // Static Page View: Refund & Cancellation Policy (Safepay & SaaS Compliance)
 
+import { BRAND_CONFIG } from "../../config/branding.js";
+
 export function renderRefundPolicyView() {
   return `
     <div class="space-y-6 max-w-4xl mx-auto animate-fadeIn text-slate-300">
       <div class="border-b border-slate-800 pb-4">
         <h1 class="text-3xl font-bold text-white tracking-tight">Refund &amp; Cancellation Policy</h1>
-        <p class="text-xs sm:text-sm text-slate-400 mt-1">Effective Date: January 2026 — Web Developer Hub</p>
+        <p class="text-xs sm:text-sm text-slate-400 mt-1">Effective Date: January 2026 — NEXORA AI</p>
       </div>
 
       <div class="space-y-6 text-xs sm:text-sm leading-relaxed">
@@ -22,7 +24,7 @@ export function renderRefundPolicyView() {
         <section class="space-y-2">
           <h2 class="text-base sm:text-lg font-bold text-white">2. 14-Day Money-Back Guarantee</h2>
           <p>
-            We stand by the quality of our developer tools. If you are not satisfied with your Developer Pro subscription within the first <strong>14 days</strong> of your initial upgrade, contact our support team at <code>billing@webdeveloperhub.app</code>, and we will issue a full refund back to your original payment method via Safepay.
+            We stand by the quality of our developer tools. If you are not satisfied with your Developer Pro subscription within the first <strong>14 days</strong> of your initial upgrade, contact our support team at <code>billing@nexora.ai</code>, and we will issue a full refund back to your original payment method via Safepay.
           </p>
         </section>
 

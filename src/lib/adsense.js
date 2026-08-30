@@ -1,4 +1,4 @@
-// Web Developer Hub — Google AdSense Centralized Script Loader & Service
+// NEXORA AI — Google AdSense Centralized Script Loader & Service
 // Compliant with Google AdSense Policies: Single injection, lazy loading, failsafe when no client ID is present.
 
 let isScriptInjected = false;

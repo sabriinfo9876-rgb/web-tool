@@ -85,17 +85,17 @@ export function initHtmlMarkdownJsxView() {
   let activeTab = "md";
 
   const sampleHtml = `<div class="hero-section" id="hero">
-  <h1>Welcome to Web Developer Hub</h1>
-  <p>The <strong>ultimate</strong> suite of developer tools and <em>AI assistants</em>.</p>
+  <h1>Welcome to NEXORA AI</h1>
+  <p>The <strong>ultimate</strong> suite of developer tools and <em>autonomous neural agents</em>.</p>
   <ul>
     <li>Fast client-side execution</li>
     <li>Zero network tracking</li>
-    <li>Powered by Gemini 3.7</li>
+    <li>10-Node Neural Consensus</li>
   </ul>
   <img src="https://example.com/logo.png" alt="Logo" class="logo-img">
   <input type="text" placeholder="Search tools..." class="search-box">
   <br>
-  <a href="https://webdevhub.app">Learn more</a>
+  <a href="https://nexora.ai">Learn more</a>
 </div>`;
 
   function htmlToMarkdown(html) {

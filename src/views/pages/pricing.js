@@ -3,6 +3,7 @@
 import { PLANS } from "../../config/plans.js";
 import { getCurrentUser, initiateCheckout } from "../../auth.js";
 import { showToast } from "../../utils.js";
+import { BRAND_CONFIG } from "../../config/branding.js";
 
 export function renderPricingView() {
   const user = getCurrentUser();
@@ -13,14 +14,14 @@ export function renderPricingView() {
       
       <!-- Pricing Header -->
       <div class="text-center space-y-3 max-w-2xl mx-auto">
-        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 text-xs font-semibold">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-xs font-semibold">
           <span>Official Safepay Merchant Gateway</span>
         </div>
         <h1 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-          Supercharge Your Workflow with <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-300 to-cyan-300">WebDevHub Pro</span>
+          Supercharge Your Workflow with <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-indigo-300 to-purple-300">NEXORA Pro</span>
         </h1>
         <p class="text-slate-400 text-sm sm:text-base leading-relaxed">
-          Start free with all 74 developer utilities and 74 daily AI operations, or upgrade to Pro for 3,000 monthly AI operations, automated GitHub project repair, and unlimited cloud vault storage.
+          Start free with all 74 developer utilities and generous daily AI operations, or upgrade to Pro for 3,000 monthly operations, automated GitHub project repair, and full 10-node autonomous agent consensus.
         </p>
 
         <!-- Billing Toggle (Monthly / Annual) -->

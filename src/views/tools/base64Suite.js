@@ -42,7 +42,7 @@ export function renderBase64SuiteView() {
             <span class="text-slate-300 font-bold" id="b64-input-label">RAW TEXT INPUT</span>
             <span id="b64-in-count" class="text-slate-500 text-[11px]">0 chars</span>
           </div>
-          <textarea id="b64-input-area" rows="12" placeholder="Enter text to encode or Base64 string to decode..." class="w-full flex-1 bg-slate-950 p-4 text-xs font-mono text-slate-100 focus:outline-none focus:ring-1 focus:ring-emerald-500 resize-none leading-relaxed">Hello, WebDevHub!</textarea>
+          <textarea id="b64-input-area" rows="12" placeholder="Enter text to encode or Base64 string to decode..." class="w-full flex-1 bg-slate-950 p-4 text-xs font-mono text-slate-100 focus:outline-none focus:ring-1 focus:ring-emerald-500 resize-none leading-relaxed">Hello, NEXORA AI!</textarea>
         </div>
 
         <!-- Output Textarea -->

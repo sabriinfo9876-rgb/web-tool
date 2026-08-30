@@ -1,4 +1,4 @@
-// Web Developer Hub — Safepay Payment Result & Status Verification View
+// NEXORA AI — Safepay Payment Result & Status Verification View
 // Verifies server-side payment state with Safepay without trusting client parameters
 
 import { getCurrentUser } from "../../auth.js";

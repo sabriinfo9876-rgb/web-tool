@@ -573,7 +573,7 @@ export function renderFixGithubProjectView() {
                   ${githubState.isApproved ? 'checked' : ''}
                 />
                 <label for="gh-approval-checkbox" class="text-xs text-slate-300 cursor-pointer leading-relaxed">
-                  <strong class="text-white">I have reviewed these proposed multi-file changes</strong> and authorize the Web Developer Hub Gatekeeper to sign the patch digest and create the isolated repair branch.
+                  <strong class="text-white">I have reviewed these proposed multi-file changes</strong> and authorize the NEXORA AI Gatekeeper to sign the patch digest and create the isolated repair branch.
                 </label>
               </div>
 
@@ -1206,7 +1206,7 @@ export function initFixGithubProjectView() {
   // 22. Export Audit Log
   document.getElementById("gh-export-audit-btn")?.addEventListener("click", () => {
     const jsonStr = JSON.stringify({
-      app: "Web Developer Hub - GitHub Project Repair Engine",
+      app: "NEXORA AI - GitHub Project Repair Engine",
       repository: githubState.selectedRepo?.full_name,
       branch: githubState.selectedBranch,
       approvalCertificate: githubState.approvalCertificate,

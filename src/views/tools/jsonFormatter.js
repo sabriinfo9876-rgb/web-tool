@@ -47,7 +47,7 @@ export function renderJsonFormatterView() {
             <span id="jf-input-stats">0 lines | 0 bytes</span>
           </div>
           <div class="p-4 flex-1 flex flex-col">
-            <textarea id="jf-input" rows="16" placeholder='Paste your raw JSON string here... (e.g. {"name": "WebDevHub", "version": 1.0, "active": true})' class="w-full bg-slate-950 border border-slate-700/80 rounded-xl p-3.5 text-xs text-slate-100 font-mono focus:outline-none focus:border-cyan-400 resize-y leading-relaxed flex-1"></textarea>
+            <textarea id="jf-input" rows="16" placeholder='Paste your raw JSON string here... (e.g. {"name": "NEXORA AI", "version": 1.0, "active": true})' class="w-full bg-slate-950 border border-slate-700/80 rounded-xl p-3.5 text-xs text-slate-100 font-mono focus:outline-none focus:border-cyan-400 resize-y leading-relaxed flex-1"></textarea>
           </div>
         </div>
 
@@ -122,13 +122,13 @@ export function initJsonFormatterView() {
   let parsedObj = null;
 
   const sampleJson = `{
-  "hub": "Web Developer Hub",
+  "hub": "NEXORA AI",
   "version": "2.0.0",
   "isOnline": true,
   "stats": {
-    "utilitiesCount": 22,
+    "utilitiesCount": 74,
     "speedMs": 1.4,
-    "security": "100% Client-Side Sandbox"
+    "security": "100% Client-Side Sandbox & Neural Engine"
   },
   "modules": [
     "Core Utilities",
